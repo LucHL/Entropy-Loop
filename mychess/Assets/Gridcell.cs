@@ -2,27 +2,35 @@ using UnityEngine;
 
 public class GridCell : MonoBehaviour
 {
-    public Color unitColor = Color.blue;
     private GameObject spawnedUnit;
 
-    void OnMouseDown()
+    private void OnMouseDown()
     {
-        if (GameManager.Instance != null && GameManager.Instance.SelectedCard != null)
+        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard())
         {
             SpawnUnit();
-        } else {
-            Debug.LogWarning("GameManager ou SelectedCard est nul !");
+            GameManager.Instance.DeselectCard();
+        }
+        else
+        {
+            Debug.LogWarning("No card select");
         }
     }
 
-    void SpawnUnit()
+    private void SpawnUnit()
     {
         if (spawnedUnit == null)
         {
-            spawnedUnit = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            spawnedUnit.transform.position = transform.position + Vector3.up * 0.5f;
-            spawnedUnit.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-            spawnedUnit.GetComponent<Renderer>().material.color = unitColor;
+            GameObject unitPrefab = GameManager.Instance.GetSelectedUnitPrefab();
+            if (unitPrefab != null)
+            {
+                spawnedUnit = Instantiate(unitPrefab, transform.position + Vector3.up * 1.0f, Quaternion.identity);
+                Debug.Log("unit spawned");
+            }
+            else
+            {
+                Debug.LogWarning("Missing model");
+            }
         }
     }
 }

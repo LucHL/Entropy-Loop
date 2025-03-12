@@ -5,5 +5,6 @@ public class CardData : ScriptableObject
 {
     public string cardName;
     public Sprite cardImage;
+    public Color unitColor;
     public GameObject unitPrefab;
 }
