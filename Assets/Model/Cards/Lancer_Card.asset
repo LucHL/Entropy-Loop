@@ -15,4 +15,4 @@ MonoBehaviour:
   cardName: Lancier
   cardImage: {fileID: 21300000, guid: 420c091c8c7f9e84f91db8184ca8773c, type: 3}
   unitColor: {r: 0.050980385, g: 0.6901961, b: 0.21776459, a: 0}
-  unitPrefab: {fileID: 2090268629567324162, guid: c93a953378c6c674798b5ffd7cfa5bb8, type: 3}
+  unitPrefab: {fileID: 979792249222255647, guid: 25d50975d15dde84da77884e14e86791, type: 3}
