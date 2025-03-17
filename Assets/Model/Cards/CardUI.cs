@@ -6,7 +6,6 @@ public class CardUI : MonoBehaviour
 {
     public CardData cardData;  
     public Image cardImage;
-    public TextMeshProUGUI cardNameText;
 
     private void Start()
     {
@@ -16,10 +15,9 @@ public class CardUI : MonoBehaviour
         }
     }
 
-    private void UpdateCardUI()
+    public void UpdateCardUI()
     {
-        cardImage.sprite = cardData.cardImage;
-        cardNameText.text = cardData.cardName;
+        cardImage.sprite = cardData != null ? cardData.cardImage : null;
     }
 
     public void SelectCard()
