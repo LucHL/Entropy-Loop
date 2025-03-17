@@ -5,8 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Champion
-  - champion
-  - enemy
+  - Enemy
   layers:
   - Default
   - TransparentFX

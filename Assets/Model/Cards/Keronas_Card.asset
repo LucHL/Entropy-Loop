@@ -15,4 +15,4 @@ MonoBehaviour:
   cardName: Keronas
   cardImage: {fileID: 21300000, guid: a7acb9270b372fa43914e47e30aa6272, type: 3}
   unitColor: {r: 0.7584905, g: 0, b: 0.6475101, a: 0}
-  unitPrefab: {fileID: 2090268629567324162, guid: c93a953378c6c674798b5ffd7cfa5bb8, type: 3}
+  unitPrefab: {fileID: 4494458366465816587, guid: 7af7faf532e867a45919b27657553e6b, type: 3}
