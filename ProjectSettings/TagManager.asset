@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Champion
   - Enemy
+  - Entities
   layers:
   - Default
   - TransparentFX

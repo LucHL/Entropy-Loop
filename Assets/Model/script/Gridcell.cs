@@ -4,6 +4,14 @@ public class GridCell : MonoBehaviour
 {
     private GameObject spawnedUnit;
 
+    void Start()
+    {
+        GameObject[] entities = GameObject.FindGameObjectsWithTag("Entities");
+        foreach (GameObject e in entities) {
+            e.GetComponentInChildren<Units>().enabled = false;
+        }
+    }
+
     private void OnMouseDown()
     {
         if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard())
@@ -26,7 +34,7 @@ public class GridCell : MonoBehaviour
             {
                 spawnedUnit = Instantiate(unitPrefab, transform.position + Vector3.up * 25.0f, Quaternion.identity);
                 Debug.Log("unit spawned");
-                spawnedUnit.GetComponentInChildren<Champion>().enabled = false;
+                spawnedUnit.GetComponentInChildren<Units>().enabled = false;
             }
             else
             {

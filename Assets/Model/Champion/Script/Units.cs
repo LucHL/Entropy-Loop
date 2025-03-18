@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Units : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class Units : MonoBehaviour
     public float speed = 10;
     public float health = 100;
     public float attackRate = 1f; // every seconde
-    public float damagePerSecond = 10;
+    public float damagePerAttack = 10;
     public float attackRange = 15;
     public GameObject attackEffect;
     public Canvas canvas;
@@ -89,17 +90,12 @@ public class Units : MonoBehaviour
             return;
 
         animator.SetTrigger("AttackTrigger");
-        // target.GetComponent<>().receiveDamage(damagePerSecond * speed * Time.deltaTime);
-        // targetScript = target.GetComponent<T>();
-
-        // if (targetScript != null) {
-        //     targetScript.GetType().GetMethod("receiveDamage").Invoke(targetScript, new object[] { damagePerSecond * speed * Time.deltaTime });
-        // }
+        target.GetComponent<Units>().receiveDamage(damagePerAttack * speed * Time.deltaTime);
 
         if (attackEffect != null)
         {
-            GameObject effect = Instantiate(attackEffect, target.transform.position, Quaternion.identity);
-            Destroy(effect, 2f);
+            // GameObject effect = Instantiate(attackEffect, target.transform.position, Quaternion.identity);
+            // Destroy(effect, 2f);
         }
     }
 

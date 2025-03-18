@@ -187,8 +187,8 @@ GameObject:
   m_Component:
   - component: {fileID: 245237201203649013}
   m_Layer: 0
-  m_Name: Champion
-  m_TagString: Untagged
+  m_Name: Lancier
+  m_TagString: Entities
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -438,13 +438,43 @@ PrefabInstance:
       propertyPath: attackEffect
       value: 
       objectReference: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6189322609157831505, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 979792249222255647, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3441388235354068002}
   m_SourcePrefab: {fileID: 100100000, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
 --- !u!4 &4696405679059563224 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 979792249222416895, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
   m_PrefabInstance: {fileID: 5527068795114208039}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4696405679059988280 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 979792249222255647, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
+  m_PrefabInstance: {fileID: 5527068795114208039}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3441388235354068002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4696405679059988280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a7350bb286a05f4d88607c61f62a6c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityTag: Champion
+  speed: 10
+  health: 100
+  attackRate: 1
+  damagePerAttack: 10
+  attackRange: 15
+  attackEffect: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0, type: 3}
+  canvas: {fileID: 7407381465029423888}
+  slider: {fileID: 7413390874744282398}

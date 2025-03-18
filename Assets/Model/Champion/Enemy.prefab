@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 6317609174432581175}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Entities
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -652,9 +652,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f4557213a4f49c46a9814ae7276e2f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entityTag: Champion
   speed: 10
   health: 100
-  damagePerSecond: 10
+  attackRate: 1
+  damagePerAttack: 10
   attackRange: 15
   attackEffect: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0, type: 3}
   canvas: {fileID: 9054733468058505433}
