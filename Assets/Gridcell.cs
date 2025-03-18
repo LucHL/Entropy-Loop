@@ -26,6 +26,7 @@ public class GridCell : MonoBehaviour
             {
                 spawnedUnit = Instantiate(unitPrefab, transform.position + Vector3.up * 25.0f, Quaternion.identity);
                 Debug.Log("unit spawned");
+                spawnedUnit.GetComponentInChildren<Champion>().enabled = false;
             }
             else
             {
