@@ -7,6 +7,7 @@ TagManager:
   - Champion
   - Enemy
   - Entities
+  - ShopPopup
   layers:
   - Default
   - TransparentFX
