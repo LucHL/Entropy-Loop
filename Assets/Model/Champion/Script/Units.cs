@@ -1,26 +1,38 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using NUnit.Framework.Constraints;
 
 public class Units : MonoBehaviour
 {
     public string entityTag = "Champion";
     public float speed = 10;
-    public float health = 100;
-    public float attackRate = 1f; // every seconde
+    public float totalHealth = 100;
+    public float attackRate = 3f; // every seconde
     public float damagePerAttack = 10;
     public float attackRange = 15;
     public GameObject attackEffect;
     public Canvas canvas;
     public Slider slider;
+    public float pv;
 
     protected Animator animator;
-    protected GameObject target;
-    protected GameObject[] entities;
+    protected GameObject target = null;
+    protected GameObject[] entities = null;
+    protected bool isCapaciteAlreadyUse = false;
+
+    private bool isAttacking = true;
+
+    enum TypeUnits {
+        Champion,
+        Enemy
+    }
 
     protected virtual void Start()
     {
         animator = GetComponent<Animator>();
+        animator.speed = 1 / attackRate;
+        pv = totalHealth;
     }
 
     protected virtual void Update()
@@ -30,19 +42,34 @@ public class Units : MonoBehaviour
                 animator.SetBool("IsMoving", true);
                 animator.SetBool("IsAttacking", false);
                 MoveTowardsTarget();
-                CancelInvoke(nameof(Attack));
+
+                if (isAttacking) {
+                    CancelInvoke(nameof(Attack));
+                    isAttacking = false;
+                }
             } else {
-                animator.SetBool("IsMoving", false);
                 animator.SetBool("IsAttacking", true);
-                InvokeRepeating(nameof(Attack), 0f, attackRate);
+                animator.SetBool("IsMoving", false);
+                if (!isAttacking) {
+                    InvokeRepeating(nameof(Attack), 0f, attackRate);
+                    isAttacking = true;
+                }
             }
         } else {
-            CancelInvoke(nameof(Attack));
+            if (isAttacking) {
+                CancelInvoke(nameof(Attack));
+                isAttacking = false;
+            }
             animator.SetBool("IsMoving", false);
             animator.SetBool("IsAttacking", false);
             entities = GameObject.FindGameObjectsWithTag(entityTag);
             target = FindClosestEntity();
         }
+    }
+
+    protected virtual void Capacite()
+    {
+        return;
     }
 
     protected GameObject FindClosestEntity()
@@ -77,25 +104,27 @@ public class Units : MonoBehaviour
 
     public void receiveDamage(float damage)
     {
-        health -= damage;
-        slider.value = health / 100;
-        if (health <= 0) {
+        pv -= damage;
+        slider.value = pv / 100;
+        if (pv <= 0) {
+            Capacite();
             Die();
         }
     }
 
     protected virtual void Attack()
     {
+        Capacite();
         if (target == null)
             return;
 
         animator.SetTrigger("AttackTrigger");
-        target.GetComponent<Units>().receiveDamage(damagePerAttack * speed * Time.deltaTime);
+        target.GetComponent<Units>().receiveDamage(damagePerAttack);
 
         if (attackEffect != null)
         {
-            // GameObject effect = Instantiate(attackEffect, target.transform.position, Quaternion.identity);
-            // Destroy(effect, 2f);
+            GameObject effect = Instantiate(attackEffect, target.transform.position + new Vector3(0, 10, 0), Quaternion.identity);
+            Destroy(effect, 2f);
         }
     }
 

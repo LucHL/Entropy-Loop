@@ -5,7 +5,7 @@ public class Lancier : Units
     protected override void Start()
     {
         speed = 3f;
-        health = 100;
+        totalHealth = 100;
         damagePerAttack = 10;
         attackRange = 50;
         entityTag = "Enemy";
