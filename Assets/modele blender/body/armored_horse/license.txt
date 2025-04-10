@@ -1,0 +1,11 @@
+Model Information:
+* title:	Armored Horse
+* source:	https://sketchfab.com/3d-models/armored-horse-98c3f1c40a6b422dba76bf5403e0a3d8
+* author:	naminoff (https://sketchfab.com/naminoff)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Armored Horse" (https://sketchfab.com/3d-models/armored-horse-98c3f1c40a6b422dba76bf5403e0a3d8) by naminoff (https://sketchfab.com/naminoff) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

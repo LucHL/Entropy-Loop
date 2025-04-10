@@ -1,0 +1,11 @@
+Model Information:
+* title:	“Armor Piercer” Longsword
+* source:	https://sketchfab.com/3d-models/armor-piercer-longsword-1ea61491d81743ccbc3cd2fb5c4b10b9
+* author:	leeeck (https://sketchfab.com/leeeck)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "“Armor Piercer” Longsword" (https://sketchfab.com/3d-models/armor-piercer-longsword-1ea61491d81743ccbc3cd2fb5c4b10b9) by leeeck (https://sketchfab.com/leeeck) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

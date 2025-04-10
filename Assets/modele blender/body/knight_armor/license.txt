@@ -1,0 +1,11 @@
+Model Information:
+* title:	Knight armor
+* source:	https://sketchfab.com/3d-models/knight-armor-2353f53f8bd04a9ab7b036a007daf7fc
+* author:	SlagPerch 3D (https://sketchfab.com/slagperch3d)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Knight armor" (https://sketchfab.com/3d-models/knight-armor-2353f53f8bd04a9ab7b036a007daf7fc) by SlagPerch 3D (https://sketchfab.com/slagperch3d) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
