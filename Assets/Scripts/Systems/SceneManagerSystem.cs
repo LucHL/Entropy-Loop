@@ -26,8 +26,8 @@ public class LoadingScene : MonoBehaviour
 
     IEnumerator LoadSceneAsync(string scene)
     {
-        AsyncOperation op = SceneManager.LoadSceneAsync(scene);
         loadingScreen.SetActive(true);
+        AsyncOperation op = SceneManager.LoadSceneAsync(scene);
 
         while (!op.isDone) {
             float progressValue = Mathf.Clamp01(op.progress / 0.9f);

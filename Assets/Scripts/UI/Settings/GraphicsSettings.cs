@@ -25,4 +25,14 @@ public class SettingsScript : MonoBehaviour
         // else
         //     QualitySettings.vSyncCount = 0;
     }
+
+    public void SetQualityLevel(int level)
+    {
+        QualitySettings.SetQualityLevel(level);
+    }
+
+    public void SetFullScreen(bool fullScreen)
+    {
+        Screen.fullScreen = fullScreen;
+    }
 }
