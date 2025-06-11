@@ -16,11 +16,12 @@ public class LoadingScene : MonoBehaviour
         SceneManager.LoadSceneAsync(scene);
     }
 
-    //
+    //$
     // Summary:
     //     Change scene WITH a loading screen
     public void LoadScene(string scene)
     {
+        // TODO Create the loading screen object here & create a public method to instantiate the loading screen prefab.
         StartCoroutine(LoadSceneAsync(scene));
     }
 
