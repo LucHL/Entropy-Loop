@@ -1,7 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using NUnit.Framework.Constraints;
 
 public enum TypeUnits {
     Champion,
@@ -31,7 +30,7 @@ public class Units : MonoBehaviour
     protected GameObject target = null;
     protected GameObject[] entities = null;
     protected bool isCapaciteAlreadyUse = false;
-    protected UnitsClass[] unitsClass = null;
+    protected List<UnitsClass> unitsClass = new List<UnitsClass>();
 
     private bool isAttacking = true;
 
@@ -40,14 +39,18 @@ public class Units : MonoBehaviour
         animator = GetComponent<Animator>();
         animator.speed = 1 / attackRate;
         pv = totalHealth;
+        unitsClass.Add(UnitsClass.OnLand);
     }
 
     protected virtual void Update()
     {
-        if (target != null)
-        {
-            if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
-            {
+        if (unitsClass.Contains(UnitsClass.OnLand) && transform.position.y != 0) {
+            Vector3.Scale(transform.position, new Vector3(1f, 0f, 1f));
+            Debug.Log("mauvaise position.");
+        }
+
+        if (target != null) {
+            if (Vector3.Distance(transform.position, target.transform.position) > attackRange) {
                 animator.SetBool("IsMoving", true);
                 animator.SetBool("IsAttacking", false);
                 MoveTowardsTarget();
