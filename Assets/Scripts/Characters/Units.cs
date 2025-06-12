@@ -3,8 +3,19 @@ using UnityEngine.UI;
 using System.Collections;
 using NUnit.Framework.Constraints;
 
+public enum TypeUnits {
+    Champion,
+    Enemy
+}
+
+public enum UnitsClass {
+    OnLand,
+    Flying
+}
+
 public class Units : MonoBehaviour
 {
+
     public string entityTag = "Champion";
     public float speed = 10;
     public float totalHealth = 100;
@@ -20,13 +31,9 @@ public class Units : MonoBehaviour
     protected GameObject target = null;
     protected GameObject[] entities = null;
     protected bool isCapaciteAlreadyUse = false;
+    protected UnitsClass[] unitsClass = null;
 
     private bool isAttacking = true;
-
-    enum TypeUnits {
-        Champion,
-        Enemy
-    }
 
     protected virtual void Start()
     {
@@ -37,26 +44,35 @@ public class Units : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (target != null) {
-            if (Vector3.Distance(transform.position, target.transform.position) > attackRange) {
+        if (target != null)
+        {
+            if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
+            {
                 animator.SetBool("IsMoving", true);
                 animator.SetBool("IsAttacking", false);
                 MoveTowardsTarget();
 
-                if (isAttacking) {
+                if (isAttacking)
+                {
                     CancelInvoke(nameof(Attack));
                     isAttacking = false;
                 }
-            } else {
+            }
+            else
+            {
                 animator.SetBool("IsAttacking", true);
                 animator.SetBool("IsMoving", false);
-                if (!isAttacking) {
+                if (!isAttacking)
+                {
                     InvokeRepeating(nameof(Attack), 0f, attackRate);
                     isAttacking = true;
                 }
             }
-        } else {
-            if (isAttacking) {
+        }
+        else
+        {
+            if (isAttacking)
+            {
                 CancelInvoke(nameof(Attack));
                 isAttacking = false;
             }
@@ -81,12 +97,14 @@ public class Units : MonoBehaviour
         float minDistance = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
 
-        foreach (GameObject entity in entities) {
+        foreach (GameObject entity in entities)
+        {
             if (entity == gameObject)
                 continue;
 
             float distance = Vector3.Distance(currentPosition, entity.transform.position);
-            if (distance < minDistance) {
+            if (distance < minDistance)
+            {
                 minDistance = distance;
                 closest = entity;
             }
@@ -106,7 +124,8 @@ public class Units : MonoBehaviour
     {
         pv -= damage;
         slider.value = pv / 100;
-        if (pv <= 0) {
+        if (pv <= 0)
+        {
             Capacite();
             Die();
         }
@@ -130,9 +149,9 @@ public class Units : MonoBehaviour
 
     protected virtual void Die()
     {
-            Destroy(gameObject);
-            Destroy(canvas.GetComponent<CanvasScaler>());
-            Destroy(canvas.GetComponent<GraphicRaycaster>());
-            Destroy(canvas);
+        Destroy(gameObject);
+        Destroy(canvas.GetComponent<CanvasScaler>());
+        Destroy(canvas.GetComponent<GraphicRaycaster>());
+        Destroy(canvas);
     }
 }
