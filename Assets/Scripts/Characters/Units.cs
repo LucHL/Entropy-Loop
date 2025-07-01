@@ -33,24 +33,25 @@ public class Units : MonoBehaviour
     protected List<UnitsClass> unitsClass = new List<UnitsClass>();
 
     private bool isAttacking = true;
+    private Transform transformParents;
 
-    protected virtual void Start()
-    {
+    protected virtual void Start() {
         animator = GetComponent<Animator>();
         animator.speed = 1 / attackRate;
         pv = totalHealth;
         unitsClass.Add(UnitsClass.OnLand);
+        transformParents = GetComponentInParent<Transform>();
     }
 
     protected virtual void Update()
     {
-        if (unitsClass.Contains(UnitsClass.OnLand) && transform.position.y != 0) {
-            Vector3.Scale(transform.position, new Vector3(1f, 0f, 1f));
-            Debug.Log("mauvaise position.");
+        // TODO changer ce code horrible
+        if (unitsClass.Contains(UnitsClass.OnLand) && transformParents.position.y != 0) {
+            transformParents.position = new Vector3(transformParents.position.x, 0f, transformParents.position.z); // worst code ever
         }
 
         if (target != null) {
-            if (Vector3.Distance(transform.position, target.transform.position) > attackRange) {
+            if (Vector3.Distance(transformParents.position, target.transform.position) > attackRange) {
                 animator.SetBool("IsMoving", true);
                 animator.SetBool("IsAttacking", false);
                 MoveTowardsTarget();
@@ -98,7 +99,7 @@ public class Units : MonoBehaviour
 
         GameObject closest = null;
         float minDistance = Mathf.Infinity;
-        Vector3 currentPosition = transform.position;
+        Vector3 currentPosition = transformParents.position;
 
         foreach (GameObject entity in entities)
         {
@@ -117,8 +118,8 @@ public class Units : MonoBehaviour
 
     protected void MoveTowardsTarget()
     {
-        Vector3 distance = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-        transform.position = distance;
+        Vector3 distance = Vector3.MoveTowards(transformParents.position, target.transform.position, speed * Time.deltaTime);
+        transformParents.position = distance;
         slider.transform.position = distance + new Vector3(0, 21, 0);
         transform.LookAt(target.transform.position);
     }
