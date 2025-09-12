@@ -186,7 +186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 245237201203649013}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Paladin
   m_TagString: Entities
   m_Icon: {fileID: 0}
@@ -471,10 +471,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityTag: Champion
   speed: 10
-  health: 100
+  totalHealth: 100
   attackRate: 3
   damagePerAttack: 10
   attackRange: 15
   attackEffect: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0, type: 3}
   canvas: {fileID: 7407381465029423888}
   slider: {fileID: 7413390874744282398}
+  pv: 0
