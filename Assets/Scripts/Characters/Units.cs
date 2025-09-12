@@ -25,7 +25,6 @@ public class Units : MonoBehaviour
     // public float attackRate = 3f; // every seconde
     // public float damagePerAttack = 10;
     // public float attackRange = 15;
-    // public GameObject attackEffect;
     // public Canvas canvas;
     // public Slider slider;
     // public float pv;
@@ -34,20 +33,22 @@ public class Units : MonoBehaviour
     // protected Animator animator;
     // protected GameObject target = null;
     // protected GameObject[] entities = null;
-    // protected bool isCapaciteAlreadyUse = false;
-    // protected List<UnitsClass> unitsClass = new List<UnitsClass>();
 
-    // private bool isAttacking = true;
     // private Transform transformParents;
 
-    protected string entityTag = "Champion";
-    protected float totalHealth = 100;
-    protected float hp = 100;
-    protected float attackRate = 3f; // every seconde
-    protected float attackRange = 15;
-    protected float damagePerAttack = 10;
-    protected float speed = 10f;
 
+    /* Must be handle in each entities script */
+    protected float totalHealth = 100;
+    public string entityTag = "Champion";
+    public float hp = 100;
+    public float attackRate = 3f; // every seconde
+    public float attackRange = 15;
+    public float damagePerAttack = 10;
+    public float speed = 10f;
+    public List<UnitsClass> unitsClass = new();
+    public bool isCapaciteAlreadyUse = false;
+
+    public GameObject attackEffect;
     public NavMeshAgent navMeshAgent;
     public Canvas hpBarCanvas;
     protected Slider hpSlider;
@@ -58,21 +59,20 @@ public class Units : MonoBehaviour
     protected Animator animator;
 
     private Quaternion fixedRotationHPbar;
+    private bool isAttacking = false;
 
     protected virtual void Start() {
         animator = GetComponentInChildren<Animator>();
         animator.speed = 1 / attackRate;
-        // pv = totalHealth;
-        // unitsClass.Add(UnitsClass.OnLand);
-        // transformParents = GetComponentInParent<Transform>();
-
-        hp = totalHealth;
         navMeshAgent.speed = speed;
         hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
         navMeshAgent.updateRotation = false;
         fixedRotationHPbar = hpBarCanvas.transform.rotation;
         animator.SetBool("IsMoving", false);
         animator.SetBool("IsAttacking", false);
+
+        hp = totalHealth;
+        unitsClass.Add(UnitsClass.OnLand);
     }
 
     private void LateUpdate() {
@@ -121,13 +121,15 @@ public class Units : MonoBehaviour
         //     target = FindClosestEntity();
         // }
 
-        Capacite(); // Must be handle by the Champion
+        if (!isCapaciteAlreadyUse)
+            Capacite(); // Must be handle by the Champion
 
         entities = GameObject.FindGameObjectsWithTag(entityTag);
         target = FindClosestEntity();
 
         if (target != null) {
             if (Vector3.Distance(transform.position, target.transform.position) > attackRange) {
+                CancelInvoke(nameof(Attack));
                 animator.SetBool("IsMoving", true);
                 animator.SetBool("IsAttacking", false);
                 MoveTowardsTarget();
@@ -135,9 +137,11 @@ public class Units : MonoBehaviour
             else {
                 animator.SetBool("IsAttacking", true);
                 animator.SetBool("IsMoving", false);
+                InvokeRepeating(nameof(Attack), 0f, attackRate);
             }
         }
         else {
+            CancelInvoke(nameof(Attack));
             animator.SetBool("IsMoving", false);
             animator.SetBool("IsAttacking", false);
         }
@@ -177,11 +181,16 @@ public class Units : MonoBehaviour
         navMeshAgent.steeringTarget.Set(target.transform.position.x, target.transform.position.y, target.transform.position.z);
     }
 
-    public void receiveDamage(float damage)
-    {
+    /// <summary>
+    /// Inflicts damage on the unit.
+    /// If the damage is negative, the unit will be healed
+    /// </summary>
+    /// <param name="damage">If the damage is negative, the unit will be healed</param>
+    public void TakeDamage(float damage) {
         hp -= damage;
         hpSlider.value = hp / 100;
         if (hp <= 0) {
+            // Capacite(); // exemple: in case of a commander who can revive
             Die();
         }
     }
@@ -192,7 +201,7 @@ public class Units : MonoBehaviour
             return;
 
         animator.SetTrigger("AttackTrigger");
-        target.GetComponent<Units>().receiveDamage(damagePerAttack);
+        target.GetComponent<Units>().TakeDamage(damagePerAttack);
 
         // if (attackEffect != null)
         // {
