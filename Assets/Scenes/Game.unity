@@ -1771,6 +1771,10 @@ PrefabInstance:
       propertyPath: attackEffect
       value: 
       objectReference: {fileID: 6007584933065334475, guid: 45c1a9f607b571349b0186f437fb0702, type: 3}
+    - target: {fileID: 4037171792878926362, guid: 23d336e1541545c47bb80b592178af4b, type: 3}
+      propertyPath: speed
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6317609174432581175, guid: 23d336e1541545c47bb80b592178af4b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.242502
