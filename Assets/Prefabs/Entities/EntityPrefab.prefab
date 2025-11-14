@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8876957936816507290}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Entity Model
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,12 +83,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityTag: Champion
-  totalHealth: 100
   hp: 100
   attackRate: 1
   attackRange: 15
   damagePerAttack: 10
   speed: 10
+  animationSpeed: 3
+  unitsClass: 
+  isCapaciteAlreadyUse: 0
+  attackEffect: {fileID: 0}
   navMeshAgent: {fileID: 6895135250863905532}
   hpBarCanvas: {fileID: 4151159326295130401}
   modelPosition: {fileID: 6268893229560182798}

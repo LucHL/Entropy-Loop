@@ -82,6 +82,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d05047b60e277a42b073e13c1e892ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entityTag: Champion
+  hp: 100
+  attackRate: 3
+  attackRange: 15
+  damagePerAttack: 10
+  speed: 10
+  animationSpeed: 3
+  unitsClass: 
+  isCapaciteAlreadyUse: 0
+  attackEffect: {fileID: 0}
   navMeshAgent: {fileID: 6895135250863905532}
   hpBarCanvas: {fileID: 4151159326295130401}
   modelPosition: {fileID: 5850395088792518696}
@@ -233,6 +243,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6317609174432581175}
     m_Modifications:
+    - target: {fileID: 213888593383672922, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 255301199389239165, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
