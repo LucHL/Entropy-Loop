@@ -57,6 +57,8 @@ public class Units : MonoBehaviour
 
         animator.SetBool("IsMoving", false);
         animator.SetBool("IsAttacking", false);
+
+        BugTracker.NewEntity(gameObject.name);
     }
 
     private void LateUpdate() {
