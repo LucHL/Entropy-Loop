@@ -240,6 +240,14 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 6268893229553276818}
+    - target: {fileID: 4736947020946230216, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 7527798960168742340}
+    - target: {fileID: 5407062788180022964, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -9151300098422719518, guid: c8997603e7eeb33188c2afc31233ba84, type: 2}
     - target: {fileID: 5779190894488422793, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -289,6 +297,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+--- !u!82 &7527798960168742340 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5407062788180022964, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+  m_PrefabInstance: {fileID: 2554002440254765936}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8305320302594372345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5779190894488422793, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
