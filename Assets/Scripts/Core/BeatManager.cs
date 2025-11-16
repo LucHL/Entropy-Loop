@@ -11,7 +11,7 @@ public class BeatManager : MonoBehaviour
     {
         foreach (Interval i in intervals)
         {
-            float sampledTime = (audioSource.timeSamples / (audioSource.clip.frequency * i.GetIntervalLengh(bpm)));
+            float sampledTime = audioSource.timeSamples / (audioSource.clip.frequency * i.GetIntervalLengh(bpm));
             i.CheckForNewInterval(sampledTime);
         }
     }
@@ -21,7 +21,7 @@ public class BeatManager : MonoBehaviour
 public class Interval
 {
     [SerializeField] private float steps;
-    [SerializeField] private UnityEvent trigger;
+    [SerializeField] private GameObject gameObject;
     private int lastInterval;
 
     public float GetIntervalLengh(float bpm)
@@ -34,7 +34,7 @@ public class Interval
         if (Mathf.FloorToInt(interval) != lastInterval)
         {
             lastInterval = Mathf.FloorToInt(interval);
-            trigger.Invoke();
+            gameObject.GetComponent<PulseToTheBeat>().Pulse();
         }
     }
 }
