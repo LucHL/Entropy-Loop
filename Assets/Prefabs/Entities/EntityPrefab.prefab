@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8876957936816507290}
   m_Layer: 0
   m_Name: Entity Model
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -89,6 +89,7 @@ MonoBehaviour:
   damagePerAttack: 10
   speed: 10
   animationSpeed: 3
+  timeBeforeFirstAttack: 0
   unitsClass: 
   isCapaciteAlreadyUse: 0
   attackEffect: {fileID: 0}
