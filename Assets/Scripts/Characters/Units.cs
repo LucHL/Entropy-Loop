@@ -58,7 +58,7 @@ public class Units : MonoBehaviour
         animator.SetBool("IsMoving", false);
         animator.SetBool("IsAttacking", false);
 
-        BugTracker.NewEntity(gameObject.name);
+        BugTracker.Info("New entity '" + gameObject.name + "' created.");
     }
 
     private void LateUpdate() {
@@ -66,8 +66,10 @@ public class Units : MonoBehaviour
     }
 
     protected virtual void Update() {
-        if (!isCapaciteAlreadyUse)
+        if (!isCapaciteAlreadyUse) {
+            BugTracker.Info("Entity '" + gameObject.name + "' active function Capacite().");
             Capacite(); // Must be handle by the Champion
+        }
 
         if (target != null) {
             if (Vector3.Distance(transform.position, target.transform.position) > attackRange) {
@@ -131,7 +133,7 @@ public class Units : MonoBehaviour
 
     /// <summary>
     /// Inflicts damage on the unit.
-    /// If the damage is negative, the unit will be healed
+    /// INFO: If the damage is negative, the unit will be healed
     /// </summary>
     /// <param name="damage">If the damage is negative, the unit will be healed</param>
     public void TakeDamage(float damage) {
@@ -149,6 +151,7 @@ public class Units : MonoBehaviour
         if (target == null)
             return;
 
+        BugTracker.Info("Entity '" + gameObject.name + "' attack '"+ target.name + "' and deal '" + damagePerAttack + "' damage");
         animator.SetTrigger("AttackTrigger");
         target.GetComponent<Units>().TakeDamage(damagePerAttack);
 
@@ -161,6 +164,7 @@ public class Units : MonoBehaviour
 
     protected virtual void Die()
     {
+        BugTracker.Info("Entity '" + gameObject.name + "' destroyed.");
         Destroy(gameObject);
     }
 }

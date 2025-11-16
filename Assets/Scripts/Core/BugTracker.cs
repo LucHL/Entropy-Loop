@@ -8,7 +8,7 @@ public static class BugTracker
     private static string logPath;
     private static bool initialized = false;
 
-    public enum Level
+    public enum IssueLevel
     {
         Info,
         Warning,
@@ -27,10 +27,11 @@ public static class BugTracker
 
         logPath = Path.Combine(folder, "bugtracker.log");
         initialized = true;
-        Write(Level.Info, "BugTracker initialized.");
+        Report(IssueLevel.Info, "BugTracker initialized.");
+        Debug.Log("BugTracker initialized ! Log saved to: " + logPath);
     }
 
-    public static void Write(Level level, string message)
+    public static void Report(IssueLevel level, string message)
     {
         if (!initialized)
             Initialize();
@@ -42,14 +43,8 @@ public static class BugTracker
         }
     }
 
-    public static void NewEntity(string entityName)
-    {
-        string msg = "New entity '" + entityName + "' created.";
-        Write(Level.Info, msg);
-    }
-
-    public static void Error(string msg) => Write(Level.Error, msg);
-    public static void Warning(string msg) => Write(Level.Warning, msg);
-    public static void Info(string msg) => Write(Level.Info, msg);
-    public static void Critical(string msg) => Write(Level.Critical, msg);
+    public static void Error(string msg) => Report(IssueLevel.Error, msg);
+    public static void Warning(string msg) => Report(IssueLevel.Warning, msg);
+    public static void Info(string msg) => Report(IssueLevel.Info, msg);
+    public static void Critical(string msg) => Report(IssueLevel.Critical, msg);
 }
