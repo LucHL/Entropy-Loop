@@ -4,11 +4,10 @@ public class AttackSound : MonoBehaviour  // 👈 Vérifie que MonoBehaviour est
 {
     public AudioSource audioSource;
     public AudioClip swordSound;
-    private Animator animator;
+    public Animator animator;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
     }

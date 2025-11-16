@@ -1,69 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Xml;
+using JetBrains.Annotations;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
-using System.Collections;
-using NUnit.Framework.Constraints;
+
+public enum TypeUnits {
+    Champion,
+    Enemy
+}
+
+public enum UnitsClass {
+    OnLand,
+    Flying
+}
 
 public class Units : MonoBehaviour
 {
+    /* Must be handle in each entities script */
+    protected float totalHealth = 100;
     public string entityTag = "Champion";
-    public float speed = 10;
-    public float totalHealth = 100;
+    public float hp = 100;
     public float attackRate = 3f; // every seconde
-    public float damagePerAttack = 10;
     public float attackRange = 15;
-    public GameObject attackEffect;
-    public Canvas canvas;
-    public Slider slider;
-    public float pv;
+    public float damagePerAttack = 10;
+    public float speed = 10f;
+    public float animationSpeed = 3f;
+    public float timeBeforeFirstAttack = 0f;
+    public List<UnitsClass> unitsClass = new();
+    public bool isCapaciteAlreadyUse = false;
 
-    protected Animator animator;
+    public GameObject attackEffect;
+    public NavMeshAgent navMeshAgent;
+    public Canvas hpBarCanvas;
+    protected Slider hpSlider;
+    public Transform modelPosition;
+
     protected GameObject target = null;
     protected GameObject[] entities = null;
-    protected bool isCapaciteAlreadyUse = false;
+    protected Animator animator;
 
-    private bool isAttacking = true;
+    private Quaternion fixedRotationHPbar;
+    private bool isAttacking = false;
 
-    enum TypeUnits {
-        Champion,
-        Enemy
+    protected virtual void Start() {
+        animator = GetComponentInChildren<Animator>();
+        animator.speed = 1 / animationSpeed;
+        navMeshAgent.speed = speed;
+        hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
+        navMeshAgent.updateRotation = false;
+        fixedRotationHPbar = hpBarCanvas.transform.rotation;
+        hp = totalHealth;
+        unitsClass.Add(UnitsClass.OnLand);
+
+        animator.SetBool("IsMoving", false);
+        animator.SetBool("IsAttacking", false);
     }
 
-    protected virtual void Start()
-    {
-        animator = GetComponent<Animator>();
-        animator.speed = 1 / attackRate;
-        pv = totalHealth;
+    private void LateUpdate() {
+        hpBarCanvas.transform.rotation = fixedRotationHPbar;
     }
 
-    protected virtual void Update()
-    {
+    protected virtual void Update() {
+        if (!isCapaciteAlreadyUse)
+            Capacite(); // Must be handle by the Champion
+
         if (target != null) {
             if (Vector3.Distance(transform.position, target.transform.position) > attackRange) {
+                CancelInvoke(nameof(Attack));
+                isAttacking = false;
                 animator.SetBool("IsMoving", true);
                 animator.SetBool("IsAttacking", false);
                 MoveTowardsTarget();
-
-                if (isAttacking) {
-                    CancelInvoke(nameof(Attack));
-                    isAttacking = false;
-                }
-            } else {
+            }
+            else {
                 animator.SetBool("IsAttacking", true);
                 animator.SetBool("IsMoving", false);
                 if (!isAttacking) {
-                    InvokeRepeating(nameof(Attack), 0f, attackRate);
+                    InvokeRepeating(nameof(Attack), timeBeforeFirstAttack, attackRate);
                     isAttacking = true;
                 }
             }
         } else {
-            if (isAttacking) {
-                CancelInvoke(nameof(Attack));
-                isAttacking = false;
-            }
-            animator.SetBool("IsMoving", false);
-            animator.SetBool("IsAttacking", false);
+            CancelInvoke(nameof(Attack));
+            isAttacking = false;
             entities = GameObject.FindGameObjectsWithTag(entityTag);
             target = FindClosestEntity();
+            animator.SetBool("IsMoving", false);
+            animator.SetBool("IsAttacking", false);
         }
     }
 
@@ -81,58 +107,58 @@ public class Units : MonoBehaviour
         float minDistance = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
 
-        foreach (GameObject entity in entities) {
+        foreach (GameObject entity in entities)
+        {
             if (entity == gameObject)
                 continue;
 
             float distance = Vector3.Distance(currentPosition, entity.transform.position);
-            if (distance < minDistance) {
+            if (distance < minDistance)
+            {
                 minDistance = distance;
-                closest = entity;
+                closest = entity.transform.root.gameObject;
             }
         }
         return closest;
     }
 
-    protected void MoveTowardsTarget()
-    {
-        Vector3 distance = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-        transform.position = distance;
-        slider.transform.position = distance + new Vector3(0, 21, 0);
-        transform.LookAt(target.transform.position);
+    protected void MoveTowardsTarget() {
+        navMeshAgent.SetDestination(target.transform.position);
+        navMeshAgent.steeringTarget.Set(target.transform.position.x, target.transform.position.y, target.transform.position.z);
     }
 
-    public void receiveDamage(float damage)
-    {
-        pv -= damage;
-        slider.value = pv / 100;
-        if (pv <= 0) {
-            Capacite();
+    /// <summary>
+    /// Inflicts damage on the unit.
+    /// If the damage is negative, the unit will be healed
+    /// </summary>
+    /// <param name="damage">If the damage is negative, the unit will be healed</param>
+    public void TakeDamage(float damage) {
+        hp -= damage;
+        hpSlider.value = hp / 100;
+        if (hp <= 0) {
+            // Capacite(); // exemple: in case of a commander who can revive
+            // can be change with a bool and wait for 1 more loop before going to Die();
             Die();
         }
     }
 
     protected virtual void Attack()
     {
-        Capacite();
         if (target == null)
             return;
 
         animator.SetTrigger("AttackTrigger");
-        target.GetComponent<Units>().receiveDamage(damagePerAttack);
+        target.GetComponent<Units>().TakeDamage(damagePerAttack);
 
-        if (attackEffect != null)
-        {
-            GameObject effect = Instantiate(attackEffect, target.transform.position + new Vector3(0, 10, 0), Quaternion.identity);
-            Destroy(effect, 2f);
-        }
+        // if (attackEffect != null)
+        // {
+        //     GameObject effect = Instantiate(attackEffect, target.transform.position + new Vector3(0, 10, 0), Quaternion.identity);
+        //     Destroy(effect, 2f);
+        // }
     }
 
     protected virtual void Die()
     {
-            Destroy(gameObject);
-            Destroy(canvas.GetComponent<CanvasScaler>());
-            Destroy(canvas.GetComponent<GraphicRaycaster>());
-            Destroy(canvas);
+        Destroy(gameObject);
     }
 }

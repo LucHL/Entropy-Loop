@@ -32,7 +32,7 @@ public class GridCell : MonoBehaviour
             GameObject unitPrefab = GameManager.Instance.GetSelectedUnitPrefab();
             if (unitPrefab != null)
             {
-                spawnedUnit = Instantiate(unitPrefab, transform.position + Vector3.up * 25.0f, Quaternion.identity);
+                spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new Vector3(1f, 0f, 1f)), Quaternion.identity);
                 Debug.Log("unit spawned");
                 spawnedUnit.GetComponentInChildren<Units>().enabled = false;
             }

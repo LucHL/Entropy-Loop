@@ -22,7 +22,7 @@ public class PlayerSpawner : MonoBehaviour
 
     void SpawnPlayer(Vector3 position)
     {
-        GameObject newPlayer = Instantiate(playerPrefab, position, Quaternion.identity);
-        Debug.Log("🎮 Nouveau joueur ajouté !");
+        GameObject newPlayer = Instantiate(playerPrefab, Vector3.Scale(position, new Vector3(1f, 0f, 1f)), Quaternion.identity);
+        Debug.Log("New Champion");
     }
 }

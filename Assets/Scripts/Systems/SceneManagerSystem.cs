@@ -16,7 +16,7 @@ public class LoadingScene : MonoBehaviour
         SceneManager.LoadSceneAsync(scene);
     }
 
-    //$
+    //
     // Summary:
     //     Change scene WITH a loading screen
     public void LoadScene(string scene)

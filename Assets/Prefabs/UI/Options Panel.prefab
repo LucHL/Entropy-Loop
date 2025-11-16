@@ -1806,7 +1806,7 @@ MonoBehaviour:
   masterVolume: {fileID: 0}
   MusicVolume: {fileID: 0}
   SfxVolume: {fileID: 0}
-  MainAudioMixer: {fileID: 0}
+  MainAudioMixer: {fileID: 24100000, guid: c8997603e7eeb33188c2afc31233ba84, type: 2}
 --- !u!1 &7802863661687427610
 GameObject:
   m_ObjectHideFlags: 0
