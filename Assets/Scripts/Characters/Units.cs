@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.AI;
@@ -137,6 +138,9 @@ public class Units : MonoBehaviour
     /// </summary>
     /// <param name="damage">If the damage is negative, the unit will be healed</param>
     public void TakeDamage(float damage) {
+        if (hpSlider == null)
+            BugTracker.Critical("'" + gameObject.name + "' has a hpSlider null !");
+
         hp -= damage;
         hpSlider.value = hp / 100;
         if (hp <= 0) {
