@@ -35,8 +35,6 @@ public class GameManager : MonoBehaviour
         isPaused = true;
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     public void ResumeGame()
@@ -44,8 +42,6 @@ public class GameManager : MonoBehaviour
         isPaused = false;
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     public void SetSelectedCard(CardUI card)
@@ -78,4 +74,3 @@ public class GameManager : MonoBehaviour
         return selectedCard != null ? selectedCard.cardData.unitPrefab : null;
     }
 }
-
