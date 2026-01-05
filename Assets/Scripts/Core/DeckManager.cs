@@ -3,8 +3,26 @@ using UnityEngine;
 
 public class DeckManager : MonoBehaviour
 {
-    public List<CardData> deck = new List<CardData>();  // Le deck de cartes
-    public HandSlot[] handSlots;  // Les emplacements dans la main
+    public List<CardData> deck = new List<CardData>();
+    public HandSlot[] handSlots;
+
+    void Awake()
+    {
+        LoadDeckFromFolder();
+    }
+
+    // TODO chercher dans chaque dossier, pour permettre le choix du deck. Utiliser le dossier comme nom du deck.
+    private void LoadDeckFromFolder()
+    {
+        deck.Clear();
+
+        CardData[] cards = Resources.LoadAll<CardData>("Card Data/Keronas");
+
+        foreach (CardData card in cards)
+        {
+            deck.Add(card);
+        }
+    }
 
     public void DrawCard()
     {
