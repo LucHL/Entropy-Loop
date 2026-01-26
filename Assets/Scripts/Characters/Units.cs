@@ -52,6 +52,7 @@ public class Units : MonoBehaviour
         navMeshAgent.speed = speed;
         hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
         navMeshAgent.updateRotation = false;
+        navMeshAgent.Warp(transform.position);
         fixedRotationHPbar = hpBarCanvas.transform.rotation;
         hp = totalHealth;
         unitsClass.Add(UnitsClass.OnLand);

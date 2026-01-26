@@ -28,9 +28,10 @@ public class GridCell : MonoBehaviour
         {
             GameObject unitPrefab = GameManager.Instance.GetSelectedUnitPrefab();
             if (unitPrefab != null) {
-                spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new Vector3(1f, 0f, 1f)), Quaternion.identity);
-                BugTracker.Info("Unit '"+unitPrefab.name+"' spawned.");
+                unitPrefab.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new Vector3(1f, 2.3f, 1f)), Quaternion.identity);
                 spawnedUnit.GetComponentInChildren<Units>().enabled = false;
+                BugTracker.Info("Unit '"+unitPrefab.name+"' spawned.");
             } else {
                 BugTracker.Error("Missing model (Gidcell.cs/SpawnUnit).");
             }

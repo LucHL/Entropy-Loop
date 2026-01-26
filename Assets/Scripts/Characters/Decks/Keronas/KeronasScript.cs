@@ -8,6 +8,7 @@ public class Keronas : Units
         totalHealth = 150;
         damagePerAttack = 25;
         entityTag = "Enemy";
+        navMeshAgent.agentTypeID = (int)TypeUnits.Champion;
         base.Start();
     }
 

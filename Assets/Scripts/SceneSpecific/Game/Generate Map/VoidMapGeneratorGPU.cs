@@ -142,6 +142,12 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
         {
             navSurface.BuildNavMesh();
         }
+
+        // TMP Create a Prefab
+        GameObject prefabEnemy = Resources.Load<GameObject>("Enemy_tmp");
+        // prefabEnemy.transform.Rotate(0, 180, 0);
+        Instantiate(prefabEnemy, new Vector3(0, 2.2f, 0), Quaternion.identity);
+        Debug.Log("enemy spawned");
     }
 
     // ------------------------------------------------------------------ //
@@ -371,9 +377,11 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
             quad.layer = gameObject.layer;
             quad.transform.localScale = new Vector3(chessTile, 0.06f, chessTile);
             quad.transform.localPosition = new Vector3(start + x * chessTile, cy + arenaRaise + 0.06f, start + y * chessTile);
-            quad.AddComponent<GridCell>();
             quad.GetComponent<MeshRenderer>().sharedMaterial = dark ? matBoardDark : matBoardLight;
-            // SafeRemoveCollider(quad.GetComponent<BoxCollider>());
+
+            // Add the GridCell script
+            quad.AddComponent<GridCell>();
+            // SafeRemoveCollider(quad.GetComponent<BoxCollider>()); Prefab need BoxCollider
         }
         return group;
     }
