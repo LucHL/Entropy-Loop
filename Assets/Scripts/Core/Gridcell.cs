@@ -14,13 +14,10 @@ public class GridCell : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard())
-        {
+        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard()) {
             SpawnUnit();
             GameManager.Instance.DeselectCard();
-        }
-        else
-        {
+        } else {
             Debug.LogWarning("No card select");
         }
     }
@@ -30,15 +27,12 @@ public class GridCell : MonoBehaviour
         if (spawnedUnit == null)
         {
             GameObject unitPrefab = GameManager.Instance.GetSelectedUnitPrefab();
-            if (unitPrefab != null)
-            {
+            if (unitPrefab != null) {
                 spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new Vector3(1f, 0f, 1f)), Quaternion.identity);
-                Debug.Log("unit spawned");
+                BugTracker.Info("Unit '"+unitPrefab.name+"' spawned.");
                 spawnedUnit.GetComponentInChildren<Units>().enabled = false;
-            }
-            else
-            {
-                Debug.LogWarning("Missing model");
+            } else {
+                BugTracker.Error("Missing model (Gidcell.cs/SpawnUnit).");
             }
         }
     }

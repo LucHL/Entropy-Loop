@@ -68,7 +68,7 @@ public class Units : MonoBehaviour
 
     protected virtual void Update() {
         if (!isCapaciteAlreadyUse) {
-            BugTracker.Info("Entity '" + gameObject.name + "' active function Capacite().");
+            // BugTracker.Info("Entity '" + gameObject.name + "' active function Capacite().");
             Capacite(); // Must be handle by the Champion
         }
 

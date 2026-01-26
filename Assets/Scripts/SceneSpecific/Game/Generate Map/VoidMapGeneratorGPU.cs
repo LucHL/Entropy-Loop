@@ -371,8 +371,9 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
             quad.layer = gameObject.layer;
             quad.transform.localScale = new Vector3(chessTile, 0.06f, chessTile);
             quad.transform.localPosition = new Vector3(start + x * chessTile, cy + arenaRaise + 0.06f, start + y * chessTile);
+            quad.AddComponent<GridCell>();
             quad.GetComponent<MeshRenderer>().sharedMaterial = dark ? matBoardDark : matBoardLight;
-            SafeRemoveCollider(quad.GetComponent<BoxCollider>());
+            // SafeRemoveCollider(quad.GetComponent<BoxCollider>());
         }
         return group;
     }
