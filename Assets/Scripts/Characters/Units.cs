@@ -26,29 +26,31 @@ public enum AnimationState {
 
 public class Units : MonoBehaviour
 {
-    /* Must be handle in each entities script */
-    protected float totalHealth = 100;
-    public string entityTag = "Champion";
-    public float hp = 100;
-    public float attackRate = 1f; // every seconde
-    public float attackRange = 1.5f;
-    public float damagePerAttack = 10;
-    public float speed = 10f;
-    public float timeBeforeFirstAttack = 0f;
-    public List<UnitsClass> unitsClass = new();
-    public bool isCapaciteAlreadyUse = false;
-
     public GameObject attackEffect;
     public NavMeshAgent navMeshAgent;
     public Canvas hpBarCanvas;
     protected Slider hpSlider;
     public Transform modelPosition;
 
+    /* Must be handle in each entities script */
+    public float damagePerAttack = 10;
+    protected string enemyTag = "Champion";
+    protected float totalHealth = 100;
+    protected float hp = 0;
+    protected float attackRate = 1f; // every seconde
+    protected float attackRange = 1.5f;
+    protected float speed = 1f;
+    protected float attackAnimDuration = 1f;
+    protected float timeBeforeFirstAttack = 0f;
+    /* end */
+
+    protected List<UnitsClass> unitsClass = new();
     protected GameObject target = null;
     protected GameObject[] entities = null;
     protected Animator animator;
     protected AnimationState state = AnimationState.Idle;
     protected float attackTimer = 0f;
+    protected bool isCapaciteAlreadyUse = false;
 
     private Quaternion fixedRotationHPbar;
     private AnimationState currentAnimationState;
@@ -59,8 +61,8 @@ public class Units : MonoBehaviour
         // navMeshAgent.Warp(transform.position);
 
         animator = GetComponentInChildren<Animator>();
-        animator.speed = 1 / attackRate;
-        animator.SetFloat("MoveSpeed", speed);
+        // animator.speed = 1 / attackRate;
+        // animator.SetFloat("MoveSpeed", speed);
         currentAnimationState = AnimationState.Idle;
 
         hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
@@ -78,45 +80,15 @@ public class Units : MonoBehaviour
         hpBarCanvas.transform.rotation = fixedRotationHPbar;
     }
 
-    protected virtual void Update() {
-        // if (!isCapaciteAlreadyUse) {
-        //     // BugTracker.Info("Entity '" + gameObject.name + "' active function Capacite().");
-        //     Capacite(); // Must be handle by the Champion
-        // }
-
-        // if (target != null) {
-        //     if (Vector3.Distance(transform.position, target.transform.position) > attackRange) {
-        //         CancelInvoke(nameof(Attack));
-        //         isAttacking = false;
-        //         // animator.SetBool("IsMoving", true);
-        //         // animator.SetBool("IsAttacking", false);
-        //         MoveTowardsTarget();
-        //     }
-        //     else {
-        //         // animator.SetBool("IsAttacking", true);
-        //         // animator.SetBool("IsMoving", false);
-        //         if (!isAttacking) {
-        //             InvokeRepeating(nameof(Attack), timeBeforeFirstAttack, attackRate);
-        //             isAttacking = true;
-        //         }
-        //     }
-        // } else {
-        //     CancelInvoke(nameof(Attack));
-        //     isAttacking = false;
-        //     target = FindClosestEntity();
-        //     // animator.SetBool("IsMoving", false);
-        //     // animator.SetBool("IsAttacking", false);
-        // }
-
+    protected virtual void Update()
+    {
         if (!isCapaciteAlreadyUse)
-        Capacite();
+            Capacite();
 
         attackTimer -= Time.deltaTime;
 
         if (target != null) {
             float distance = Vector3.Distance(transform.position, target.transform.position);
-
-            Debug.Log(distance + " "+attackRange);
 
             if (distance > attackRange) {
                 SetAnimationState(AnimationState.Moving);
@@ -152,7 +124,7 @@ public class Units : MonoBehaviour
 
     protected GameObject FindClosestEntity()
     {
-        entities = GameObject.FindGameObjectsWithTag(entityTag);
+        entities = GameObject.FindGameObjectsWithTag(enemyTag);
 
         if (entities == null)
             return null;
@@ -234,7 +206,7 @@ public class Units : MonoBehaviour
             return;
 
         BugTracker.Info("Entity '" + gameObject.name + "' attack '"+ target.name + "' and deal '" + damagePerAttack + "' damage");
-        animator.SetTrigger("AttackTrigger");
+        // animator.SetTrigger("AttackTrigger");
         target.GetComponent<Units>().TakeDamage(damagePerAttack);
 
         // if (attackEffect != null)

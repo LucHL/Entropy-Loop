@@ -4,10 +4,11 @@ public class Keronas : Units
 {
     protected override void Start()
     {
-        speed = 1.5f;
+        speed = 0.5f;
+        attackRate = 2f;
         totalHealth = 150;
         damagePerAttack = 25;
-        entityTag = "Enemy";
+        enemyTag = "Enemy";
         base.Start();
     }
 
