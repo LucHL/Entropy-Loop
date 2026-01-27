@@ -177,8 +177,6 @@ public class Units : MonoBehaviour
                 10f * Time.deltaTime
             );
         }
-
-        Debug.Log(gameObject.name+" move: "+gameObject.transform.position);
     }
 
 
