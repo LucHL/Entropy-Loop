@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.AI.Navigation; // AI Navigation package
+using Unity.AI.Navigation;
+using UnityEngine.AI; // AI Navigation package
 
 [ExecuteAlways]
 [RequireComponent(typeof(NavMeshSurface))]
@@ -145,9 +146,24 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
 
         // TMP Create a Prefab
         GameObject prefabEnemy = Resources.Load<GameObject>("Enemy_tmp");
-        // prefabEnemy.transform.Rotate(0, 180, 0);
-        Instantiate(prefabEnemy, new Vector3(0, 2.2f, 0), Quaternion.identity);
+        GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
+        // enemyInstance.transform.Rotate(0, 180, 0);
+
+        // Movements are NOT managed by the navmesh
+        enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
+
         Debug.Log("enemy spawned");
+    }
+
+
+    Vector3 GetValidNavMeshPosition(Vector3 wantedPos, float maxDistance = 2f)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(wantedPos, out hit, maxDistance, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        return wantedPos; // fallback
     }
 
     // ------------------------------------------------------------------ //

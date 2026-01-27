@@ -88,6 +88,7 @@ MonoBehaviour:
   attackRange: 15
   damagePerAttack: 10
   speed: 10
+  stopDistance: 1.2
   animationSpeed: 3
   timeBeforeFirstAttack: 0
   unitsClass: 
@@ -103,7 +104,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6774719691583486067}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: -334000983
   m_Radius: 0.5
   m_Speed: 10

@@ -4,11 +4,10 @@ public class Keronas : Units
 {
     protected override void Start()
     {
-        speed = 3f;
+        speed = 1.5f;
         totalHealth = 150;
         damagePerAttack = 25;
         entityTag = "Enemy";
-        navMeshAgent.agentTypeID = (int)TypeUnits.Champion;
         base.Start();
     }
 

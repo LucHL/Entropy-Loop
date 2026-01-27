@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GridCell : MonoBehaviour
 {
@@ -29,8 +30,13 @@ public class GridCell : MonoBehaviour
             GameObject unitPrefab = GameManager.Instance.GetSelectedUnitPrefab();
             if (unitPrefab != null) {
                 unitPrefab.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+                // Movements are NOT managed by the navmesh
+                unitPrefab.GetComponent<NavMeshAgent>().enabled = false;
+
                 spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new Vector3(1f, 2.3f, 1f)), Quaternion.identity);
                 spawnedUnit.GetComponentInChildren<Units>().enabled = false;
+
                 BugTracker.Info("Unit '"+unitPrefab.name+"' spawned.");
             } else {
                 BugTracker.Error("Missing model (Gidcell.cs/SpawnUnit).");
