@@ -203,7 +203,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4094511764918563843}
@@ -469,13 +469,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a7350bb286a05f4d88607c61f62a6c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityTag: Champion
-  speed: 10
-  totalHealth: 100
-  attackRate: 1
-  damagePerAttack: 10
-  attackRange: 15
   attackEffect: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0, type: 3}
-  canvas: {fileID: 7407381465029423888}
-  slider: {fileID: 7413390874744282398}
-  pv: 0
+  navMeshAgent: {fileID: 0}
+  hpBarCanvas: {fileID: 0}
+  modelPosition: {fileID: 0}
+  damagePerAttack: 10
