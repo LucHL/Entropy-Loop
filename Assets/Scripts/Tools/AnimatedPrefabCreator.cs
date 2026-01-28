@@ -1,4 +1,4 @@
-using UnityEditor;
+ï»¿using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using System.IO;
@@ -152,14 +152,14 @@ public class AnimatedPrefabCreator : EditorWindow
         if (!canGenerate)
         {
             string msg = "Missing required fields:\n"
-                            + (missingModel ? "• Model\n" : "")
-                            + (missingIdle  ? "• Idle\n"   : "")
-                            + (missingRun   ? "• Run\n"    : "");
+                            + (missingModel ? "â€¢ Model\n" : "")
+                            + (missingIdle  ? "â€¢ Idle\n"   : "")
+                            + (missingRun   ? "â€¢ Run\n"    : "");
             EditorGUILayout.HelpBox(msg.TrimEnd('\n','\r'), MessageType.Info);
         }
         else
         {
-            EditorGUILayout.HelpBox("All set. Click ‘Generate Prefab’.", MessageType.None);
+            EditorGUILayout.HelpBox("All set. Click â€˜Generate Prefabâ€™.", MessageType.None);
         }
 
         using (new EditorGUI.DisabledScope(!canGenerate))
@@ -179,7 +179,7 @@ public class AnimatedPrefabCreator : EditorWindow
     {
         if (modelAsset == null || idleClip == null || runClip == null)
         {
-            Debug.LogWarning("Please specify a model and at least Idle/Run animations.");
+            BugTracker.Warning("Please specify a model and at least Idle/Run animations.");
             return;
         }
 
@@ -259,7 +259,7 @@ public class AnimatedPrefabCreator : EditorWindow
         GameObject modelInstance = (GameObject)PrefabUtility.InstantiatePrefab(modelAsset);
         if (modelInstance == null)
         {
-            Debug.LogError("Failed to instantiate the model.");
+            BugTracker.Error("Failed to instantiate the model.");
             return;
         }
 
@@ -274,19 +274,19 @@ public class AnimatedPrefabCreator : EditorWindow
             animator.runtimeAnimatorController = controller;
 
             if (animator.avatar == null)
-                Debug.LogWarning("Animator has no Avatar assigned. If using Humanoid, ensure your model provides an Avatar.");
+                BugTracker.Warning("Animator has no Avatar assigned. If using Humanoid, ensure your model provides an Avatar.");
 
             string prefabPath = GetUniqueAssetPath($"Assets/Prefabs/{finalName}.prefab");
             var saved = PrefabUtility.SaveAsPrefabAsset(modelInstance, prefabPath);
             if (saved == null)
             {
-                Debug.LogError("Failed to save the prefab.");
+                BugTracker.Error("Failed to save the prefab.");
                 return;
             }
 
             Selection.activeObject = saved;
             EditorGUIUtility.PingObject(saved);
-            Debug.Log("Animated prefab created successfully: " + prefabPath);
+            BugTracker.Info("Animated prefab created successfully: " + prefabPath);
         }
         finally
         {
