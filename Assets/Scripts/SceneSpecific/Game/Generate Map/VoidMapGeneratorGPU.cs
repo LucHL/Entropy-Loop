@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.AI.Navigation; // AI Navigation package
+using Unity.AI.Navigation;
+using UnityEngine.AI; // AI Navigation package
 
 [ExecuteAlways]
 [RequireComponent(typeof(NavMeshSurface))]
@@ -142,6 +143,27 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
         {
             navSurface.BuildNavMesh();
         }
+
+        // TMP Create a Prefab
+        GameObject prefabEnemy = Resources.Load<GameObject>("Enemy_tmp");
+        GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
+        enemyInstance.transform.Rotate(0, 180, 0);
+
+        // Movements are NOT managed by the navmesh
+        enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
+
+        Debug.Log("enemy spawned");
+    }
+
+
+    Vector3 GetValidNavMeshPosition(Vector3 wantedPos, float maxDistance = 2f)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(wantedPos, out hit, maxDistance, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        return wantedPos; // fallback
     }
 
     // ------------------------------------------------------------------ //
@@ -372,7 +394,10 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
             quad.transform.localScale = new Vector3(chessTile, 0.06f, chessTile);
             quad.transform.localPosition = new Vector3(start + x * chessTile, cy + arenaRaise + 0.06f, start + y * chessTile);
             quad.GetComponent<MeshRenderer>().sharedMaterial = dark ? matBoardDark : matBoardLight;
-            SafeRemoveCollider(quad.GetComponent<BoxCollider>());
+
+            // Add the GridCell script
+            quad.AddComponent<GridCell>();
+            // SafeRemoveCollider(quad.GetComponent<BoxCollider>()); Prefab need BoxCollider
         }
         return group;
     }

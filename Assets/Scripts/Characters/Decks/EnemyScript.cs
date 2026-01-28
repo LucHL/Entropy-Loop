@@ -4,10 +4,10 @@ public class Enemy : Units
 {
     protected override void Start()
     {
-        // speed = 3f;
-        // totalHealth = 150;
-        // damagePerAttack = 15;
-        entityTag = "Champion";
+        speed = 1f;
+        totalHealth = 100;
+        damagePerAttack = 10;
+        enemyTag = "Champion";
         base.Start();
     }
 }

@@ -4,11 +4,10 @@ public class Paladin : Units
 {
     protected override void Start()
     {
-        // speed = 3f;
-        // totalHealth = 100;
-        // damagePerAttack = 10;
-        // attackRange = 50;
-        // entityTag = "Enemy";
+        speed = 1f;
+        totalHealth = 100;
+        damagePerAttack = 10;
+        enemyTag = "Enemy";
         base.Start();
     }
 }

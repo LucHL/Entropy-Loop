@@ -1,0 +1,30 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class LevelSelectManager : MonoBehaviour
+{
+    public GameObject levelButtonPrefab;
+    public int levelCount = 50;
+
+    void Start()
+    {
+        GenerateLevels();
+    }
+
+    void GenerateLevels()
+    {
+        for (int i = 1; i <= levelCount; i++) {
+            GameObject btn = Instantiate(levelButtonPrefab, transform);
+
+            RectTransform rt = btn.GetComponent<RectTransform>();
+
+            rt.anchoredPosition = new Vector2((i - 1) * 200f - 600, 0f); // TODO delete -600
+
+            LevelButtonUI ui = btn.GetComponent<LevelButtonUI>();
+            ui.Init(i);
+
+            Button button = btn.GetComponent<Button>();
+            button.onClick.AddListener(ui.OnClick);
+        }
+    }
+}

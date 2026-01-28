@@ -4,10 +4,10 @@ public class Cavalier : Units
 {
     protected override void Start()
     {
-        // speed = 10f;
-        // totalHealth = 80;
-        // damagePerAttack = 25;
-        // entityTag = "Enemy";
+        speed = 1f;
+        totalHealth = 100;
+        damagePerAttack = 10;
+        enemyTag = "Enemy";
         base.Start();
     }
 }

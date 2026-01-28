@@ -18,46 +18,60 @@ public enum UnitsClass {
     Flying
 }
 
+public enum AnimationState {
+    Idle,
+    Moving,
+    Attacking
+}
+
 public class Units : MonoBehaviour
 {
-    /* Must be handle in each entities script */
-    protected float totalHealth = 100;
-    public string entityTag = "Champion";
-    public float hp = 100;
-    public float attackRate = 3f; // every seconde
-    public float attackRange = 15;
-    public float damagePerAttack = 10;
-    public float speed = 10f;
-    public float animationSpeed = 3f;
-    public float timeBeforeFirstAttack = 0f;
-    public List<UnitsClass> unitsClass = new();
-    public bool isCapaciteAlreadyUse = false;
-
     public GameObject attackEffect;
     public NavMeshAgent navMeshAgent;
     public Canvas hpBarCanvas;
     protected Slider hpSlider;
     public Transform modelPosition;
 
+    /* Must be handle in each entities script */
+    public float damagePerAttack = 10;
+    protected string enemyTag = "Champion";
+    protected float totalHealth = 100;
+    protected float hp = 0;
+    protected float attackRate = 1f; // every seconde
+    protected float attackRange = 1.5f;
+    protected float speed = 1f;
+    protected float attackAnimDuration = 1f;
+    protected float timeBeforeFirstAttack = 0f;
+    /* end */
+
+    protected List<UnitsClass> unitsClass = new();
     protected GameObject target = null;
     protected GameObject[] entities = null;
     protected Animator animator;
+    protected AnimationState state = AnimationState.Idle;
+    protected float attackTimer = 0f;
+    protected bool isCapaciteAlreadyUse = false;
 
     private Quaternion fixedRotationHPbar;
-    private bool isAttacking = false;
+    private AnimationState currentAnimationState;
 
     protected virtual void Start() {
+        // navMeshAgent.speed = speed;
+        // navMeshAgent.updateRotation = false;
+        // navMeshAgent.Warp(transform.position);
+
         animator = GetComponentInChildren<Animator>();
-        animator.speed = 1 / animationSpeed;
-        navMeshAgent.speed = speed;
+        // animator.speed = 1 / attackRate;
+        // animator.SetFloat("MoveSpeed", speed);
+        currentAnimationState = AnimationState.Idle;
+
         hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
-        navMeshAgent.updateRotation = false;
         fixedRotationHPbar = hpBarCanvas.transform.rotation;
         hp = totalHealth;
         unitsClass.Add(UnitsClass.OnLand);
 
-        animator.SetBool("IsMoving", false);
-        animator.SetBool("IsAttacking", false);
+        // animator.SetBool("IsMoving", false);
+        // animator.SetBool("IsAttacking", false);
 
         BugTracker.Info("New entity '" + gameObject.name + "' created.");
     }
@@ -66,36 +80,41 @@ public class Units : MonoBehaviour
         hpBarCanvas.transform.rotation = fixedRotationHPbar;
     }
 
-    protected virtual void Update() {
-        if (!isCapaciteAlreadyUse) {
-            BugTracker.Info("Entity '" + gameObject.name + "' active function Capacite().");
-            Capacite(); // Must be handle by the Champion
-        }
+    protected virtual void Update()
+    {
+        if (!isCapaciteAlreadyUse)
+            Capacite();
+
+        attackTimer -= Time.deltaTime;
 
         if (target != null) {
-            if (Vector3.Distance(transform.position, target.transform.position) > attackRange) {
-                CancelInvoke(nameof(Attack));
-                isAttacking = false;
-                animator.SetBool("IsMoving", true);
-                animator.SetBool("IsAttacking", false);
+            float distance = Vector3.Distance(transform.position, target.transform.position);
+
+            if (distance > attackRange) {
+                SetAnimationState(AnimationState.Moving);
                 MoveTowardsTarget();
-            }
-            else {
-                animator.SetBool("IsAttacking", true);
-                animator.SetBool("IsMoving", false);
-                if (!isAttacking) {
-                    InvokeRepeating(nameof(Attack), timeBeforeFirstAttack, attackRate);
-                    isAttacking = true;
+            } else {
+                if (attackTimer <= 0f) {
+                    SetAnimationState(AnimationState.Attacking);
+                    Attack();
+                    attackTimer = attackRate;
                 }
             }
         } else {
-            CancelInvoke(nameof(Attack));
-            isAttacking = false;
-            entities = GameObject.FindGameObjectsWithTag(entityTag);
+            SetAnimationState(AnimationState.Idle);
             target = FindClosestEntity();
-            animator.SetBool("IsMoving", false);
-            animator.SetBool("IsAttacking", false);
         }
+    }
+
+    protected void SetAnimationState(AnimationState newState)
+    {
+        if (currentAnimationState == newState)
+            return;
+
+        currentAnimationState = newState;
+
+        animator.SetBool("IsMoving", newState == AnimationState.Moving);
+        animator.SetBool("IsAttacking", newState == AnimationState.Attacking);
     }
 
     protected virtual void Capacite()
@@ -105,6 +124,8 @@ public class Units : MonoBehaviour
 
     protected GameObject FindClosestEntity()
     {
+        entities = GameObject.FindGameObjectsWithTag(enemyTag);
+
         if (entities == null)
             return null;
 
@@ -127,10 +148,37 @@ public class Units : MonoBehaviour
         return closest;
     }
 
-    protected void MoveTowardsTarget() {
-        navMeshAgent.SetDestination(target.transform.position);
-        navMeshAgent.steeringTarget.Set(target.transform.position.x, target.transform.position.y, target.transform.position.z);
+    // ------------------------------------------------------------------ //
+    // This function use NavMesh
+    // ------------------------------------------------------------------ //
+        // protected void MoveTowardsTarget()
+        // {
+        //     navMeshAgent.SetDestination(target.transform.position);
+        //     navMeshAgent.steeringTarget.Set(target.transform.position.x, target.transform.position.y, target.transform.position.z);
+        // }
+    
+    protected void MoveTowardsTarget()
+    {
+        Vector3 direction = target.transform.position - transform.position;
+
+        direction.Normalize();
+
+        // Cannot work for entity who can fly
+        direction.y = 0f;
+
+        transform.position += speed * Time.deltaTime * direction;
+
+        // transform.rotation = Quaternion.LookRotation(direction);
+        if (direction != Vector3.zero) {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                10f * Time.deltaTime
+            );
+        }
     }
+
 
     /// <summary>
     /// Inflicts damage on the unit.
@@ -156,7 +204,7 @@ public class Units : MonoBehaviour
             return;
 
         BugTracker.Info("Entity '" + gameObject.name + "' attack '"+ target.name + "' and deal '" + damagePerAttack + "' damage");
-        animator.SetTrigger("AttackTrigger");
+        // animator.SetTrigger("AttackTrigger");
         target.GetComponent<Units>().TakeDamage(damagePerAttack);
 
         // if (attackEffect != null)
