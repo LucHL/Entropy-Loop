@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2b90ec3733819ae408d834530888a94f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - manaSlider: {fileID: 7455632831919477018, guid: e36397ce3e43be74f8e870d878d5b9b2, type: 3}
+  - manaText: {fileID: 2144944168751238952, guid: b3b0c79879279db469e31572c4815dc0, type: 3}
+  - notEnoughManaMessage: {fileID: 6752131296471034439, guid: 303d06e0d77aa374ebd476aeb5caaa05, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

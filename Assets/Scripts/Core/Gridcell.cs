@@ -15,8 +15,32 @@ public class GridCell : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard()) {
+        Debug.Log("GridCell OnMouseDown");
+
+        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard())
+        {
+            Debug.Log("GridCell clicked");
+
+
+            CardUI card = GameManager.Instance.selectedCard;
+            ManaManager mana = GameManager.Instance.manaManager;
+
+            int cost = card.cardData.manaCost;
+
+            if (!mana.HasEnoughMana(cost))
+            {
+                return;
+            }
+
+            Debug.Log("Mana OK, spawn autorisé");
+
             SpawnUnit();
+            mana.SpendMana(cost);
+
+            HandSlot slot = card.GetComponent<HandSlot>();
+            Debug.Log(slot == null ? "HandSlot NULL" : "HandSlot OK");
+
+            card.GetComponent<HandSlot>().ClearSlot();
             GameManager.Instance.DeselectCard();
         } else {
             Debug.LogWarning("No card select");
@@ -29,8 +53,8 @@ public class GridCell : MonoBehaviour
         {
             GameObject unitPrefab = GameManager.Instance.GetSelectedUnitPrefab();
             if (unitPrefab != null) {
+                //spawnedUnit = Instantiate(unitPrefab, position, Quaternion.identity);
                 unitPrefab.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-
                 // Movements are NOT managed by the navmesh
                 unitPrefab.GetComponent<NavMeshAgent>().enabled = false;
 
