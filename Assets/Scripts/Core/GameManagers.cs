@@ -5,12 +5,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public CardUI selectedCard;
+    public ManaManager manaManager;
 
     private bool isPaused = false;
     [SerializeField] private GameObject pauseMenu;
 
     private void Awake()
     {
+        Debug.Log("GameManager Awake : " + gameObject.name);
         if (Instance == null)
         {
             Instance = this;
