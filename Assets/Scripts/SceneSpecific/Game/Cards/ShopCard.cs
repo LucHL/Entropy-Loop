@@ -1,36 +1,50 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ShopCard : MonoBehaviour
 {
-    public CardData cardData;
-    public Button buyButton;
-    public int cardPrice = 25;
-    public ShopManager shopManager;
+    [Header("UI Elements")]
+    public Image cardImage;         
+    public Button buyButton;        
+    public TextMeshProUGUI priceText; 
+    public GameObject coinIcon;     // NOUVEAU : La petite icône de pièce !
 
-    private DeckManager deckManager;
+    private CardData myData;
+    private int myPrice;
+    private ShopManager manager;
 
-    void Start()
+    public void Setup(CardData data, int price, ShopManager shopManager)
     {
-        deckManager = FindFirstObjectByType<DeckManager>();
-        shopManager = FindFirstObjectByType<ShopManager>();
+        myData = data;
+        myPrice = price;
+        manager = shopManager;
 
-        buyButton.onClick.AddListener(BuyCard);
+        // 1. Visuel
+        if (cardImage != null) cardImage.sprite = data.cardImage;
+        if (priceText != null) priceText.text = "Buy for " + price; 
+
+        // On s'assure que la pièce est visible (utile si on rafraîchit le shop)
+        if (coinIcon != null) coinIcon.SetActive(true);
+
+        // 2. Reset du bouton
+        buyButton.interactable = true;
+        buyButton.onClick.RemoveAllListeners();
+        buyButton.onClick.AddListener(TryBuy);
     }
 
-    void BuyCard()
+    void TryBuy()
     {
-        if (deckManager != null && cardData != null && shopManager != null)
+        if (manager != null)
         {
-            if (shopManager.playerGold >= cardPrice)
+            if (manager.TryBuyCard(myData, myPrice))
             {
-                deckManager.deck.Add(cardData);
-                shopManager.SpendGold(cardPrice);
-                Debug.Log("Carte achetée : " + cardData.cardName);
-            }
-            else
-            {
-                Debug.Log("Pas assez d'or !");
+                // Si acheté : on désactive le bouton
+                buyButton.interactable = false;
+                if (priceText != null) priceText.text = "SOLD";
+                
+                // NOUVEAU : On cache la pièce d'or !
+                if (coinIcon != null) coinIcon.SetActive(false);
             }
         }
     }
