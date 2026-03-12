@@ -1,17 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Xml;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-
-public enum TypeUnits {
-    Champion,
-    Enemy
-}
 
 public enum UnitsClass {
     OnLand,
@@ -24,8 +14,15 @@ public enum AnimationState {
     Attacking
 }
 
+public class BackupUnits
+{
+    public Vector3 position;
+    public Quaternion rotation;
+}
+
 public class Units : MonoBehaviour
 {
+    public Units instance;
     public GameObject attackEffect;
     public NavMeshAgent navMeshAgent;
     public Canvas hpBarCanvas;
@@ -54,6 +51,7 @@ public class Units : MonoBehaviour
 
     private Quaternion fixedRotationHPbar;
     private AnimationState currentAnimationState;
+    private BackupUnits backupUnits = new();
 
     protected virtual void Start() {
         // navMeshAgent.speed = speed;
@@ -74,6 +72,22 @@ public class Units : MonoBehaviour
         // animator.SetBool("IsAttacking", false);
 
         BugTracker.Info("New entity '" + gameObject.name + "' created.");
+
+        backupUnits.position = gameObject.transform.position;
+        backupUnits.rotation = gameObject.transform.rotation;
+        BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
+    }
+
+    public void ResetUnit()
+    {
+        gameObject.SetActive(true);
+        hp = totalHealth;
+        hpSlider.value = totalHealth;
+        isCapaciteAlreadyUse = false;
+        gameObject.transform.position = backupUnits.position;
+        gameObject.transform.rotation = backupUnits.rotation;
+
+        BugTracker.Info("Entity '" + gameObject.name + "' has been reset.");
     }
 
     private void LateUpdate() {
@@ -216,7 +230,7 @@ public class Units : MonoBehaviour
 
     protected virtual void Die()
     {
-        BugTracker.Info("Entity '" + gameObject.name + "' destroyed.");
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        GameLoopManager.instance.UnitDied(gameObject);
     }
 }

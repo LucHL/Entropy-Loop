@@ -25,6 +25,10 @@ public class LevelSelectManager : MonoBehaviour
 
             Button button = btn.GetComponent<Button>();
             button.onClick.AddListener(ui.OnClick);
+
+            if (i != 1) {
+                button.interactable = false; // Only one level for now
+            }
         }
     }
 }

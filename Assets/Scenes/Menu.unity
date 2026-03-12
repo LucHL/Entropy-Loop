@@ -753,6 +753,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.00002670288
       objectReference: {fileID: 0}
+    - target: {fileID: 1117622930435387602, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
+      propertyPath: levelCount
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 4732609392256983023, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -1477,7 +1481,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1660334432}
   m_OnClick:
     m_PersistentCalls:
