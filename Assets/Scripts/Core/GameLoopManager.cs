@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameLoopManager : MonoBehaviour
 {
@@ -22,9 +20,8 @@ public class GameLoopManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1)) { // right click
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit)) {
+            if (Physics.Raycast(ray, out RaycastHit hit)) {
                 GameObject clickedObject = hit.collider.gameObject;
 
                 RemoveUnit(clickedObject);
@@ -46,6 +43,7 @@ public class GameLoopManager : MonoBehaviour
     {
         if (playerUnits.Contains(unit)) {
             playerUnits.Remove(unit);
+            ManaManager.instance.AddMana(unit.GetComponent<Units>().manaCost);
             Destroy(unit);
 
             BugTracker.Info("'" + unit.name + "' has been remove from the playerUnits list.");
@@ -84,12 +82,11 @@ public class GameLoopManager : MonoBehaviour
         }
 
         if (countPlayer == 0) {
-            Debug.Log("Player wins");
-            EndGame(true);
-        }
-        else if (countEnemy == 0) {
             Debug.Log("Enemy wins");
             EndGame(false);
+        } else if (countEnemy == 0) {
+            Debug.Log("Player wins");
+            EndGame(true);
         }
     }
 
@@ -103,6 +100,8 @@ public class GameLoopManager : MonoBehaviour
             key.GetComponent<Units>().ResetUnit();
         }
         StartOrStopCombat(false);
+
+        ManaManager.instance.AddMana(3);
     }
 
     public void StartOrStopCombat(bool enabled = true)

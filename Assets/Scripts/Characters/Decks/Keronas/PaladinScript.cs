@@ -7,6 +7,7 @@ public class Paladin : Units
         speed = 1f;
         totalHealth = 100;
         damagePerAttack = 10;
+        manaCost = 3;
         enemyTag = "Enemy";
         base.Start();
     }

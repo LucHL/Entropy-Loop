@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public ManaManager manaManager;
 
     private bool isPaused = false;
-    [SerializeField] private GameObject pauseMenu;
+    public GameObject settings;
 
     private void Awake()
     {
@@ -27,14 +27,14 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         isPaused = true;
-        pauseMenu.SetActive(true);
+        settings.SetActive(true);
         Time.timeScale = 0f;
     }
 
     public void ResumeGame()
     {
         isPaused = false;
-        pauseMenu.SetActive(false);
+        settings.SetActive(false);
         Time.timeScale = 1f;
     }
 

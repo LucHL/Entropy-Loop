@@ -8,6 +8,7 @@ public class Keronas : Units
         attackRate = 2f;
         totalHealth = 150;
         damagePerAttack = 25;
+        manaCost = 5;
         enemyTag = "Enemy";
         base.Start();
     }

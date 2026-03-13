@@ -32,6 +32,7 @@ public class Units : MonoBehaviour
 
     /* Must be handle in each entities script */
     public float damagePerAttack = 10;
+    public int manaCost = 3;
     protected string enemyTag = "Champion";
     protected float totalHealth = 100;
     protected float hp = 0;
@@ -44,6 +45,7 @@ public class Units : MonoBehaviour
 
     protected List<UnitsClass> unitsClass = new();
     protected GameObject target = null;
+    protected Units targetUnitsComponent = null;
     protected GameObject[] entities = null;
     protected Animator animator;
     protected AnimationState state = AnimationState.Idle;
@@ -104,7 +106,12 @@ public class Units : MonoBehaviour
 
         attackTimer -= Time.deltaTime;
 
-        if (target != null) {
+        if (target != null && targetUnitsComponent != null) {
+            if (!targetUnitsComponent.isAlive) {
+                target = null;
+                return;
+            }
+
             float distance = Vector3.Distance(transform.position, target.transform.position);
 
             if (distance > attackRange) {
@@ -120,6 +127,8 @@ public class Units : MonoBehaviour
         } else {
             SetAnimationState(AnimationState.Idle);
             target = FindClosestEntity();
+            if (target != null)
+                targetUnitsComponent = target.GetComponent<Units>();
         }
     }
 
@@ -244,6 +253,8 @@ public class Units : MonoBehaviour
     {
         isAlive = false;
         gameObject.SetActive(false);
+
+        BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
 
         GameLoopManager.instance.CheckVictory();
     }

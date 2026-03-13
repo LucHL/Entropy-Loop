@@ -924,7 +924,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   selectedCard: {fileID: 0}
   manaManager: {fileID: 1857431925}
-  pauseMenu: {fileID: 2012922644}
+  settings: {fileID: 728422960}
 --- !u!114 &238418547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1224,11 +1224,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1857431925}
         m_TargetAssemblyTypeName: ManaManager, Assembly-CSharp
         m_MethodName: AddMana
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1562,7 +1562,7 @@ GameObject:
   - component: {fileID: 419479732}
   - component: {fileID: 419479731}
   m_Layer: 5
-  m_Name: popup_NoMana
+  m_Name: PopupNoMana
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3873,7 +3873,7 @@ GameObject:
   - component: {fileID: 952884053}
   - component: {fileID: 952884054}
   m_Layer: 5
-  m_Name: MSG_Mana_Manager
+  m_Name: MSGManaManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4202,14 +4202,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deck:
   - {fileID: 11400000, guid: d50c634db743a9c499bb11c191279ada, type: 2}
-  - {fileID: 11400000, guid: d50c634db743a9c499bb11c191279ada, type: 2}
-  - {fileID: 11400000, guid: d50c634db743a9c499bb11c191279ada, type: 2}
-  - {fileID: 11400000, guid: d50c634db743a9c499bb11c191279ada, type: 2}
+  - {fileID: 11400000, guid: 06a0f020e7a43a24580b8901b95a0704, type: 2}
+  - {fileID: 11400000, guid: e104d4f9341ac8941bb9e6a64b31ac46, type: 2}
+  - {fileID: 11400000, guid: fa4f597694e6fa4439004d451fe1abb9, type: 2}
   - {fileID: 11400000, guid: d50c634db743a9c499bb11c191279ada, type: 2}
   - {fileID: 11400000, guid: e104d4f9341ac8941bb9e6a64b31ac46, type: 2}
-  - {fileID: 11400000, guid: e104d4f9341ac8941bb9e6a64b31ac46, type: 2}
-  - {fileID: 11400000, guid: e104d4f9341ac8941bb9e6a64b31ac46, type: 2}
-  - {fileID: 11400000, guid: e104d4f9341ac8941bb9e6a64b31ac46, type: 2}
+  - {fileID: 11400000, guid: 06a0f020e7a43a24580b8901b95a0704, type: 2}
+  - {fileID: 11400000, guid: fa4f597694e6fa4439004d451fe1abb9, type: 2}
+  - {fileID: 11400000, guid: d50c634db743a9c499bb11c191279ada, type: 2}
   - {fileID: 11400000, guid: e104d4f9341ac8941bb9e6a64b31ac46, type: 2}
   handSlots:
   - {fileID: 56737553}
@@ -7472,7 +7472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b90ec3733819ae408d834530888a94f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ManaManager
-  currentMana: 2
+  currentMana: 3
   maxMana: 10
   manaBarUI: {fileID: 191546585}
 --- !u!1 &1880338359
@@ -8363,7 +8363,7 @@ GameObject:
   - component: {fileID: 2012922647}
   - component: {fileID: 2012922646}
   m_Layer: 5
-  m_Name: Menu_TMP
+  m_Name: BackToMenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

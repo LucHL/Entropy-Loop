@@ -61,6 +61,8 @@ public class GridCell : MonoBehaviour
                 spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new Vector3(1f, 2.3f, 1f)), Quaternion.identity);
                 spawnedUnit.GetComponentInChildren<Units>().enabled = false;
 
+                GameLoopManager.instance.RegisterUnit(spawnedUnit, true);
+
                 BugTracker.Info("Unit '"+unitPrefab.name+"' spawned.");
             } else {
                 BugTracker.Error("Missing model (Gidcell.cs/SpawnUnit).");
