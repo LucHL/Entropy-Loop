@@ -7,6 +7,7 @@ public class Cavalier : Units
         speed = 1f;
         totalHealth = 100;
         damagePerAttack = 10;
+        manaCost = 4;
         enemyTag = "Enemy";
         base.Start();
     }

@@ -8,6 +8,7 @@ public class Lancier : Units
         totalHealth = 100;
         damagePerAttack = 10;
         attackRange = 5f;
+        manaCost = 3;
         enemyTag = "Enemy";
         base.Start();
     }

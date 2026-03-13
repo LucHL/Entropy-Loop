@@ -1,17 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Xml;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-
-public enum TypeUnits {
-    Champion,
-    Enemy
-}
 
 public enum UnitsClass {
     OnLand,
@@ -24,16 +14,25 @@ public enum AnimationState {
     Attacking
 }
 
+public class BackupUnits
+{
+    public Vector3 position;
+    public Quaternion rotation;
+}
+
 public class Units : MonoBehaviour
 {
+    public Units instance;
     public GameObject attackEffect;
     public NavMeshAgent navMeshAgent;
     public Canvas hpBarCanvas;
     protected Slider hpSlider;
     public Transform modelPosition;
+    public bool isAlive = true;
 
     /* Must be handle in each entities script */
     public float damagePerAttack = 10;
+    public int manaCost = 3;
     protected string enemyTag = "Champion";
     protected float totalHealth = 100;
     protected float hp = 0;
@@ -46,6 +45,7 @@ public class Units : MonoBehaviour
 
     protected List<UnitsClass> unitsClass = new();
     protected GameObject target = null;
+    protected Units targetUnitsComponent = null;
     protected GameObject[] entities = null;
     protected Animator animator;
     protected AnimationState state = AnimationState.Idle;
@@ -54,6 +54,7 @@ public class Units : MonoBehaviour
 
     private Quaternion fixedRotationHPbar;
     private AnimationState currentAnimationState;
+    private BackupUnits backupUnits = new();
 
     protected virtual void Start() {
         // navMeshAgent.speed = speed;
@@ -74,6 +75,24 @@ public class Units : MonoBehaviour
         // animator.SetBool("IsAttacking", false);
 
         BugTracker.Info("New entity '" + gameObject.name + "' created.");
+
+        backupUnits.position = gameObject.transform.position;
+        backupUnits.rotation = gameObject.transform.rotation;
+        BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
+    }
+
+    public void ResetUnit()
+    {
+        gameObject.SetActive(true);
+
+        isAlive = true;
+        hp = totalHealth;
+        hpSlider.value = totalHealth;
+        isCapaciteAlreadyUse = false;
+        gameObject.transform.position = backupUnits.position;
+        gameObject.transform.rotation = backupUnits.rotation;
+
+        BugTracker.Info("Entity '" + gameObject.name + "' has been reset.");
     }
 
     private void LateUpdate() {
@@ -87,7 +106,12 @@ public class Units : MonoBehaviour
 
         attackTimer -= Time.deltaTime;
 
-        if (target != null) {
+        if (target != null && targetUnitsComponent != null) {
+            if (!targetUnitsComponent.isAlive) {
+                target = null;
+                return;
+            }
+
             float distance = Vector3.Distance(transform.position, target.transform.position);
 
             if (distance > attackRange) {
@@ -103,6 +127,8 @@ public class Units : MonoBehaviour
         } else {
             SetAnimationState(AnimationState.Idle);
             target = FindClosestEntity();
+            if (target != null)
+                targetUnitsComponent = target.GetComponent<Units>();
         }
     }
 
@@ -126,24 +152,33 @@ public class Units : MonoBehaviour
     {
         entities = GameObject.FindGameObjectsWithTag(enemyTag);
 
-        if (entities == null)
-            return null;
-
         GameObject closest = null;
         float minDistance = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
 
         foreach (GameObject entity in entities)
         {
-            if (entity == gameObject)
+            if (entity == null || entity == gameObject)
+                continue;
+            
+            Units unit = entity.GetComponentInParent<Units>();
+
+            if (unit == null || !unit.isAlive)
                 continue;
 
-            float distance = Vector3.Distance(currentPosition, entity.transform.position);
-            if (distance < minDistance)
+            float sqrDistance = (entity.transform.position - currentPosition).sqrMagnitude;
+
+            if (sqrDistance < minDistance)
             {
-                minDistance = distance;
+                minDistance = sqrDistance;
                 closest = entity.transform.root.gameObject;
             }
+            // float distance = Vector3.Distance(currentPosition, entity.transform.position);
+            // if (distance < minDistance)
+            // {
+            //     minDistance = distance;
+            //     closest = entity.transform.root.gameObject;
+            // }
         }
         return closest;
     }
@@ -216,7 +251,11 @@ public class Units : MonoBehaviour
 
     protected virtual void Die()
     {
-        BugTracker.Info("Entity '" + gameObject.name + "' destroyed.");
-        Destroy(gameObject);
+        isAlive = false;
+        gameObject.SetActive(false);
+
+        BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
+
+        GameLoopManager.instance.CheckVictory();
     }
 }

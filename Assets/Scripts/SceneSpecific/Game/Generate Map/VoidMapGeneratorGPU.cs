@@ -152,7 +152,9 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
         // Movements are NOT managed by the navmesh
         enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
 
-        Debug.Log("enemy spawned");
+        GameLoopManager.instance.RegisterUnit(enemyInstance, false);
+
+        BugTracker.Info("Enemy_tmp spawn.");
     }
 
 

@@ -1,17 +1,18 @@
 using UnityEngine;
-using TMPro;
 
 public class ManaManager : MonoBehaviour
 {
-    public int currentMana = 2;
+    public int currentMana = 3;
     public int maxMana = 10;
 
     [Header("UI")]
     //public TextMeshProUGUI manaText;
     public ManaBarUI manaBarUI;
+    public static ManaManager instance;
 
     private void Start()
     {
+        instance = this;
         UpdateUI();
     }
 
@@ -20,9 +21,9 @@ public class ManaManager : MonoBehaviour
         return currentMana >= amount;
     }
 
-    public void AddMana()
+    public void AddMana(int nbrToAdd = 1)
     {
-        currentMana = Mathf.Clamp(currentMana + 1, 0, maxMana);
+        currentMana = Mathf.Clamp(currentMana + nbrToAdd, 0, maxMana);
         UpdateUI();
     }
 
