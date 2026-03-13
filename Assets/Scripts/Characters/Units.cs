@@ -28,6 +28,7 @@ public class Units : MonoBehaviour
     public Canvas hpBarCanvas;
     protected Slider hpSlider;
     public Transform modelPosition;
+    public bool isAlive = true;
 
     /* Must be handle in each entities script */
     public float damagePerAttack = 10;
@@ -81,6 +82,8 @@ public class Units : MonoBehaviour
     public void ResetUnit()
     {
         gameObject.SetActive(true);
+
+        isAlive = true;
         hp = totalHealth;
         hpSlider.value = totalHealth;
         isCapaciteAlreadyUse = false;
@@ -140,24 +143,33 @@ public class Units : MonoBehaviour
     {
         entities = GameObject.FindGameObjectsWithTag(enemyTag);
 
-        if (entities == null)
-            return null;
-
         GameObject closest = null;
         float minDistance = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
 
         foreach (GameObject entity in entities)
         {
-            if (entity == gameObject)
+            if (entity == null || entity == gameObject)
+                continue;
+            
+            Units unit = entity.GetComponentInParent<Units>();
+
+            if (unit == null || !unit.isAlive)
                 continue;
 
-            float distance = Vector3.Distance(currentPosition, entity.transform.position);
-            if (distance < minDistance)
+            float sqrDistance = (entity.transform.position - currentPosition).sqrMagnitude;
+
+            if (sqrDistance < minDistance)
             {
-                minDistance = distance;
+                minDistance = sqrDistance;
                 closest = entity.transform.root.gameObject;
             }
+            // float distance = Vector3.Distance(currentPosition, entity.transform.position);
+            // if (distance < minDistance)
+            // {
+            //     minDistance = distance;
+            //     closest = entity.transform.root.gameObject;
+            // }
         }
         return closest;
     }
@@ -230,7 +242,9 @@ public class Units : MonoBehaviour
 
     protected virtual void Die()
     {
+        isAlive = false;
         gameObject.SetActive(false);
-        GameLoopManager.instance.UnitDied(gameObject);
+
+        GameLoopManager.instance.CheckVictory();
     }
 }
