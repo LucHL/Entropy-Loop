@@ -40,9 +40,9 @@ public class ShopManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            ToggleShop();
-        }
+        // if (Input.GetKeyDown(KeyCode.S))
+        // {
+        //     ToggleShop();
+        // }
     }
 }

@@ -1,9 +1,75 @@
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawnAlgo : MonoBehaviour
 {
+    public static EnemySpawnAlgo instance;
+    public int numberEnemy = 3;
+
+    public GameObject enemyPrefab;
+
+    public void Awake()
+    {
+        instance = this;
+        enemyPrefab = Resources.Load<GameObject>("Enemy_tmp");
+    }
+
+    public void SpawnEnemies()
+    {
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
+
+        List<GameObject> spawnTiles = new();
+
+        int maxY = int.MinValue;
+
+        foreach (GameObject tile in tiles)
+        {
+            string[] parts = tile.name.Split('_');
+            int y = int.Parse(parts[2]);
+
+            if (y > maxY)
+                maxY = y;
+        }
+
+        foreach (GameObject tile in tiles)
+        {
+            string[] parts = tile.name.Split('_');
+            int y = int.Parse(parts[2]);
+
+            if (y >= maxY - 3)
+                spawnTiles.Add(tile);
+        }
+
+        for (int i = 0; i < numberEnemy && spawnTiles.Count > 0; i++)
+        {
+            int index = Random.Range(0, spawnTiles.Count);
+            GameObject tile = spawnTiles[index];
+            spawnTiles.RemoveAt(index);
+
+            Vector3 spawnPos = tile.transform.position + Vector3.up * 2f;
+
+            GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+            enemy.transform.Rotate(0, 180, 0);
+
+            enemy.GetComponent<NavMeshAgent>().enabled = false;
+
+            GameLoopManager.instance.RegisterUnit(enemy, false);
+        }
+        // // TMP Create a Prefab
+        // GameObject prefabEnemy = Resources.Load<GameObject>("Enemy_tmp");
+        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
+        // enemyInstance.transform.Rotate(0, 180, 0);
+
+        // // Movements are NOT managed by the navmesh
+        // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
+
+        // GameLoopManager.instance.RegisterUnit(enemyInstance, false);
+    }
+
+
+
+
     // public interface UnitsOnBoard
     // {
     //     Units units;

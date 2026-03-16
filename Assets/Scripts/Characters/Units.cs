@@ -41,6 +41,8 @@ public class Units : MonoBehaviour
     protected float speed = 1f;
     protected float attackAnimDuration = 1f;
     protected float timeBeforeFirstAttack = 0f;
+    public AudioSource audioSource;
+    public AudioClip attackSound;
     /* end */
 
     protected List<UnitsClass> unitsClass = new();
@@ -241,6 +243,9 @@ public class Units : MonoBehaviour
         BugTracker.Info("Entity '" + gameObject.name + "' attack '"+ target.name + "' and deal '" + damagePerAttack + "' damage");
         // animator.SetTrigger("AttackTrigger");
         target.GetComponent<Units>().TakeDamage(damagePerAttack);
+
+        if (attackSound != null)
+            audioSource.PlayOneShot(attackSound);
 
         // if (attackEffect != null)
         // {

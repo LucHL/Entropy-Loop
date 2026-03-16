@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Entities
   - ShopPopup
+  - Tile
   layers:
   - Default
   - TransparentFX

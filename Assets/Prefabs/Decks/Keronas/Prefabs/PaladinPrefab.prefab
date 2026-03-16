@@ -41,12 +41,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6317609174432581175}
-  - component: {fileID: 1540035363188177903}
+  - component: {fileID: -4389478330679254630}
   - component: {fileID: 6895135250863905532}
   - component: {fileID: 8594983097568216535}
   - component: {fileID: 8740454669791095734}
   m_Layer: 6
-  m_Name: KeronasPrefab
+  m_Name: PaladinPrefab
   m_TagString: Entities
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +70,7 @@ Transform:
   - {fileID: 8305320302594372345}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1540035363188177903
+--- !u!114 &-4389478330679254630
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -79,24 +79,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6774719691583486067}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d05047b60e277a42b073e13c1e892ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 65ff8fefcc3a14247b5d3ed89f5098ba, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  entityTag: Champion
-  hp: 100
-  attackRate: 3
-  attackRange: 15
-  damagePerAttack: 10
-  speed: 10
-  stopDistance: 1.2
-  animationSpeed: 3
-  timeBeforeFirstAttack: 0
-  unitsClass: 
-  isCapaciteAlreadyUse: 0
+  m_EditorClassIdentifier: Assembly-CSharp::Paladin
+  instance: {fileID: 0}
   attackEffect: {fileID: 0}
   navMeshAgent: {fileID: 6895135250863905532}
   hpBarCanvas: {fileID: 4151159326295130401}
   modelPosition: {fileID: 5850395088792518696}
+  isAlive: 1
+  damagePerAttack: 10
+  manaCost: 3
+  audioSource: {fileID: 0}
+  attackSound: {fileID: 0}
 --- !u!195 &6895135250863905532
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -183,6 +178,14 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5407062788180022964, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407062788180022964, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -9151300098422719518, guid: c8997603e7eeb33188c2afc31233ba84, type: 2}
     - target: {fileID: 5779190894488422793, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -227,7 +230,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: EntityAudioManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4736947020946230216, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
