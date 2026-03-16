@@ -172,7 +172,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 213888593383672922, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
       propertyPath: m_Value
-      value: 0.7
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 255301199389239165, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
       propertyPath: m_PresetInfoIsWorld
