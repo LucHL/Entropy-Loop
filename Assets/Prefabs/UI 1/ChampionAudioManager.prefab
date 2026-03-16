@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5779190894488422793}
-  - component: {fileID: 4736947020946230216}
   - component: {fileID: 5407062788180022964}
   m_Layer: 0
   m_Name: ChampionAudioManager
@@ -33,20 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4736947020946230216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8213011683843475402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcf82173cec4f633f86807b388fc69c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
-  swordSound: {fileID: 8300000, guid: b94312eb0c245244e9f38a685e4a12c5, type: 3}
 --- !u!82 &5407062788180022964
 AudioSource:
   m_ObjectHideFlags: 0
@@ -57,7 +42,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b94312eb0c245244e9f38a685e4a12c5, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: b94312eb0c245244e9f38a685e4a12c5, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
