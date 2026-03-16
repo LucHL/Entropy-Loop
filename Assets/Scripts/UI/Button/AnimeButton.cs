@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class AnimeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class AnimeButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public Button button;
+    private Button button;
     private Image image;
 
     [Tooltip("sprite[0] is the default sprite.")]
@@ -13,6 +13,7 @@ public class AnimeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     void Start()
     {
         image = GetComponent<Image>();
+        button = GetComponent<Button>();
         image.sprite = sprite[0];
     }
 

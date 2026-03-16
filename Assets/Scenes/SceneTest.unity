@@ -755,9 +755,25 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2262011595725633231, guid: 42b407169e5477b80a5cae8ac3042aee, type: 3}
+      propertyPath: m_Size
+      value: 0.99998367
+      objectReference: {fileID: 0}
+    - target: {fileID: 2749138373343606008, guid: 42b407169e5477b80a5cae8ac3042aee, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2749138373343606008, guid: 42b407169e5477b80a5cae8ac3042aee, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2749138373343606008, guid: 42b407169e5477b80a5cae8ac3042aee, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4918504887901075121, guid: 42b407169e5477b80a5cae8ac3042aee, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00013042982
+      value: -0.0000071317786
       objectReference: {fileID: 0}
     - target: {fileID: 7548467173896984914, guid: 42b407169e5477b80a5cae8ac3042aee, type: 3}
       propertyPath: m_Pivot.x
@@ -842,6 +858,10 @@ PrefabInstance:
     - target: {fileID: 8914183523562320468, guid: 42b407169e5477b80a5cae8ac3042aee, type: 3}
       propertyPath: m_Name
       value: DeckSelectionList
+      objectReference: {fileID: 0}
+    - target: {fileID: 8914183523562320468, guid: 42b407169e5477b80a5cae8ac3042aee, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -89,6 +89,9 @@ MonoBehaviour:
   modelPosition: {fileID: 5850395088792518696}
   isAlive: 1
   damagePerAttack: 10
+  manaCost: 3
+  audioSource: {fileID: 0}
+  attackSound: {fileID: 0}
 --- !u!195 &6895135250863905532
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -175,6 +178,14 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5407062788180022964, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407062788180022964, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -9151300098422719518, guid: c8997603e7eeb33188c2afc31233ba84, type: 2}
     - target: {fileID: 5779190894488422793, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -219,7 +230,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: EntityAudioManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4736947020946230216, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -155,6 +155,7 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
         GameLoopManager.instance.RegisterUnit(enemyInstance, false);
 
         BugTracker.Info("Enemy_tmp spawn.");
+        // EnemySpawnAlgo.instance.SpawnEnemies();
     }
 
 
@@ -391,11 +392,14 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
             bool dark = ((x + y) % 2 == 0);
             var quad = GameObject.CreatePrimitive(PrimitiveType.Cube);
             quad.name = $"Tile_{x}_{y}";
+            quad.tag = "Tile";
+
             quad.transform.SetParent(group.transform);
             quad.layer = gameObject.layer;
             quad.transform.localScale = new Vector3(chessTile, 0.06f, chessTile);
             quad.transform.localPosition = new Vector3(start + x * chessTile, cy + arenaRaise + 0.06f, start + y * chessTile);
             quad.GetComponent<MeshRenderer>().sharedMaterial = dark ? matBoardDark : matBoardLight;
+
 
             // Add the GridCell script
             quad.AddComponent<GridCell>();
