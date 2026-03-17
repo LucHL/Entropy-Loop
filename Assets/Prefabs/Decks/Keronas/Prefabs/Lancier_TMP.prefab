@@ -92,6 +92,7 @@ MonoBehaviour:
   manaCost: 3
   audioSource: {fileID: 0}
   attackSound: {fileID: 0}
+  deathSound: {fileID: 0}
 --- !u!54 &7117334998971467765
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -172,7 +173,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 213888593383672922, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
       propertyPath: m_Value
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 255301199389239165, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
       propertyPath: m_PresetInfoIsWorld
@@ -236,19 +237,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6684720576428631367, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: -0.002006138
       objectReference: {fileID: 0}
     - target: {fileID: 6684720576428631367, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.0010038719
       objectReference: {fileID: 0}
     - target: {fileID: 6684720576428631367, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: -0.89428174
       objectReference: {fileID: 0}
     - target: {fileID: 6684720576428631367, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.44749877
       objectReference: {fileID: 0}
     - target: {fileID: 6684720576428631367, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
       propertyPath: m_AnchoredPosition.x

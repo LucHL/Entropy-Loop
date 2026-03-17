@@ -5647,7 +5647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b90ec3733819ae408d834530888a94f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ManaManager
-  currentMana: 3
+  currentMana: 4
   maxMana: 10
   manaBarUI: {fileID: 191546585}
 --- !u!1 &1880338359

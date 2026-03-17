@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,7 +12,8 @@ public enum UnitsClass {
 public enum AnimationState {
     Idle,
     Moving,
-    Attacking
+    Attacking,
+    Death
 }
 
 public class BackupUnits
@@ -43,6 +45,7 @@ public class Units : MonoBehaviour
     protected float timeBeforeFirstAttack = 0f;
     public AudioSource audioSource;
     public AudioClip attackSound;
+    public AudioClip deathSound;
     /* end */
 
     protected List<UnitsClass> unitsClass = new();
@@ -126,7 +129,6 @@ public class Units : MonoBehaviour
             } else {
                 if (attackTimer <= 0f) {
                     SetAnimationState(AnimationState.Attacking);
-                    Attack();
                     attackTimer = attackRate;
                 }
             }
@@ -231,7 +233,7 @@ public class Units : MonoBehaviour
             BugTracker.Critical("'" + gameObject.name + "' has a hpSlider null !");
 
         hp -= damage;
-        hpSlider.value = hp / 100;
+        hpSlider.value = hp / totalHealth;
         if (hp <= 0) {
             // Capacite(); // exemple: in case of a commander who can revive
             // can be change with a bool and wait for 1 more loop before going to Die();
@@ -260,6 +262,26 @@ public class Units : MonoBehaviour
 
     protected virtual void Die()
     {
+        SetAnimationState(AnimationState.Death);
+
+        if (deathSound != null) {
+            audioSource.PlayOneShot(deathSound);
+            StartCoroutine(DisablePrefabAfterDeathSound());
+            return;
+        }
+
+        isAlive = false;
+        gameObject.SetActive(false);
+
+        BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
+
+        GameLoopManager.instance.CheckVictory();
+    }
+
+    IEnumerator DisablePrefabAfterDeathSound()
+    {
+        yield return new WaitForSeconds(deathSound.length);
+
         isAlive = false;
         gameObject.SetActive(false);
 

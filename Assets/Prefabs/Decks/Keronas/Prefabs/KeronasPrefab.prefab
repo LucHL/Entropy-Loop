@@ -90,8 +90,9 @@ MonoBehaviour:
   isAlive: 1
   damagePerAttack: 10
   manaCost: 3
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 7527798960168742340}
   attackSound: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: 0992108b52bb128828e615e1ca4a6bf0, type: 3}
 --- !u!195 &6895135250863905532
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -179,6 +180,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5407062788180022964, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407062788180022964, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
@@ -236,6 +241,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+--- !u!82 &7527798960168742340 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5407062788180022964, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
+  m_PrefabInstance: {fileID: 2554002440254765936}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8305320302594372345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5779190894488422793, guid: be7026ebd317214439ed82850be2dfd4, type: 3}
@@ -435,13 +445,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 979792249222255647, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 798188957380505360}
   m_SourcePrefab: {fileID: 100100000, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
 --- !u!4 &5850395088792518696 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 979792249222416895, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
   m_PrefabInstance: {fileID: 6676635419594869207}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5850395088792624584 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 979792249222255647, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
+  m_PrefabInstance: {fileID: 6676635419594869207}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &798188957380505360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5850395088792624584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 860050c63d75095408d14bb5d362e0b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationEvent
 --- !u!95 &5850395088802148276 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 979792249212872291, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
