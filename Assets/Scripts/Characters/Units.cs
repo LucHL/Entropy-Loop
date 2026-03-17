@@ -54,7 +54,6 @@ public class Units : MonoBehaviour
     protected float attackTimer = 0f;
     protected bool isCapaciteAlreadyUse = false;
 
-    private Quaternion fixedRotationHPbar;
     private AnimationState currentAnimationState;
     private BackupUnits backupUnits = new();
 
@@ -69,7 +68,8 @@ public class Units : MonoBehaviour
         currentAnimationState = AnimationState.Idle;
 
         hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
-        fixedRotationHPbar = hpBarCanvas.transform.rotation;
+        ResetHpBarQuaternion();
+
         hp = totalHealth;
         unitsClass.Add(UnitsClass.OnLand);
 
@@ -94,11 +94,15 @@ public class Units : MonoBehaviour
         gameObject.transform.position = backupUnits.position;
         gameObject.transform.rotation = backupUnits.rotation;
 
+        hpBarCanvas.transform.rotation = Quaternion.LookRotation(
+            hpBarCanvas.transform.position - Camera.main.transform.position
+        );
+
         BugTracker.Info("Entity '" + gameObject.name + "' has been reset.");
     }
 
     private void LateUpdate() {
-        hpBarCanvas.transform.rotation = fixedRotationHPbar;
+        ResetHpBarQuaternion();
     }
 
     protected virtual void Update()
@@ -235,7 +239,7 @@ public class Units : MonoBehaviour
         }
     }
 
-    protected virtual void Attack()
+    public virtual void Attack()
     {
         if (target == null)
             return;
@@ -262,5 +266,13 @@ public class Units : MonoBehaviour
         BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
 
         GameLoopManager.instance.CheckVictory();
+    }
+
+    private void ResetHpBarQuaternion()
+    {
+        if (hpBarCanvas != null)
+            hpBarCanvas.transform.rotation = Quaternion.LookRotation(
+                hpBarCanvas.transform.position - Camera.main.transform.position
+            );
     }
 }
