@@ -22,14 +22,12 @@ public class CardUI : MonoBehaviour
 
     public void SelectCard()
     {
-        Debug.Log("SelectCard appelé");
-
         if (GameManager.Instance != null && cardData != null)
         {
             ManaManager mana = GameManager.Instance.manaManager;
             if (!mana.HasEnoughMana(cardData.manaCost))
             {
-                Debug.Log("Pas assez de mana pour jouer : " + cardData.cardName);
+                FloatingTextManager.instance.Show("Not enough mana");
                 return;
             }
             GameManager.Instance.SetSelectedCard(this);
