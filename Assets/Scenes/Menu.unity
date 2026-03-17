@@ -1233,14 +1233,14 @@ PrefabInstance:
     - target: {fileID: 7758087871126081271, guid: ac55d64f494d266a5b210bbef01a928a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1364134154}
     - target: {fileID: 7758087871126081271, guid: ac55d64f494d266a5b210bbef01a928a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: QuitGame
       objectReference: {fileID: 0}
     - target: {fileID: 7758087871126081271, guid: ac55d64f494d266a5b210bbef01a928a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: LoadingScene, Assembly-CSharp
+      value: MenuManager, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

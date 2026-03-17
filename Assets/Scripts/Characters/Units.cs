@@ -13,7 +13,7 @@ public enum AnimationState {
     Idle,
     Moving,
     Attacking,
-    Death
+    Dead
 }
 
 public class BackupUnits
@@ -76,8 +76,7 @@ public class Units : MonoBehaviour
         hp = totalHealth;
         unitsClass.Add(UnitsClass.OnLand);
 
-        // animator.SetBool("IsMoving", false);
-        // animator.SetBool("IsAttacking", false);
+        SetAnimationState(AnimationState.Idle);
 
         BugTracker.Info("New entity '" + gameObject.name + "' created.");
 
@@ -89,6 +88,7 @@ public class Units : MonoBehaviour
     public void ResetUnit()
     {
         gameObject.SetActive(true);
+        SetAnimationState(AnimationState.Idle);
 
         isAlive = true;
         hp = totalHealth;
@@ -149,6 +149,7 @@ public class Units : MonoBehaviour
 
         animator.SetBool("IsMoving", newState == AnimationState.Moving);
         animator.SetBool("IsAttacking", newState == AnimationState.Attacking);
+        animator.SetBool("IsDead", newState == AnimationState.Dead);
     }
 
     protected virtual void Capacite()
@@ -262,7 +263,8 @@ public class Units : MonoBehaviour
 
     protected virtual void Die()
     {
-        SetAnimationState(AnimationState.Death);
+        SetAnimationState(AnimationState.Dead);
+        animator.SetTrigger("Die");
 
         if (deathSound != null) {
             audioSource.PlayOneShot(deathSound);

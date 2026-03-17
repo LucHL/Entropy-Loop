@@ -9,4 +9,9 @@ public class MenuManager : MonoBehaviour
     {
         version.text = Application.version;
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
