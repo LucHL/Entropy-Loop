@@ -144,7 +144,7 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
             navSurface.BuildNavMesh();
         }
 
-        EnemySpawnAlgo.instance.SpawnEnemies();
+        EnemySpawnAlgo.instance.SpawnEnemies(chessTile);
     }
 
 

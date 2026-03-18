@@ -9,6 +9,11 @@ public enum UnitsClass {
     Flying
 }
 
+public enum EntityType {
+    Champion,
+    Basic
+}
+
 public enum AnimationState {
     Idle,
     Moving,
@@ -42,6 +47,7 @@ public class Units : MonoBehaviour
     protected float attackRange = 1.5f;
     protected float speed = 1f;
     protected float attackAnimDuration = 1f;
+    public EntityType entityType = EntityType.Basic;
     protected float timeBeforeFirstAttack = 0f;
     public AudioSource audioSource;
     public AudioClip attackSound;
@@ -251,8 +257,7 @@ public class Units : MonoBehaviour
         // animator.SetTrigger("AttackTrigger");
         target.GetComponent<Units>().TakeDamage(damagePerAttack);
 
-        if (attackSound != null)
-            audioSource.PlayOneShot(attackSound);
+        PlaySound(attackSound);
 
         // if (attackEffect != null)
         // {
@@ -298,5 +303,18 @@ public class Units : MonoBehaviour
             hpBarCanvas.transform.rotation = Quaternion.LookRotation(
                 hpBarCanvas.transform.position - Camera.main.transform.position
             );
+    }
+
+    protected void PlaySound(AudioClip audioClip)
+    {
+        if (audioClip != null)
+            audioSource.PlayOneShot(audioClip);
+        else
+            BugTracker.Warning("Function 'PlaySound': "+ audioClip.name + " is null.");
+    }
+
+    protected void InstatiateParticule(GameObject particule, Transform transform)
+    {
+        Instantiate(particule, transform);
     }
 }

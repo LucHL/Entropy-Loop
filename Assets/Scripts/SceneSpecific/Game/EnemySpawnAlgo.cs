@@ -13,10 +13,15 @@ public class EnemySpawnAlgo : MonoBehaviour
         // enemyPrefab = Resources.Load<GameObject>("Enemy_tmp");
     }
 
-    public void SpawnEnemies()
+    public void SpawnEnemies(float tileSize)
     {
         // TMP Create a Prefab
+        Vector2 tilePos = GetRandomTilePosition();
+        float x = tilePos.x + (tileSize / 2);
+        float y = tilePos.y + (tileSize / 2);
+
         GameObject prefabEnemy = Resources.Load<GameObject>("Enchanted_Lich_King");
+        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(x, 2f, y), Quaternion.identity);
         GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
         enemyInstance.transform.Rotate(0, 180, 0);
 
@@ -29,7 +34,14 @@ public class EnemySpawnAlgo : MonoBehaviour
         // EnemySpawnAlgo.instance.SpawnEnemies();
 
         // TMP Create a Prefab
+        Vector2 tilePos2;
+        while((tilePos2 = GetRandomTilePosition()) == tilePos);
+
+        x = tilePos.x + (tileSize / 2);
+        y = tilePos.y + (tileSize / 2);
+
         GameObject prefabEnemy1 = Resources.Load<GameObject>("Enemy_tmp");
+        // GameObject enemyInstance1 = Instantiate(prefabEnemy1, new Vector3(x, 2f, y), Quaternion.identity);
         GameObject enemyInstance1 = Instantiate(prefabEnemy1, new Vector3(2f, 2f, 0f), Quaternion.identity);
         enemyInstance1.transform.Rotate(0, 180, 0);
 
@@ -39,6 +51,36 @@ public class EnemySpawnAlgo : MonoBehaviour
         GameLoopManager.instance.RegisterUnit(enemyInstance1, false);
 
         BugTracker.Info("Enemy_tmp spawn.");
+    }
+
+    private Vector2 GetRandomTilePosition()
+    {
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
+        
+        int maxX = int.MinValue;
+        int maxY = int.MinValue;
+
+        foreach (GameObject t in tiles)
+        {
+            string[] parts = t.name.Split('_');
+            int x = int.Parse(parts[1]);
+            int y = int.Parse(parts[2]);
+
+            if (y > maxY)
+                maxY = y;
+            if (x > maxX)
+                maxX = x;
+        }
+
+        int randomX = Random.Range(0, maxX);
+        int randomy = Random.Range(0, maxY / 2); // only half of the board
+
+        foreach (GameObject t in tiles) {
+            if (t.name == ("Tile_" + randomX + "_" + randomy))
+                return new Vector2(t.transform.position.x, t.transform.position.y);
+        }
+        Debug.Log("Tile doesn't exist.");
+        return new Vector2(0, 0);
     }
 
     // public void SpawnEnemies()

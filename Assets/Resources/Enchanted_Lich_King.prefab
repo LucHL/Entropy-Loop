@@ -90,6 +90,7 @@ MonoBehaviour:
   isAlive: 1
   damagePerAttack: 10
   manaCost: 3
+  entityType: 1
   audioSource: {fileID: 7527798960168742340}
   attackSound: {fileID: 0}
   deathSound: {fileID: 0}
@@ -100,7 +101,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6774719691583486067}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: -334000983
   m_Radius: 0.5
   m_Speed: 10
@@ -451,7 +452,7 @@ Animator:
   m_GameObject: {fileID: 8414003860726918869}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d5ebc30b91f1e39e6bfdf3705badbe62, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6a88163310a12bcb6b66c22658a68d36, type: 2}
+  m_Controller: {fileID: 9100000, guid: 47ceed122b68f9490881d0440413d3c3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
