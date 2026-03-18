@@ -5,8 +5,8 @@ public class Enemy : Units
     protected override void Start()
     {
         speed = 1f;
-        totalHealth = 100;
-        damagePerAttack = 10;
+        totalHealth = 200;
+        damagePerAttack = 15;
         enemyTag = "Champion";
         base.Start();
     }

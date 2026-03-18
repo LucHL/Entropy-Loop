@@ -6,7 +6,7 @@ public class Lancier : Units
     {
         speed = 1f;
         totalHealth = 100;
-        damagePerAttack = 10;
+        damagePerAttack = 7;
         attackRange = 5f;
         manaCost = 3;
         enemyTag = "Enemy";

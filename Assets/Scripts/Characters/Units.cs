@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -8,10 +9,16 @@ public enum UnitsClass {
     Flying
 }
 
+public enum EntityType {
+    Champion,
+    Basic
+}
+
 public enum AnimationState {
     Idle,
     Moving,
-    Attacking
+    Attacking,
+    Dead
 }
 
 public class BackupUnits
@@ -40,9 +47,11 @@ public class Units : MonoBehaviour
     protected float attackRange = 1.5f;
     protected float speed = 1f;
     protected float attackAnimDuration = 1f;
+    public EntityType entityType = EntityType.Basic;
     protected float timeBeforeFirstAttack = 0f;
     public AudioSource audioSource;
-    public AudioClip attackSound;
+    public AudioClip attackSound = null;
+    public AudioClip deathSound;
     /* end */
 
     protected List<UnitsClass> unitsClass = new();
@@ -54,7 +63,6 @@ public class Units : MonoBehaviour
     protected float attackTimer = 0f;
     protected bool isCapaciteAlreadyUse = false;
 
-    private Quaternion fixedRotationHPbar;
     private AnimationState currentAnimationState;
     private BackupUnits backupUnits = new();
 
@@ -69,12 +77,12 @@ public class Units : MonoBehaviour
         currentAnimationState = AnimationState.Idle;
 
         hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
-        fixedRotationHPbar = hpBarCanvas.transform.rotation;
+        ResetHpBarQuaternion();
+
         hp = totalHealth;
         unitsClass.Add(UnitsClass.OnLand);
 
-        // animator.SetBool("IsMoving", false);
-        // animator.SetBool("IsAttacking", false);
+        SetAnimationState(AnimationState.Idle);
 
         BugTracker.Info("New entity '" + gameObject.name + "' created.");
 
@@ -86,6 +94,7 @@ public class Units : MonoBehaviour
     public void ResetUnit()
     {
         gameObject.SetActive(true);
+        SetAnimationState(AnimationState.Idle);
 
         isAlive = true;
         hp = totalHealth;
@@ -94,11 +103,27 @@ public class Units : MonoBehaviour
         gameObject.transform.position = backupUnits.position;
         gameObject.transform.rotation = backupUnits.rotation;
 
+        hpBarCanvas.transform.rotation = Quaternion.LookRotation(
+            hpBarCanvas.transform.position - Camera.main.transform.position
+        );
+
         BugTracker.Info("Entity '" + gameObject.name + "' has been reset.");
     }
 
     private void LateUpdate() {
-        hpBarCanvas.transform.rotation = fixedRotationHPbar;
+        ResetHpBarQuaternion();
+
+        if (target != null) {
+            Vector3 direction = target.transform.position - transform.position;
+            if (direction != Vector3.zero) {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetRotation,
+                    10f * Time.deltaTime
+                );
+            }
+        }
     }
 
     protected virtual void Update()
@@ -122,7 +147,6 @@ public class Units : MonoBehaviour
             } else {
                 if (attackTimer <= 0f) {
                     SetAnimationState(AnimationState.Attacking);
-                    Attack();
                     attackTimer = attackRate;
                 }
             }
@@ -143,6 +167,7 @@ public class Units : MonoBehaviour
 
         animator.SetBool("IsMoving", newState == AnimationState.Moving);
         animator.SetBool("IsAttacking", newState == AnimationState.Attacking);
+        animator.SetBool("IsDead", newState == AnimationState.Dead);
     }
 
     protected virtual void Capacite()
@@ -224,10 +249,10 @@ public class Units : MonoBehaviour
     /// <param name="damage">If the damage is negative, the unit will be healed</param>
     public void TakeDamage(float damage) {
         if (hpSlider == null)
-            BugTracker.Critical("'" + gameObject.name + "' has a hpSlider null !");
+            BugTracker.Error("'" + gameObject.name + "' has a hpSlider null !");
 
         hp -= damage;
-        hpSlider.value = hp / 100;
+        hpSlider.value = hp / totalHealth;
         if (hp <= 0) {
             // Capacite(); // exemple: in case of a commander who can revive
             // can be change with a bool and wait for 1 more loop before going to Die();
@@ -235,7 +260,7 @@ public class Units : MonoBehaviour
         }
     }
 
-    protected virtual void Attack()
+    public virtual void Attack()
     {
         if (target == null)
             return;
@@ -244,8 +269,7 @@ public class Units : MonoBehaviour
         // animator.SetTrigger("AttackTrigger");
         target.GetComponent<Units>().TakeDamage(damagePerAttack);
 
-        if (attackSound != null)
-            audioSource.PlayOneShot(attackSound);
+        PlaySound(attackSound);
 
         // if (attackEffect != null)
         // {
@@ -256,11 +280,60 @@ public class Units : MonoBehaviour
 
     protected virtual void Die()
     {
+        SetAnimationState(AnimationState.Dead);
+        animator.SetTrigger("Die");
+
+        if (deathSound != null) {
+            audioSource.PlayOneShot(deathSound);
+            StartCoroutine(DisablePrefabAfterDeathSound());
+            return;
+        }
+
         isAlive = false;
         gameObject.SetActive(false);
 
         BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
 
         GameLoopManager.instance.CheckVictory();
+    }
+
+    IEnumerator DisablePrefabAfterDeathSound()
+    {
+        yield return new WaitForSeconds(deathSound.length);
+
+        isAlive = false;
+        gameObject.SetActive(false);
+
+        BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
+
+        GameLoopManager.instance.CheckVictory();
+    }
+
+    private void ResetHpBarQuaternion()
+    {
+        if (hpBarCanvas != null)
+            hpBarCanvas.transform.rotation = Quaternion.LookRotation(
+                hpBarCanvas.transform.position - Camera.main.transform.position
+            );
+    }
+
+    protected void PlaySound(AudioClip audioClip)
+    {
+        if (audioClip != null)
+            audioSource.PlayOneShot(audioClip);
+        else
+            BugTracker.Warning("Function 'PlaySound': "+ audioClip.name + " is null.");
+    }
+
+    protected void InstatiateParticule(GameObject particule, Transform t, float duration)
+    {
+        StartCoroutine(HandleParticule(particule, t, duration));
+    }
+
+    private IEnumerator HandleParticule(GameObject particule, Transform t, float duration)
+    {
+        GameObject p = Instantiate(particule, t);
+        yield return new WaitForSeconds(duration);
+        Destroy(p);
     }
 }

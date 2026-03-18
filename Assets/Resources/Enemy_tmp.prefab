@@ -1289,6 +1289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5028670973977435553}
   - component: {fileID: 5028670973984436797}
+  - component: {fileID: 6510307690443899206}
   m_Layer: 0
   m_Name: HumanMeleeWarrior
   m_TagString: Untagged
@@ -1323,7 +1324,7 @@ Animator:
   m_GameObject: {fileID: 5028670973977133121}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 9035850883732af4daf57c888e1fefce, type: 3}
-  m_Controller: {fileID: 9100000, guid: 92efc5a6051953a4db45a52f72df44cc, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6a88163310a12bcb6b66c22658a68d36, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1335,6 +1336,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6510307690443899206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028670973977133121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 860050c63d75095408d14bb5d362e0b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationEvent
 --- !u!1 &5028670973977133127
 GameObject:
   m_ObjectHideFlags: 0
@@ -2607,6 +2620,7 @@ MonoBehaviour:
   manaCost: 3
   audioSource: {fileID: 7926323460743587458}
   attackSound: {fileID: 8300000, guid: 63f8dd6ea4153c664aa9b9544002d7d6, type: 3}
+  deathSound: {fileID: 8300000, guid: 0992108b52bb128828e615e1ca4a6bf0, type: 3}
 --- !u!195 &8981559609334556152
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2654,7 +2668,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!65 &4290732782232125975
 BoxCollider:
@@ -2720,7 +2734,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -9151300098422719518, guid: c8997603e7eeb33188c2afc31233ba84, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 63f8dd6ea4153c664aa9b9544002d7d6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

@@ -7,55 +7,123 @@ public class EnemySpawnAlgo : MonoBehaviour
     public static EnemySpawnAlgo instance;
     public int numberEnemy = 3;
 
-    public GameObject enemyPrefab;
-
     public void Awake()
     {
         instance = this;
-        enemyPrefab = Resources.Load<GameObject>("Enemy_tmp");
+        // enemyPrefab = Resources.Load<GameObject>("Enemy_tmp");
     }
 
-    public void SpawnEnemies()
+    public void SpawnEnemies(float tileSize)
+    {
+        // TMP Create a Prefab
+        Vector2 tilePos = GetRandomTilePosition();
+        float x = tilePos.x + (tileSize / 2);
+        float y = tilePos.y + (tileSize / 2);
+
+        GameObject prefabEnemy = Resources.Load<GameObject>("Enchanted_Lich_King");
+        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(x, 2f, y), Quaternion.identity);
+        GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
+        enemyInstance.transform.Rotate(0, 180, 0);
+
+        // Movements are NOT managed by the navmesh
+        enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
+
+        GameLoopManager.instance.RegisterUnit(enemyInstance, false);
+
+        BugTracker.Info("Enchanted_Lich_King spawn.");
+        // EnemySpawnAlgo.instance.SpawnEnemies();
+
+        // TMP Create a Prefab
+        Vector2 tilePos2;
+        while((tilePos2 = GetRandomTilePosition()) == tilePos);
+
+        x = tilePos.x + (tileSize / 2);
+        y = tilePos.y + (tileSize / 2);
+
+        GameObject prefabEnemy1 = Resources.Load<GameObject>("Enemy_tmp");
+        // GameObject enemyInstance1 = Instantiate(prefabEnemy1, new Vector3(x, 2f, y), Quaternion.identity);
+        GameObject enemyInstance1 = Instantiate(prefabEnemy1, new Vector3(2f, 2f, 0f), Quaternion.identity);
+        enemyInstance1.transform.Rotate(0, 180, 0);
+
+        // Movements are NOT managed by the navmesh
+        enemyInstance1.GetComponent<NavMeshAgent>().enabled = false;
+
+        GameLoopManager.instance.RegisterUnit(enemyInstance1, false);
+
+        BugTracker.Info("Enemy_tmp spawn.");
+    }
+
+    private Vector2 GetRandomTilePosition()
     {
         GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
-
-        List<GameObject> spawnTiles = new();
-
+        
+        int maxX = int.MinValue;
         int maxY = int.MinValue;
 
-        foreach (GameObject tile in tiles)
+        foreach (GameObject t in tiles)
         {
-            string[] parts = tile.name.Split('_');
+            string[] parts = t.name.Split('_');
+            int x = int.Parse(parts[1]);
             int y = int.Parse(parts[2]);
 
             if (y > maxY)
                 maxY = y;
+            if (x > maxX)
+                maxX = x;
         }
 
-        foreach (GameObject tile in tiles)
-        {
-            string[] parts = tile.name.Split('_');
-            int y = int.Parse(parts[2]);
+        int randomX = Random.Range(0, maxX);
+        int randomy = Random.Range(0, maxY / 2); // only half of the board
 
-            if (y >= maxY - 3)
-                spawnTiles.Add(tile);
+        foreach (GameObject t in tiles) {
+            if (t.name == ("Tile_" + randomX + "_" + randomy))
+                return new Vector2(t.transform.position.x, t.transform.position.y);
         }
+        Debug.Log("Tile doesn't exist.");
+        return new Vector2(0, 0);
+    }
 
-        for (int i = 0; i < numberEnemy && spawnTiles.Count > 0; i++)
-        {
-            int index = Random.Range(0, spawnTiles.Count);
-            GameObject tile = spawnTiles[index];
-            spawnTiles.RemoveAt(index);
+    // public void SpawnEnemies()
+    // {
+        // GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
 
-            Vector3 spawnPos = tile.transform.position + Vector3.up * 2f;
+        // List<GameObject> spawnTiles = new();
 
-            GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-            enemy.transform.Rotate(0, 180, 0);
+        // int maxY = int.MinValue;
 
-            enemy.GetComponent<NavMeshAgent>().enabled = false;
+        // foreach (GameObject tile in tiles)
+        // {
+        //     string[] parts = tile.name.Split('_');
+        //     int y = int.Parse(parts[2]);
 
-            GameLoopManager.instance.RegisterUnit(enemy, false);
-        }
+        //     if (y > maxY)
+        //         maxY = y;
+        // }
+
+        // foreach (GameObject tile in tiles)
+        // {
+        //     string[] parts = tile.name.Split('_');
+        //     int y = int.Parse(parts[2]);
+
+        //     if (y >= maxY - 3)
+        //         spawnTiles.Add(tile);
+        // }
+
+        // for (int i = 0; i < numberEnemy && spawnTiles.Count > 0; i++)
+        // {
+        //     int index = Random.Range(0, spawnTiles.Count);
+        //     GameObject tile = spawnTiles[index];
+        //     spawnTiles.RemoveAt(index);
+
+        //     Vector3 spawnPos = tile.transform.position + Vector3.up * 2f;
+
+        //     GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        //     enemy.transform.Rotate(0, 180, 0);
+
+        //     enemy.GetComponent<NavMeshAgent>().enabled = false;
+
+        //     GameLoopManager.instance.RegisterUnit(enemy, false);
+        // }
         // // TMP Create a Prefab
         // GameObject prefabEnemy = Resources.Load<GameObject>("Enemy_tmp");
         // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
@@ -65,7 +133,7 @@ public class EnemySpawnAlgo : MonoBehaviour
         // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
 
         // GameLoopManager.instance.RegisterUnit(enemyInstance, false);
-    }
+    // }
 
 
 

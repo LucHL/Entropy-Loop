@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 08313f6cc7f15b3168a8765adb1855ac
+guid: 7ae9ddc1bb9fb70ddb329b4269026251
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -88,7 +88,7 @@ ModelImporter:
     foreArmTwist: 0.5
     upperLegTwist: 0.5
     legTwist: 0.5
-    armStretch: 1
+    armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
@@ -100,7 +100,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 2
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
