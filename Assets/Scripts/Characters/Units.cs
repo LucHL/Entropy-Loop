@@ -50,7 +50,7 @@ public class Units : MonoBehaviour
     public EntityType entityType = EntityType.Basic;
     protected float timeBeforeFirstAttack = 0f;
     public AudioSource audioSource;
-    public AudioClip attackSound;
+    public AudioClip attackSound = null;
     public AudioClip deathSound;
     /* end */
 
@@ -313,8 +313,15 @@ public class Units : MonoBehaviour
             BugTracker.Warning("Function 'PlaySound': "+ audioClip.name + " is null.");
     }
 
-    protected void InstatiateParticule(GameObject particule, Transform transform)
+    protected void InstatiateParticule(GameObject particule, Transform t, float duration)
     {
-        Instantiate(particule, transform);
+        StartCoroutine(HandleParticule(particule, t, duration));
+    }
+
+    private IEnumerator HandleParticule(GameObject particule, Transform t, float duration)
+    {
+        GameObject p = Instantiate(particule, t);
+        yield return new WaitForSeconds(duration);
+        Destroy(p);
     }
 }

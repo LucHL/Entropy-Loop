@@ -90,8 +90,9 @@ MonoBehaviour:
   isAlive: 1
   damagePerAttack: 10
   manaCost: 3
+  entityType: 1
   audioSource: {fileID: 7527798960168742340}
-  attackSound: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: 63f8dd6ea4153c664aa9b9544002d7d6, type: 3}
   deathSound: {fileID: 8300000, guid: 0992108b52bb128828e615e1ca4a6bf0, type: 3}
 --- !u!195 &6895135250863905532
 NavMeshAgent:

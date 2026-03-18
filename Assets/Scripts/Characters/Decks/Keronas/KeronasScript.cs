@@ -3,7 +3,7 @@
 public class Keronas : Units
 {
     [SerializeField] GameObject particulCapacite;
-    [SerializeField] AudioClip particulSound;
+    // [SerializeField] AudioClip particulSound = null;
 
     private readonly float healCapacite = -50;
 
@@ -31,9 +31,10 @@ public class Keronas : Units
         foreach (GameObject e in champions) {
             e.GetComponentInParent<Units>().TakeDamage(healCapacite);
             e.GetComponentInParent<Units>().damagePerAttack += 10;
+            InstatiateParticule(particulCapacite, e.transform, 2f);
         }
 
-        PlaySound(particulSound);
+        // PlaySound(particulSound);
 
         Invoke(nameof(ResetDamagePerAttack), 5f);
     }
