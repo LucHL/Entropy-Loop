@@ -112,6 +112,18 @@ public class Units : MonoBehaviour
 
     private void LateUpdate() {
         ResetHpBarQuaternion();
+
+        if (target != null) {
+            Vector3 direction = target.transform.position - transform.position;
+            if (direction != Vector3.zero) {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetRotation,
+                    10f * Time.deltaTime
+                );
+            }
+        }
     }
 
     protected virtual void Update()
@@ -237,7 +249,7 @@ public class Units : MonoBehaviour
     /// <param name="damage">If the damage is negative, the unit will be healed</param>
     public void TakeDamage(float damage) {
         if (hpSlider == null)
-            BugTracker.Critical("'" + gameObject.name + "' has a hpSlider null !");
+            BugTracker.Error("'" + gameObject.name + "' has a hpSlider null !");
 
         hp -= damage;
         hpSlider.value = hp / totalHealth;
