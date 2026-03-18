@@ -17,8 +17,7 @@ public class GridCell : MonoBehaviour
     {
         Debug.Log("GridCell OnMouseDown");
 
-        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard())
-        {
+        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard()) {
             Debug.Log("GridCell clicked");
 
 
@@ -27,12 +26,9 @@ public class GridCell : MonoBehaviour
 
             int cost = card.cardData.manaCost;
 
-            if (!mana.HasEnoughMana(cost))
-            {
+            if (!mana.HasEnoughMana(cost)) {
                 return;
             }
-
-            Debug.Log("Mana OK, spawn autorisé");
 
             SpawnUnit();
             mana.SpendMana(cost);
@@ -43,7 +39,7 @@ public class GridCell : MonoBehaviour
             card.GetComponent<HandSlot>().ClearSlot();
             GameManager.Instance.DeselectCard();
         } else {
-            Debug.LogWarning("No card select");
+            FloatingTextManager.instance.Show("No card selected");
         }
     }
 
