@@ -6,9 +6,9 @@ public class GameManager : MonoBehaviour
 
     public CardUI selectedCard;
     public ManaManager manaManager;
+    public GameObject settings;
 
     private bool isPaused = false;
-    public GameObject settings;
 
     private void Awake()
     {

@@ -3,5 +3,5 @@ using UnityEngine.SceneManagement;
 
 public static class GameModeManager
 {
-    public static bool isTutorial = true;
+    public static bool isTutorial = false;
 }

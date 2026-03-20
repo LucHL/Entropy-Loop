@@ -40,6 +40,7 @@ public class TutorialManager : MonoBehaviour
             isTutorial = false;
 
             BugTracker.Info("Tutorial finish.");
+            Debug.Log("fin du tuto.");
             return;
         }
 
