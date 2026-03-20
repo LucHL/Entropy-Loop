@@ -33,7 +33,19 @@ public class LoadingScene : MonoBehaviour
     //     Change scene WITH a loading screen
     public void LoadScene(string scene)
     {
+
         StartCoroutine(LoadSceneAsync(scene));
+    }
+
+    //
+    // Summary:
+    //     Load Game scene WITH a loading screen
+    public void LoadGame(bool isTutorial = false)
+    {
+        BugTracker.Info("Scene change to 'Game' tutorial is '" + isTutorial + "'.");
+
+        GameModeManager.isTutorial = isTutorial;
+        StartCoroutine(LoadSceneAsync("Game"));
     }
 
     private IEnumerator LoadSceneAsync(string scene)

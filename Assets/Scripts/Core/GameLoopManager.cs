@@ -6,6 +6,7 @@ public class GameLoopManager : MonoBehaviour
 {
     public static GameLoopManager instance;
     public GameObject popupEndGame;
+    public bool isGameRunning { get; set; } = false;
 
     // the bool define if the entity is still alive
     private List<GameObject> playerUnits = new();
@@ -60,6 +61,7 @@ public class GameLoopManager : MonoBehaviour
 
     private void EndGame(bool isPlayerVictorious)
     {
+        isGameRunning = false;
         popupEndGame.SetActive(true);
 
         if (isPlayerVictorious) {
@@ -106,6 +108,8 @@ public class GameLoopManager : MonoBehaviour
 
     public void StartOrStopCombat(bool enabled = true)
     {
+        isGameRunning = enabled;
+
         GameObject[] entities = GameObject.FindGameObjectsWithTag("Entities");
         if (entities == null)
             return;

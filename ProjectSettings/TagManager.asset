@@ -9,6 +9,7 @@ TagManager:
   - Entities
   - ShopPopup
   - Tile
+  - BlockClick
   layers:
   - Default
   - TransparentFX

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class GridCell : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class GridCell : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (IsPointerOverBlockingUI())
+            return;
+
         Debug.Log("GridCell OnMouseDown");
 
         if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard()) {
@@ -41,6 +45,24 @@ public class GridCell : MonoBehaviour
         } else {
             FloatingTextManager.instance.Show("No card selected");
         }
+    }
+
+    private bool IsPointerOverBlockingUI()
+    {
+        PointerEventData eventData = new(EventSystem.current) {
+            position = Input.mousePosition
+        };
+
+        var results = new System.Collections.Generic.List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (var result in results)
+        {
+            if (result.gameObject.CompareTag("BlockClick"))
+                return true;
+        }
+
+        return false;
     }
 
     private void SpawnUnit()
