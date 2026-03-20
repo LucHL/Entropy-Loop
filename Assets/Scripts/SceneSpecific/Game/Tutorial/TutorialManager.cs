@@ -6,9 +6,13 @@ public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager instance;
 
-    public bool isTutorial = false;
-    public List<GameObject> tutorialSteps;
+    [SerializeField] GameObject tutorial;
+
+    private readonly List<GameObject> tutorialSteps = new();
+    private bool isTutorial = false;
     private int currentStep = 0;
+
+    private int btnIncrementation = 1;
 
     void Awake()
     {
@@ -20,6 +24,11 @@ public class TutorialManager : MonoBehaviour
         isTutorial = GameModeManager.isTutorial;
 
         if (isTutorial) {
+            foreach (Transform t in tutorial.GetComponentInChildren<Transform>()) {
+                if (t != tutorial.transform)
+                    tutorialSteps.Add(t.gameObject);
+            }
+
             tutorialSteps[currentStep].SetActive(true);
         }
     }
@@ -54,5 +63,16 @@ public class TutorialManager : MonoBehaviour
     public void SetIsTutorial(bool tuto)
     {
         isTutorial = tuto;
+    }
+
+    public void ButtonNextAfterANumberOfClick(int numberOfClickMax)
+    {
+        if (btnIncrementation >= numberOfClickMax) {
+            btnIncrementation = 1;
+            NextStep();
+            return;
+        }
+
+        btnIncrementation += 1;
     }
 }

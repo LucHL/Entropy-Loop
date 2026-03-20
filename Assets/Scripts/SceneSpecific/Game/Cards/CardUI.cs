@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -17,9 +18,8 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) {
-            if (cardSelected != null)
-                cardSelected.gameObject.SetActive(false);
+        if (Input.GetMouseButtonDown(0) && cardSelected != null && cardSelected.isActiveAndEnabled && !GameModeManager.isTutorial) {
+            cardSelected.gameObject.SetActive(false);
         }
     }
 
@@ -32,8 +32,6 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
             } else
                 BugTracker.Error("'CardUI' cardSelected is null.");
         }
-        if (eventData.button == PointerEventData.InputButton.Left)
-            cardSelected.gameObject.SetActive(false);
     }
 
     public void UpdateCardUI()

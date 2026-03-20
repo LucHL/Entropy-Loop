@@ -6,39 +6,35 @@ public class HandSlot : MonoBehaviour
 
     private void Awake()
     {
-        // Récupère automatiquement le CardUI attaché au slot
         cardUI = GetComponent<CardUI>();
 
-        if (cardUI == null)
-        {
-            Debug.LogError("CardUI manquant sur le slot : " + gameObject.name);
+        if (cardUI == null) {
+            BugTracker.Error("CardUI missing '" + gameObject.name + "'.");
         }
 
-        ClearSlot();  // On démarre avec un slot vide
+        ClearSlot();
     }
 
     public bool IsEmpty()
     {
-        return cardUI.cardData == null;  // Vérifie si la carte est vide
+        return cardUI.cardData == null;
     }
 
     public void SetCard(CardData newCard)
     {
-        if (cardUI != null && newCard != null)
-        {
+        if (cardUI != null && newCard != null) {
             cardUI.cardData = newCard;
             cardUI.UpdateCardUI();
-            gameObject.SetActive(true);  // Rend le slot visible quand une carte arrive
+            gameObject.SetActive(true);
         }
     }
 
     public void ClearSlot()
     {
-        if (cardUI != null)
-        {
+        if (cardUI != null) {
             cardUI.cardData = null;
             cardUI.UpdateCardUI();
-            gameObject.SetActive(false);  // Cache le slot s'il est vide
+            gameObject.SetActive(false);
         }
     }
 }
