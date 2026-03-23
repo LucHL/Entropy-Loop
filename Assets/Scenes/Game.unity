@@ -3416,7 +3416,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "En cliquant sur le packet de carte, vous allez remplir votre main jusqu'\xE0
+  m_text: "En cliquant sur le paquet de carte, vous allez remplir votre main jusqu'\xE0
     4 cartes. Vous avez un total de 10 cartes posable dans votre deck."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4190,7 +4190,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Vous pouvez voir en rouge la barre de PV des ennemies que vous allez affronter.
+  m_text: Vous pouvez voir en rouge la barre de PV des ennemis que vous allez affronter.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
