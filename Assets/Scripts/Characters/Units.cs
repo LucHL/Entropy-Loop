@@ -41,6 +41,8 @@ public class Units : MonoBehaviour
     protected Slider hpSlider;
     public Transform modelPosition;
 
+    public GameObject damagePopupPrefab;
+
     [Header("Must be handle in each entities script")]
     public float damagePerAttack = 10;
     public int manaCost = 3;
@@ -249,7 +251,6 @@ public class Units : MonoBehaviour
             );
         }
     }
-
 
     /// <summary>
     /// Inflicts damage on the unit.

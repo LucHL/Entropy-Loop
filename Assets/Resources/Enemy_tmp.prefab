@@ -2615,6 +2615,7 @@ MonoBehaviour:
   navMeshAgent: {fileID: 8981559609334556152}
   hpBarCanvas: {fileID: 3267663579756370344}
   modelPosition: {fileID: 5028670973977435553}
+  damagePopupPrefab: {fileID: 0}
   damagePerAttack: 10
   manaCost: 3
   entityType: 1

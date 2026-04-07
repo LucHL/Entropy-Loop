@@ -18,6 +18,9 @@ public class GameLoopManager : MonoBehaviour
 
     void Update()
     {
+        if (isGameRunning)
+            return;
+
         if (Input.GetMouseButtonDown(1)) { // right click
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

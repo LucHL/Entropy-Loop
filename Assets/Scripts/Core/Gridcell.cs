@@ -41,6 +41,9 @@ public class GridCell : MonoBehaviour
 
     private bool IsPointerOverBlockingUI()
     {
+        if (GameLoopManager.instance.isGameRunning)
+            return true;
+
         PointerEventData eventData = new(EventSystem.current) {
             position = Input.mousePosition
         };
