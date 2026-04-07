@@ -77,6 +77,13 @@ public class VoidbornMapGeneratorHybrid : MonoBehaviour
 
     // ------------------------------------------------------------------ //
 
+    public static VoidbornMapGeneratorHybrid instance;
+
+    void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
         navSurface = GetComponent<NavMeshSurface>();
