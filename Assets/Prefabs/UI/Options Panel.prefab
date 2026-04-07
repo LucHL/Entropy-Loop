@@ -1844,7 +1844,6 @@ GameObject:
   - component: {fileID: 9195368248173072349}
   - component: {fileID: 5773872575103211067}
   - component: {fileID: 1366566229527616730}
-  - component: {fileID: 6492978650053365772}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -1913,25 +1912,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6492978650053365772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7358229401396245057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8c8986e7c9e5abcca3ec1fcefa20327, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fullscreenTog: {fileID: 0}
-  vsincTog: {fileID: 0}
-  graphicsDropdown: {fileID: 7328908279167665244}
-  masterVolume: {fileID: 484628169466813352}
-  MusicVolume: {fileID: 4962671040645823302}
-  SfxVolume: {fileID: 3892283924045110639}
-  MainAudioMixer: {fileID: 24100000, guid: c8997603e7eeb33188c2afc31233ba84, type: 2}
 --- !u!1 &7488008122776762718
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,8 +2080,8 @@ RectTransform:
   m_Children:
   - {fileID: 4678920770464750309}
   - {fileID: 9195368248173072349}
-  - {fileID: 4557145899752553629}
   - {fileID: 5828208903424490766}
+  - {fileID: 4557145899752553629}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2128,6 +2108,7 @@ MonoBehaviour:
   MusicVolume: {fileID: 4962671040645823302}
   SfxVolume: {fileID: 3892283924045110639}
   MainAudioMixer: {fileID: 24100000, guid: c8997603e7eeb33188c2afc31233ba84, type: 2}
+  logFilePath: {fileID: 1757175170011294030}
 --- !u!1 &7802863661687427610
 GameObject:
   m_ObjectHideFlags: 0
@@ -2467,10 +2448,6 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 489348965221768265, guid: 7f25c68c22d2ecb289db211d8d588c5f, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6492978650053365772}
     - target: {fileID: 489348965221768265, guid: 7f25c68c22d2ecb289db211d8d588c5f, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -2982,17 +2959,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2001301817443500270, guid: a6a5e8eda77f4c01b9af78a5d8f84d8e, type: 3}
   m_PrefabInstance: {fileID: 2248865107835414630}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7328908279167665244 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8827074895087774778, guid: a6a5e8eda77f4c01b9af78a5d8f84d8e, type: 3}
-  m_PrefabInstance: {fileID: 2248865107835414630}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3516941674873061670
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3017,10 +2983,6 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 489348965221768265, guid: 7f25c68c22d2ecb289db211d8d588c5f, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6492978650053365772}
     - target: {fileID: 489348965221768265, guid: 7f25c68c22d2ecb289db211d8d588c5f, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -3178,10 +3140,6 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 489348965221768265, guid: 7f25c68c22d2ecb289db211d8d588c5f, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6492978650053365772}
     - target: {fileID: 489348965221768265, guid: 7f25c68c22d2ecb289db211d8d588c5f, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2

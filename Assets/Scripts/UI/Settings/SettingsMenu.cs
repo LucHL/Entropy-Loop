@@ -17,8 +17,12 @@ public class SettingsScript : MonoBehaviour
     public Slider SfxVolume;
     public AudioMixer MainAudioMixer;
 
+    [Header("AUDIO")]
+    public TextMeshProUGUI logFilePath;
+
     void Start()
     {
+        logFilePath.text = BugTracker.logPath;
         // fullscreenTog.isOn = Screen.fullScreen;
 
         // if (QualitySettings.vSyncCount == 0)
