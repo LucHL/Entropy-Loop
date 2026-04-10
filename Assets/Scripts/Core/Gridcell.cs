@@ -6,14 +6,6 @@ public class GridCell : MonoBehaviour
 {
     private GameObject spawnedUnit;
 
-    void Start()
-    {
-        GameObject[] entities = GameObject.FindGameObjectsWithTag("Entities");
-        foreach (GameObject e in entities) {
-            e.GetComponentInChildren<Units>().enabled = false;
-        }
-    }
-
     private void OnMouseDown()
     {
         if (IsPointerOverBlockingUI())
@@ -49,6 +41,9 @@ public class GridCell : MonoBehaviour
 
     private bool IsPointerOverBlockingUI()
     {
+        if (GameLoopManager.instance.isGameRunning)
+            return true;
+
         PointerEventData eventData = new(EventSystem.current) {
             position = Input.mousePosition
         };
@@ -73,11 +68,11 @@ public class GridCell : MonoBehaviour
             if (unitPrefab != null) {
                 //spawnedUnit = Instantiate(unitPrefab, position, Quaternion.identity);
                 unitPrefab.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                // Movements are NOT managed by the navmesh
-                unitPrefab.GetComponent<NavMeshAgent>().enabled = false;
 
-                spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new Vector3(1f, 2.3f, 1f)), Quaternion.identity);
-                spawnedUnit.GetComponentInChildren<Units>().enabled = false;
+                // unitPrefab.GetComponent<NavMeshAgent>().enabled = false;
+
+                spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new(1f, 1f, 1f)), Quaternion.identity);
+                // spawnedUnit.GetComponentInChildren<Units>().enabled = false;
 
                 GameLoopManager.instance.RegisterUnit(spawnedUnit, true);
 

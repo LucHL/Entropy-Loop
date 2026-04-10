@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -31,24 +32,32 @@ public class Units : MonoBehaviour
 {
     public Units instance;
     public GameObject attackEffect;
+
+    [Header("NavMesh")]
     public NavMeshAgent navMeshAgent;
+
+    [Header("HP Bar")]
     public Canvas hpBarCanvas;
     protected Slider hpSlider;
     public Transform modelPosition;
-    public bool isAlive = true;
 
-    /* Must be handle in each entities script */
+    public GameObject damagePopupPrefab;
+
+    [Header("Must be handle in each entities script")]
     public float damagePerAttack = 10;
     public int manaCost = 3;
     protected string enemyTag = "Champion";
     protected float totalHealth = 100;
     protected float hp = 0;
     protected float attackRate = 1f; // every seconde
-    protected float attackRange = 1.5f;
+    protected float attackRange = 1.5f; // 1f is equal to 1 chess tile
     protected float speed = 1f;
     protected float attackAnimDuration = 1f;
     public EntityType entityType = EntityType.Basic;
     protected float timeBeforeFirstAttack = 0f;
+    public bool isAlive = true;
+
+    [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip attackSound = null;
     public AudioClip deathSound;
@@ -65,26 +74,28 @@ public class Units : MonoBehaviour
 
     private AnimationState currentAnimationState;
     private BackupUnits backupUnits = new();
+    public bool isGameRunning = false;
+    private float chessTileSize = 1f;
+
+    void Awake()
+    {
+        BugTracker.Info("New entity '" + gameObject.name + "' created.");
+        animator = GetComponentInChildren<Animator>();
+        currentAnimationState = AnimationState.Idle;
+        hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
+        unitsClass.Add(UnitsClass.OnLand);
+    }
 
     protected virtual void Start() {
-        // navMeshAgent.speed = speed;
-        // navMeshAgent.updateRotation = false;
-        // navMeshAgent.Warp(transform.position);
-
-        animator = GetComponentInChildren<Animator>();
-        // animator.speed = 1 / attackRate;
-        // animator.SetFloat("MoveSpeed", speed);
-        currentAnimationState = AnimationState.Idle;
-
-        hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
-        ResetHpBarQuaternion();
-
-        hp = totalHealth;
-        unitsClass.Add(UnitsClass.OnLand);
+        isGameRunning = false;
 
         SetAnimationState(AnimationState.Idle);
 
-        BugTracker.Info("New entity '" + gameObject.name + "' created.");
+        ResetHpBarQuaternion();
+
+        hp = totalHealth;
+
+        chessTileSize = VoidbornMapGeneratorHybrid.instance.chessTile;
 
         backupUnits.position = gameObject.transform.position;
         backupUnits.rotation = gameObject.transform.rotation;
@@ -93,19 +104,13 @@ public class Units : MonoBehaviour
 
     public void ResetUnit()
     {
-        gameObject.SetActive(true);
-        SetAnimationState(AnimationState.Idle);
-
         isAlive = true;
-        hp = totalHealth;
         hpSlider.value = totalHealth;
         isCapaciteAlreadyUse = false;
-        gameObject.transform.position = backupUnits.position;
-        gameObject.transform.rotation = backupUnits.rotation;
+        gameObject.transform.SetPositionAndRotation(backupUnits.position, backupUnits.rotation);
 
-        hpBarCanvas.transform.rotation = Quaternion.LookRotation(
-            hpBarCanvas.transform.position - Camera.main.transform.position
-        );
+        target = null;
+        Start();
 
         BugTracker.Info("Entity '" + gameObject.name + "' has been reset.");
     }
@@ -128,6 +133,9 @@ public class Units : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (!isGameRunning)
+            return;
+
         if (!isCapaciteAlreadyUse)
             Capacite();
 
@@ -141,7 +149,7 @@ public class Units : MonoBehaviour
 
             float distance = Vector3.Distance(transform.position, target.transform.position);
 
-            if (distance > attackRange) {
+            if (distance > (attackRange * chessTileSize)) {
                 SetAnimationState(AnimationState.Moving);
                 MoveTowardsTarget();
             } else {
@@ -165,9 +173,11 @@ public class Units : MonoBehaviour
 
         currentAnimationState = newState;
 
+        animator.SetBool("IsIdle", newState == AnimationState.Idle);
         animator.SetBool("IsMoving", newState == AnimationState.Moving);
         animator.SetBool("IsAttacking", newState == AnimationState.Attacking);
-        animator.SetBool("IsDead", newState == AnimationState.Dead);
+        if (newState == AnimationState.Dead)
+            animator.SetTrigger("Die");
     }
 
     protected virtual void Capacite()
@@ -213,11 +223,12 @@ public class Units : MonoBehaviour
     // ------------------------------------------------------------------ //
     // This function use NavMesh
     // ------------------------------------------------------------------ //
-        // protected void MoveTowardsTarget()
-        // {
-        //     navMeshAgent.SetDestination(target.transform.position);
-        //     navMeshAgent.steeringTarget.Set(target.transform.position.x, target.transform.position.y, target.transform.position.z);
-        // }
+    // protected void MoveTowardsTarget()
+    // {
+    //     navMeshAgent.Warp(transform.position); 
+    //     navMeshAgent.SetDestination(target.transform.position - new Vector3(chessTileSize, chessTileSize, chessTileSize));
+    //     navMeshAgent.steeringTarget.Set(target.transform.position.x, target.transform.position.y, target.transform.position.z);
+    // }
     
     protected void MoveTowardsTarget()
     {
@@ -240,7 +251,6 @@ public class Units : MonoBehaviour
             );
         }
     }
-
 
     /// <summary>
     /// Inflicts damage on the unit.
@@ -265,12 +275,10 @@ public class Units : MonoBehaviour
         if (target == null)
             return;
 
-        BugTracker.Info("Entity '" + gameObject.name + "' attack '"+ target.name + "' and deal '" + damagePerAttack + "' damage");
-        // animator.SetTrigger("AttackTrigger");
         target.GetComponent<Units>().TakeDamage(damagePerAttack);
-
         PlaySound(attackSound);
 
+        BugTracker.Info("Entity '" + gameObject.name + "' attack '"+ target.name + "' and deal '" + damagePerAttack + "' damage. (hp: "+target.GetComponent<Units>().hp+"/"+target.GetComponent<Units>().totalHealth+")");
         // if (attackEffect != null)
         // {
         //     GameObject effect = Instantiate(attackEffect, target.transform.position + new Vector3(0, 10, 0), Quaternion.identity);
@@ -278,10 +286,13 @@ public class Units : MonoBehaviour
         // }
     }
 
-    protected virtual void Die()
+    public void Die()
     {
+        if (!isAlive)
+            return;
+
+        isAlive = false;
         SetAnimationState(AnimationState.Dead);
-        animator.SetTrigger("Die");
 
         if (deathSound != null) {
             audioSource.PlayOneShot(deathSound);
@@ -289,8 +300,6 @@ public class Units : MonoBehaviour
             return;
         }
 
-        isAlive = false;
-        gameObject.SetActive(false);
 
         BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
 
@@ -302,7 +311,6 @@ public class Units : MonoBehaviour
         yield return new WaitForSeconds(deathSound.length);
 
         isAlive = false;
-        gameObject.SetActive(false);
 
         BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
 

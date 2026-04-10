@@ -8,7 +8,6 @@ public class GameLoopManager : MonoBehaviour
     public GameObject popupEndGame;
     public bool isGameRunning { get; set; } = false;
 
-    // the bool define if the entity is still alive
     private List<GameObject> playerUnits = new();
     private List<GameObject> enemyUnits = new();
 
@@ -19,6 +18,9 @@ public class GameLoopManager : MonoBehaviour
 
     void Update()
     {
+        if (isGameRunning)
+            return;
+
         if (Input.GetMouseButtonDown(1)) { // right click
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -115,7 +117,7 @@ public class GameLoopManager : MonoBehaviour
             return;
 
         foreach (GameObject e in entities) {
-            e.GetComponentInChildren<Units>().enabled = enabled;
+            e.GetComponentInChildren<Units>().isGameRunning = enabled;
         }
     }
 }

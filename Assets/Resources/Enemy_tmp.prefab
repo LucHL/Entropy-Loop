@@ -1324,7 +1324,7 @@ Animator:
   m_GameObject: {fileID: 5028670973977133121}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 9035850883732af4daf57c888e1fefce, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6a88163310a12bcb6b66c22658a68d36, type: 2}
+  m_Controller: {fileID: 9100000, guid: b7b51020b5c7f92b595fe4264365cf6c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2615,12 +2615,15 @@ MonoBehaviour:
   navMeshAgent: {fileID: 8981559609334556152}
   hpBarCanvas: {fileID: 3267663579756370344}
   modelPosition: {fileID: 5028670973977435553}
-  isAlive: 1
+  damagePopupPrefab: {fileID: 0}
   damagePerAttack: 10
   manaCost: 3
+  entityType: 1
+  isAlive: 1
   audioSource: {fileID: 7926323460743587458}
   attackSound: {fileID: 8300000, guid: 63f8dd6ea4153c664aa9b9544002d7d6, type: 3}
   deathSound: {fileID: 8300000, guid: 0992108b52bb128828e615e1ca4a6bf0, type: 3}
+  isGameRunning: 0
 --- !u!195 &8981559609334556152
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2642,7 +2645,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!54 &5393434120908155317
 Rigidbody:
   m_ObjectHideFlags: 0

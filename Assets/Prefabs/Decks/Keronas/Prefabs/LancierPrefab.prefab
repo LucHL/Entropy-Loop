@@ -87,13 +87,14 @@ MonoBehaviour:
   navMeshAgent: {fileID: 6895135250863905532}
   hpBarCanvas: {fileID: 4151159326295130401}
   modelPosition: {fileID: 8219470540873892911}
-  isAlive: 1
   damagePerAttack: 10
   manaCost: 3
   entityType: 1
+  isAlive: 1
   audioSource: {fileID: 7527798960168742340}
   attackSound: {fileID: 8300000, guid: 63f8dd6ea4153c664aa9b9544002d7d6, type: 3}
   deathSound: {fileID: 8300000, guid: 0992108b52bb128828e615e1ca4a6bf0, type: 3}
+  isGameRunning: 0
 --- !u!195 &6895135250863905532
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -102,7 +103,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6774719691583486067}
   m_Enabled: 0
-  m_AgentTypeID: -334000983
+  m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 10
   m_Acceleration: 8
@@ -438,7 +439,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 7ae9ddc1bb9fb70ddb329b4269026251, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 37499ba89c34180a8bd85ee46caa2cfe, type: 2}
+      objectReference: {fileID: 9100000, guid: b7c56a02b16a32dad9f1164c7a196a7d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

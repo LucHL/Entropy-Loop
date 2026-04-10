@@ -20,18 +20,17 @@ public class EnemySpawnAlgo : MonoBehaviour
         float x = tilePos.x + (tileSize / 2);
         float y = tilePos.y + (tileSize / 2);
 
-        GameObject prefabEnemy = Resources.Load<GameObject>("Enchanted_Lich_King");
-        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(x, 2f, y), Quaternion.identity);
-        GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
-        enemyInstance.transform.Rotate(0, 180, 0);
+        // GameObject prefabEnemy = Resources.Load<GameObject>("Enchanted_Lich_King");
+        // // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(x, 2f, y), Quaternion.identity);
+        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
+        // enemyInstance.transform.Rotate(0, 180, 0);
 
-        // Movements are NOT managed by the navmesh
-        enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
+        // // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
 
-        GameLoopManager.instance.RegisterUnit(enemyInstance, false);
+        // GameLoopManager.instance.RegisterUnit(enemyInstance, false);
 
-        BugTracker.Info("Enchanted_Lich_King spawn.");
-        // EnemySpawnAlgo.instance.SpawnEnemies();
+        // BugTracker.Info("Enchanted_Lich_King spawn.");
+        // // EnemySpawnAlgo.instance.SpawnEnemies();
 
         // TMP Create a Prefab
         Vector2 tilePos2;
@@ -45,8 +44,7 @@ public class EnemySpawnAlgo : MonoBehaviour
         GameObject enemyInstance1 = Instantiate(prefabEnemy1, new Vector3(2f, 2f, 0f), Quaternion.identity);
         enemyInstance1.transform.Rotate(0, 180, 0);
 
-        // Movements are NOT managed by the navmesh
-        enemyInstance1.GetComponent<NavMeshAgent>().enabled = false;
+        // enemyInstance1.GetComponent<NavMeshAgent>().enabled = false;
 
         GameLoopManager.instance.RegisterUnit(enemyInstance1, false);
 
