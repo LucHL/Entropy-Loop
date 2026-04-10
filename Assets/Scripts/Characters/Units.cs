@@ -333,15 +333,14 @@ public class Units : MonoBehaviour
             BugTracker.Warning("Function 'PlaySound': "+ audioClip.name + " is null.");
     }
 
-    protected void InstatiateParticule(GameObject particule, Transform t, float duration)
+    public void DesapearAfterDeath()
     {
-        StartCoroutine(HandleParticule(particule, t, duration));
+        StartCoroutine(SetGameObjectUnActive());
     }
 
-    private IEnumerator HandleParticule(GameObject particule, Transform t, float duration)
+    private IEnumerator SetGameObjectUnActive()
     {
-        GameObject p = Instantiate(particule, t);
-        yield return new WaitForSeconds(duration);
-        Destroy(p);
+        gameObject.SetActive(false);
+        yield return new WaitForSeconds(2f);
     }
 }

@@ -3,27 +3,22 @@ using UnityEngine;
 
 public class SpawnParticule : MonoBehaviour
 {
-    public float duration = 2f;
+    public static SpawnParticule instance;
 
-    private GameObject particule;
-
-    public void Init(string message)
+    void Awake()
     {
-        StartCoroutine(AnimateParticule());
+        instance = this;
     }
 
-    private IEnumerator AnimateParticule()
+    public void Init(GameObject particule, Transform t, float duration)
     {
-        float timer = 0f;
+        StartCoroutine(HandleParticule(particule, t, duration));
+    }
 
-        while (timer < duration) {
-            float t = timer / duration;
-
-            // particule
-
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        Destroy(gameObject);
+    private IEnumerator HandleParticule(GameObject particule, Transform t, float duration)
+    {
+        GameObject p = Instantiate(particule, t);
+        yield return new WaitForSeconds(duration);
+        Destroy(p);
     }
 }
