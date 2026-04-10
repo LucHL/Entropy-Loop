@@ -60,7 +60,7 @@ public class Units : MonoBehaviour
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip attackSound = null;
-    public AudioClip deathSound;
+    public AudioClip deathSound = null;
     /* end */
 
     protected List<UnitsClass> unitsClass = new();

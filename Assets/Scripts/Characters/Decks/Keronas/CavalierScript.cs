@@ -9,6 +9,7 @@ public class Cavalier : Units
         damagePerAttack = 10;
         manaCost = 4;
         enemyTag = "Enemy";
+        entityType = EntityType.Basic;
         base.Start();
     }
 }

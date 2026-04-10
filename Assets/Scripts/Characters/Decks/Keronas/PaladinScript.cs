@@ -9,6 +9,7 @@ public class Paladin : Units
         damagePerAttack = 10;
         manaCost = 3;
         enemyTag = "Enemy";
+        entityType = EntityType.Basic;
         base.Start();
     }
 }

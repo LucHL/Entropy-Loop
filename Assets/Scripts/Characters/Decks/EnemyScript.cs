@@ -8,6 +8,7 @@ public class Enemy : Units
         totalHealth = 200;
         damagePerAttack = 15;
         enemyTag = "Champion";
+        entityType = EntityType.Basic;
         base.Start();
     }
 }

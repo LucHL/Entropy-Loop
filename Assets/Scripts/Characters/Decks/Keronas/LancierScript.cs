@@ -10,6 +10,7 @@ public class Lancier : Units
         attackRange = 5f;
         manaCost = 3;
         enemyTag = "Enemy";
+        entityType = EntityType.Basic;
         base.Start();
     }
 }
