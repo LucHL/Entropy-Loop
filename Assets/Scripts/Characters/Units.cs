@@ -41,6 +41,10 @@ public class Units : MonoBehaviour
     protected float speed = 1f;
     protected float attackAnimDuration = 1f;
     protected float timeBeforeFirstAttack = 0f;
+
+    // reward system //
+    public int reward_value = 100;
+
     /* end */
 
     protected List<UnitsClass> unitsClass = new();
@@ -255,6 +259,12 @@ public class Units : MonoBehaviour
         gameObject.SetActive(false);
 
         BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
+
+        // DONNER L'OR
+        if (ShopManager.instance != null)
+        {
+            ShopManager.instance.AddGold(reward_value);
+        }
 
         GameLoopManager.instance.CheckVictory();
     }

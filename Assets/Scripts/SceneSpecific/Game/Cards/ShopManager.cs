@@ -4,12 +4,20 @@ using TMPro;
 
 public class ShopManager : MonoBehaviour
 {
+    // instace pour relier la récompense à l'or du player" //
+    public static ShopManager instance;
+
     public GameObject shopPopup;
     public GameObject backgroundPopup;
 
     public int playerGold = 100;
     public TextMeshProUGUI moneyText;
     public Button closeButton;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -25,6 +33,12 @@ public class ShopManager : MonoBehaviour
         bool isActive = shopPopup.activeSelf;
         shopPopup.SetActive(!isActive);
         backgroundPopup.SetActive(!isActive);
+    }
+
+    public void AddGold(int amount)
+    {
+        playerGold += amount;
+        UpdateMoneyUI();
     }
 
     public void SpendGold(int amount)
