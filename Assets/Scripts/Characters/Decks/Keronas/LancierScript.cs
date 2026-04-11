@@ -9,7 +9,7 @@ public class Lancier : Units
         damagePerAttack = 7;
         attackRange = 5f;
         manaCost = 3;
-        enemyTag = "Enemy";
+        team = UnitsTeam.Player;
         entityType = EntityType.Basic;
         base.Start();
     }

@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+
+public enum UnitsTeam {
+    Player,
+    Enemy
+}
 
 public enum UnitsClass {
     OnLand,
@@ -31,22 +35,18 @@ public class BackupUnits
 public class Units : MonoBehaviour
 {
     public Units instance;
-    public GameObject attackEffect;
 
     [Header("NavMesh")]
-    public NavMeshAgent navMeshAgent;
+    [SerializeField] NavMeshAgent navMeshAgent;
 
     [Header("HP Bar")]
-    public Canvas hpBarCanvas;
+    [SerializeField] Canvas hpBarCanvas;
     protected Slider hpSlider;
     public Transform modelPosition;
-
-    public GameObject damagePopupPrefab;
 
     [Header("Must be handle in each entities script")]
     public float damagePerAttack = 10;
     public int manaCost = 3;
-    protected string enemyTag = "Champion";
     protected float totalHealth = 100;
     protected float hp = 0;
     protected float attackRate = 1f; // every seconde
@@ -56,13 +56,18 @@ public class Units : MonoBehaviour
     public EntityType entityType = EntityType.Basic;
     protected float timeBeforeFirstAttack = 0f;
     public bool isAlive = true;
+    public UnitsTeam team;
 
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip attackSound = null;
     public AudioClip deathSound = null;
-    /* end */
+    
+    [Header("Effects")]
+    public GameObject attackEffect;
 
+    [Header("Do not touch")]
+    protected string enemyTag = "Champion";
     protected List<UnitsClass> unitsClass = new();
     protected GameObject target = null;
     protected Units targetUnitsComponent = null;
@@ -83,7 +88,7 @@ public class Units : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         currentAnimationState = AnimationState.Idle;
         hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
-        unitsClass.Add(UnitsClass.OnLand);
+        team = UnitsTeam.Enemy;
     }
 
     protected virtual void Start() {
@@ -97,8 +102,16 @@ public class Units : MonoBehaviour
 
         chessTileSize = VoidbornMapGeneratorHybrid.instance.chessTile;
 
+        unitsClass.Add(UnitsClass.OnLand);
+
         backupUnits.position = gameObject.transform.position;
         backupUnits.rotation = gameObject.transform.rotation;
+
+        if (team == UnitsTeam.Enemy)
+            enemyTag = "Champion";
+        else
+            enemyTag = "Enemy";
+
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
     }
 

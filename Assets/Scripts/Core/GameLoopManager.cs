@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GameLoopManager : MonoBehaviour
 {
@@ -27,7 +28,8 @@ public class GameLoopManager : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit)) {
                 GameObject clickedObject = hit.collider.gameObject;
 
-                RemoveUnit(clickedObject);
+                if (clickedObject.GetComponentInChildren<EntityTeam>() != null && clickedObject.GetComponentInChildren<EntityTeam>().CompareTag("Champion"))
+                    RemoveUnit(clickedObject);
             }
         }
     }

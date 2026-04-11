@@ -2,6 +2,7 @@
 
 public class Keronas : Units
 {
+    [Header("Specific to Keronas")]
     [SerializeField] GameObject particulCapacite;
     // [SerializeField] AudioClip CapaciteSound = null;
 
@@ -14,7 +15,7 @@ public class Keronas : Units
         totalHealth = 150;
         damagePerAttack = 25;
         manaCost = 5;
-        enemyTag = "Enemy";
+        team = UnitsTeam.Player;
         entityType = EntityType.Champion;
         base.Start();
     }
@@ -31,7 +32,7 @@ public class Keronas : Units
         foreach (GameObject e in champions) {
             e.GetComponentInParent<Units>().TakeDamage(healCapacite);
             e.GetComponentInParent<Units>().damagePerAttack += 10;
-            SpawnParticule.instance.Init(particulCapacite, transform, 2f);
+            SpawnParticuleManager.instance.Init(particulCapacite, transform, 2f);
         }
 
         // PlaySound(CapaciteSound);

@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class SpawnParticule : MonoBehaviour
+public class SpawnParticuleManager : MonoBehaviour
 {
-    public static SpawnParticule instance;
+    public static SpawnParticuleManager instance;
 
     void Awake()
     {

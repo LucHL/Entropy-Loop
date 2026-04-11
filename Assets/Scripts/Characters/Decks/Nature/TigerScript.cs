@@ -8,7 +8,6 @@ public class Tiger : Units
         totalHealth = 200;
         damagePerAttack = 25;
         manaCost = 5;
-        enemyTag = "Champion";
         entityType = EntityType.Basic;
         base.Start();
     }

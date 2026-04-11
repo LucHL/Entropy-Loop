@@ -8,7 +8,7 @@ public class Paladin : Units
         totalHealth = 100;
         damagePerAttack = 10;
         manaCost = 3;
-        enemyTag = "Enemy";
+        team = UnitsTeam.Player;
         entityType = EntityType.Basic;
         base.Start();
     }
