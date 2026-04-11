@@ -261,6 +261,7 @@ public class Units : MonoBehaviour
         if (hpSlider == null)
             BugTracker.Error("'" + gameObject.name + "' has a hpSlider null !");
 
+        DamagePopupManager.instance.Init(transform, damage);
         hp -= damage;
         hpSlider.value = hp / totalHealth;
         if (hp <= 0) {
