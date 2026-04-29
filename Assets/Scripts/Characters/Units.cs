@@ -100,6 +100,8 @@ public class Units : MonoBehaviour
         backupUnits.position = gameObject.transform.position;
         backupUnits.rotation = gameObject.transform.rotation;
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
+
+        GameLogManager.Instance.AddLog(gameObject.name + " on the battlefield");
     }
 
     public void ResetUnit()
@@ -293,6 +295,8 @@ public class Units : MonoBehaviour
 
         isAlive = false;
         SetAnimationState(AnimationState.Dead);
+
+        GameLogManager.Instance.AddLog(gameObject.name + " die");
 
         if (deathSound != null) {
             audioSource.PlayOneShot(deathSound);
