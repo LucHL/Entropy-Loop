@@ -13,9 +13,4 @@ public class AnimationEvent : MonoBehaviour
     {
         units.Attack();
     }
-
-    public void DesapearAfterDeath()
-    {
-        units.DesapearAfterDeath();
-    }
 }

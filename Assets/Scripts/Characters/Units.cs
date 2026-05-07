@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -117,6 +118,7 @@ public class Units : MonoBehaviour
 
     public void ResetUnit()
     {
+        gameObject.layer = 3;
         isAlive = true;
         hpSlider.value = totalHealth;
         isCapaciteAlreadyUse = false;
@@ -307,13 +309,13 @@ public class Units : MonoBehaviour
 
         isAlive = false;
         SetAnimationState(AnimationState.Dead);
+        gameObject.layer = 6;
 
         if (deathSound != null) {
             audioSource.PlayOneShot(deathSound);
             StartCoroutine(DisablePrefabAfterDeathSound());
             return;
         }
-
 
         BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
 
@@ -345,16 +347,5 @@ public class Units : MonoBehaviour
             audioSource.PlayOneShot(audioClip);
         else
             BugTracker.Warning("Function 'PlaySound': "+ audioClip.name + " is null.");
-    }
-
-    public void DesapearAfterDeath()
-    {
-        StartCoroutine(SetGameObjectUnActive());
-    }
-
-    private IEnumerator SetGameObjectUnActive()
-    {
-        gameObject.SetActive(false);
-        yield return new WaitForSeconds(2f);
     }
 }

@@ -30,6 +30,9 @@ public class Keronas : Units
         isCapaciteAlreadyUse = true;
         GameObject[] champions = GameObject.FindGameObjectsWithTag("Champion");
         foreach (GameObject e in champions) {
+            if (!e.GetComponentInParent<Units>().isAlive)
+                continue;
+
             e.GetComponentInParent<Units>().TakeDamage(healCapacite);
             e.GetComponentInParent<Units>().damagePerAttack += 10;
             SpawnParticuleManager.instance.Init(particulCapacite, transform, 2f);
