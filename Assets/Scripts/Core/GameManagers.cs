@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public CardUI selectedCard;
     public ManaManager manaManager;
     public GameObject settings;
+    public DeckData selectedDeck;
 
     private bool isPaused = false;
 
