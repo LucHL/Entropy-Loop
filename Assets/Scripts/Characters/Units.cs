@@ -90,6 +90,7 @@ public class Units : MonoBehaviour
         currentAnimationState = AnimationState.Idle;
         hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
         team = UnitsTeam.Enemy;
+        gameObject.layer = 0;
     }
 
     protected virtual void Start() {
@@ -118,7 +119,7 @@ public class Units : MonoBehaviour
 
     public void ResetUnit()
     {
-        gameObject.layer = 3;
+        gameObject.layer = 0;
         isAlive = true;
         hpSlider.value = totalHealth;
         isCapaciteAlreadyUse = false;

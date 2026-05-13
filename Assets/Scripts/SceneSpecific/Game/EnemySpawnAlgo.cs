@@ -15,38 +15,53 @@ public class EnemySpawnAlgo : MonoBehaviour
 
     public void SpawnEnemies(float tileSize)
     {
-        // TMP Create a Prefab
-        Vector2 tilePos = GetRandomTilePosition();
-        float x = tilePos.x + (tileSize / 2);
-        float y = tilePos.y + (tileSize / 2);
+        // Vector2 tilePos = GetRandomTilePosition();
+        // float x = tilePos.x + (tileSize / 2);
+        // float y = tilePos.y + (tileSize / 2);
 
-        GameObject prefabEnemy = Resources.Load<GameObject>("TigerPrefab");
-        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(x, 2f, y), Quaternion.identity);
-        GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
-        // enemyInstance.transform.Rotate(0, 180, 0);
+        GameObject cocodilePrefab = Resources.Load<GameObject>("CrocodilePrefab");
+        // GameObject enemyInstance = Instantiate(cocodilePrefab, new Vector3(x, 2f, y), Quaternion.identity);
+        GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(-2f, 2f, 0f), Quaternion.identity);
+        cocodileInstance.transform.Rotate(0, 180, 0);
 
         // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
 
-        GameLoopManager.instance.RegisterUnit(enemyInstance, false);
+        GameLoopManager.instance.RegisterUnit(cocodileInstance, false);
 
-        BugTracker.Info("Enchanted_Lich_King spawn.");
+        BugTracker.Info("CocodilePrefab spawn.");
+
+        // TMP Create a Prefab
+        // while((tilePos = GetRandomTilePosition()) == tilePos);
+
+        // x = tilePos.x + (tileSize / 2);
+        // y = tilePos.y + (tileSize / 2);
+
+        GameObject tigerPrefab = Resources.Load<GameObject>("TigerPrefab");
+        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(x, 2f, y), Quaternion.identity);
+        GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(0f, 2f, 0f), Quaternion.identity);
+        tigerInstance.transform.Rotate(0, 180, 0);
+
+        // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
+
+        GameLoopManager.instance.RegisterUnit(tigerInstance, false);
+
+        BugTracker.Info("TigerPrefab spawn.");
         // EnemySpawnAlgo.instance.SpawnEnemies();
 
         // TMP Create a Prefab
-        Vector2 tilePos2;
-        while((tilePos2 = GetRandomTilePosition()) == tilePos);
+        // while((tilePos = GetRandomTilePosition()) == tilePos);
 
-        x = tilePos.x + (tileSize / 2);
-        y = tilePos.y + (tileSize / 2);
+        // x = tilePos.x + (tileSize / 2);
+        // y = tilePos.y + (tileSize / 2);
 
-        GameObject prefabEnemy1 = Resources.Load<GameObject>("Enemy_tmp");
+        GameObject enemy_tmpPrefab = Resources.Load<GameObject>("Enemy_tmp");
         // GameObject enemyInstance1 = Instantiate(prefabEnemy1, new Vector3(x, 2f, y), Quaternion.identity);
-        GameObject enemyInstance1 = Instantiate(prefabEnemy1, new Vector3(2f, 2f, 0f), Quaternion.identity);
-        enemyInstance1.transform.Rotate(0, 180, 0);
+        GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(2f, 2f, 0f), Quaternion.identity);
+        enemy_tmpInstance.transform.Rotate(0, 180, 0);
 
         // enemyInstance1.GetComponent<NavMeshAgent>().enabled = false;
 
-        GameLoopManager.instance.RegisterUnit(enemyInstance1, false);
+        GameLoopManager.instance.RegisterUnit(enemy_tmpInstance, false);
 
         BugTracker.Info("Enemy_tmp spawn.");
     }

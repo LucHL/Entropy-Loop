@@ -6,8 +6,8 @@ public class Lancier : Units
     {
         speed = 1f;
         totalHealth = 100;
-        damagePerAttack = 7;
-        attackRange = 5f;
+        damagePerAttack = 3;
+        attackRange = 3f;
         manaCost = 3;
         team = UnitsTeam.Player;
         entityType = EntityType.Basic;
