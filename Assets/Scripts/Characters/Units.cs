@@ -30,9 +30,62 @@ public class Units : MonoBehaviour
 
     protected virtual void Start()
     {
+<<<<<<< Updated upstream
         animator = GetComponent<Animator>();
         animator.speed = 1 / attackRate;
         pv = totalHealth;
+=======
+        BugTracker.Info("New entity '" + gameObject.name + "' created.");
+        animator = GetComponentInChildren<Animator>();
+        currentAnimationState = AnimationState.Idle;
+        hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
+        unitsClass.Add(UnitsClass.OnLand);
+    }
+
+    protected virtual void Start() {
+        isGameRunning = false;
+
+        SetAnimationState(AnimationState.Idle);
+
+        ResetHpBarQuaternion();
+
+        hp = totalHealth;
+
+        chessTileSize = VoidMapGeneratorGPU.instance.chessTile;
+
+        backupUnits.position = gameObject.transform.position;
+        backupUnits.rotation = gameObject.transform.rotation;
+        BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
+    }
+
+    public void ResetUnit()
+    {
+        isAlive = true;
+        hpSlider.value = totalHealth;
+        isCapaciteAlreadyUse = false;
+        gameObject.transform.SetPositionAndRotation(backupUnits.position, backupUnits.rotation);
+
+        target = null;
+        Start();
+
+        BugTracker.Info("Entity '" + gameObject.name + "' has been reset.");
+    }
+
+    private void LateUpdate() {
+        ResetHpBarQuaternion();
+
+        if (target != null) {
+            Vector3 direction = target.transform.position - transform.position;
+            if (direction != Vector3.zero) {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetRotation,
+                    10f * Time.deltaTime
+                );
+            }
+        }
+>>>>>>> Stashed changes
     }
 
     protected virtual void Update()
