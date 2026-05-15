@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
+using UnityEngine.AI; // AI Navigation package
 
 [ExecuteAlways]
 [RequireComponent(typeof(NavMeshSurface))]
@@ -134,6 +135,13 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         navSurface = GetComponent<NavMeshSurface>();
     }
 
+    public static VoidbornMapGeneratorHybrid instance;
+
+    void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
         if (Application.isPlaying && generateOnPlay)
@@ -215,7 +223,19 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             ppGO.transform.SetParent(transform);
             pp = ppGO.AddComponent<AutoPostProcess>();
         }
-        pp.Apply();
+
+        EnemySpawnAlgo.instance.SpawnEnemies(chessTile);
+    }
+
+
+    Vector3 GetValidNavMeshPosition(Vector3 wantedPos, float maxDistance = 2f)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(wantedPos, out hit, maxDistance, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        return wantedPos; // fallback
     }
 
     // ──────────────────────────────────────────────────────────────────
@@ -651,26 +671,21 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         for (int yy = 0; yy < tiles; yy++)
         for (int xx = 0; xx < tiles; xx++)
         {
-            int   variant  = (xx * 3 + yy * 7 + seed) % 3;
-            float jitterX  = ((xx * 17 + yy * 11 + seed) % 100 / 100f - 0.5f) * chessTile * 0.08f;
-            float jitterZ  = ((xx * 13 + yy * 19 + seed) % 100 / 100f - 0.5f) * chessTile * 0.08f;
-            float sizeJit  = 1f - ((xx * 7  + yy * 5  + seed) % 100 / 100f) * 0.12f;
-            float rotJit   = ((xx * 11 + yy * 13 + seed) % 100 / 100f - 0.5f) * 8f;
-            float heightJit= ((xx * 5  + yy * 17 + seed) % 100 / 100f) * 0.015f;
+            bool dark = ((x + y) % 2 == 0);
+            var quad = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            quad.name = $"Tile_{x}_{y}";
+            quad.tag = "Tile";
 
-            GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            quad.name = "Tile_" + xx + "_" + yy;
-            quad.tag  = "Tile";
             quad.transform.SetParent(group.transform);
             quad.layer = gameObject.layer;
-            quad.transform.localScale    = new Vector3(chessTile * sizeJit - 0.04f, 0.06f + heightJit, chessTile * sizeJit - 0.04f);
-            quad.transform.localPosition = new Vector3(start + xx * chessTile + jitterX,
-                                                       cy + arenaRaise + 0.07f + heightJit,
-                                                       start + yy * chessTile + jitterZ);
-            quad.transform.localRotation = Quaternion.Euler(0f, rotJit, 0f);
-            quad.GetComponent<MeshRenderer>().sharedMaterial = stoneVariants[variant];
-            if (quad.GetComponent<GridCell>() == null)
-                quad.AddComponent<GridCell>();
+            quad.transform.localScale = new Vector3(chessTile, 0.06f, chessTile);
+            quad.transform.localPosition = new Vector3(start + x * chessTile, cy + arenaRaise + 0.06f, start + y * chessTile);
+            quad.GetComponent<MeshRenderer>().sharedMaterial = dark ? matBoardDark : matBoardLight;
+
+
+            // Add the GridCell script
+            quad.AddComponent<GridCell>();
+            // SafeRemoveCollider(quad.GetComponent<BoxCollider>()); Prefab need BoxCollider
         }
 
         AddPathJoints(group.transform, cy + arenaRaise, boardSize);

@@ -5,17 +5,38 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public CardUI selectedCard;
+    public ManaManager manaManager;
+    public GameObject settings;
+    public DeckData selectedDeck;
+
+    private bool isPaused = false;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
+        Instance = this;
+    }
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (isPaused)
+                ResumeGame();
+            else
+                PauseGame();
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+    }
+
+    public void PauseGame()
+    {
+        isPaused = true;
+        settings.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        settings.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     public void SetSelectedCard(CardUI card)
@@ -48,4 +69,3 @@ public class GameManager : MonoBehaviour
         return selectedCard != null ? selectedCard.cardData.unitPrefab : null;
     }
 }
-

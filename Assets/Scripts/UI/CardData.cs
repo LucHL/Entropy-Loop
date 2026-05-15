@@ -7,4 +7,6 @@ public class CardData : ScriptableObject
     public Sprite cardImage;
     public Color unitColor;
     public GameObject unitPrefab;
+    public int manaCost;
+    public int goldCost;
 }

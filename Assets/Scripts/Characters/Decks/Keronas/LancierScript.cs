@@ -4,11 +4,12 @@ public class Lancier : Units
 {
     protected override void Start()
     {
-        speed = 3f;
+        speed = 1f;
         totalHealth = 100;
-        damagePerAttack = 10;
-        attackRange = 50;
-        entityTag = "Enemy";
+        damagePerAttack = 7;
+        attackRange = 5f;
+        manaCost = 3;
+        enemyTag = "Enemy";
         base.Start();
     }
 }
