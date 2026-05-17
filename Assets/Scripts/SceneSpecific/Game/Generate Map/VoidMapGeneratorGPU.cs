@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
-using UnityEngine.AI; // AI Navigation package
+using UnityEngine.AI;
 
 [ExecuteAlways]
 [RequireComponent(typeof(NavMeshSurface))]
@@ -36,6 +36,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     public float parkRadius     = 4f;
     public float chessboardSize = 3f;
     public float chessTile      = 0.6f;
+<<<<<<< Updated upstream
     public float arenaRaise     = 0.06f;
 
     [Header("Forest")]
@@ -45,6 +46,13 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     public float   treeMinSpacing  = 3.5f;         // ← nouveau : espacement minimum entre arbres
     [Range(0f, 1f)]
     public float   clearingDensity = 0.35f;        // ← nouveau : 0=aucune clairière, 1=beaucoup
+=======
+    public float arenaRaise     = 0.06f;   // quasi ras du sol
+
+    [Header("Forest")]
+    public int     forestCount     = 220;
+    public Vector2 treeHeightRange = new Vector2(4f, 8f);
+>>>>>>> Stashed changes
 
     [Header("Village")]
     public float villageRadiusPhase1 = 9f;
@@ -111,14 +119,21 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     private Material matPlaster;
     private Material matPlasterWarm;
     private Material matPlasterGrey;
+<<<<<<< Updated upstream
     // === TERRAIN PRINCIPAL ===
     private Material matTerrain;
     // === DIVERS ===
+=======
+    // === DIVERS ===
+    private Material matBoardLight;
+    private Material matBoardDark;
+>>>>>>> Stashed changes
     private Material matPath;
     private Material matPathDark;
     private Material matWindow;
     private Material matDoor;
 
+<<<<<<< Updated upstream
     // Clearings : zones circulaires sans arbres générées procéduralement
     private List<Vector3> clearingCenters = new List<Vector3>();
     private List<float>   clearingRadii   = new List<float>();
@@ -136,10 +151,18 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     }
 
     public static VoidbornMapGeneratorHybrid instance;
+=======
+    private System.Random  rng;
+    private Transform      root;
+    private NavMeshSurface navSurface;
+
+    public static VoidMapGeneratorGPU instance;
+>>>>>>> Stashed changes
 
     void Awake()
     {
-        instance = this;
+        instance   = this;
+        navSurface = GetComponent<NavMeshSurface>();
     }
 
     void Start()
@@ -176,9 +199,12 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         EnsureRoot();
         BuildMaterials();
 
+<<<<<<< Updated upstream
         // Générer les clairières avant la forêt
         GenerateClearings();
 
+=======
+>>>>>>> Stashed changes
         GameObject islandGroup = BuildIslandHybrid();
         islandGroup.name = "Island";
 
@@ -215,6 +241,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         if (navSurface == null) navSurface = GetComponent<NavMeshSurface>();
         if (navSurface != null && rebuildNavMeshAfterGenerate)
             navSurface.BuildNavMesh();
+<<<<<<< Updated upstream
 
         AutoPostProcess pp = UnityEngine.Object.FindFirstObjectByType<AutoPostProcess>();
         if (pp == null)
@@ -223,21 +250,32 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             ppGO.transform.SetParent(transform);
             pp = ppGO.AddComponent<AutoPostProcess>();
         }
+=======
+>>>>>>> Stashed changes
 
-        EnemySpawnAlgo.instance.SpawnEnemies(chessTile);
+        if (Application.isPlaying && EnemySpawnAlgo.instance != null)
+            EnemySpawnAlgo.instance.SpawnEnemies(chessTile);
+
+        AutoPostProcess pp = UnityEngine.Object.FindFirstObjectByType<AutoPostProcess>();
+        if (pp == null)
+        {
+            GameObject ppGO = new GameObject("_PostProcess");
+            ppGO.transform.SetParent(transform);
+            pp = ppGO.AddComponent<AutoPostProcess>();
+        }
+        pp.Apply();
     }
 
-
-    Vector3 GetValidNavMeshPosition(Vector3 wantedPos, float maxDistance = 2f)
+    // ──────────────────────────────────────────────────────────────────
+    Vector3 GetValidNavMeshPosition(Vector3 wantedPos, float maxDistance)
     {
         NavMeshHit hit;
         if (NavMesh.SamplePosition(wantedPos, out hit, maxDistance, NavMesh.AllAreas))
-        {
             return hit.position;
-        }
-        return wantedPos; // fallback
+        return wantedPos;
     }
 
+<<<<<<< Updated upstream
     // ──────────────────────────────────────────────────────────────────
     // Génère des zones de clairières organiques dans la forêt
     void GenerateClearings()
@@ -282,6 +320,10 @@ public class VoidMapGeneratorGPU : MonoBehaviour
 
     void EnsureRoot()
     {
+=======
+    void EnsureRoot()
+{
+>>>>>>> Stashed changes
         Transform existing = transform.Find("_GEN");
         if (existing != null) { root = existing; return; }
         GameObject go = new GameObject("_GEN");
@@ -311,6 +353,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     // ──────────────────────────────────────────────────────────────────
     void BuildMaterials()
     {
+<<<<<<< Updated upstream
         Shader terrainSh = Shader.Find("Void/TerrainBlend");
         Shader waterSh   = Shader.Find("Void/WaterAnimated");
         Shader std       = Shader.Find("Standard");
@@ -335,6 +378,15 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             matTerrain = NewMat(chosen, new Color(0.27f, 0.52f, 0.20f), 1f, 0.10f);
         }
 
+=======
+        // Préférer le shader terrain custom, sinon Standard Built-in
+        Shader terrainSh = Shader.Find("Void/TerrainBlend");
+        Shader waterSh   = Shader.Find("Void/WaterAnimated");
+        Shader std       = Shader.Find("Standard");
+        Shader chosen    = std;   // Standard pour tout sauf terrain/eau
+
+        // --- Terrain ---
+>>>>>>> Stashed changes
         matGrass      = NewMat(chosen, new Color(0.27f, 0.52f, 0.20f), 1f, 0.10f);
         matGrassLight = NewMat(chosen, new Color(0.38f, 0.62f, 0.28f), 1f, 0.08f);
         matDirt       = NewMat(chosen, new Color(0.40f, 0.28f, 0.18f), 1f, 0.12f);
@@ -343,26 +395,48 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         matSand       = NewMat(chosen, new Color(0.84f, 0.76f, 0.55f), 1f, 0.06f);
         matSandWet    = NewMat(chosen, new Color(0.65f, 0.58f, 0.42f), 1f, 0.20f);
 
+<<<<<<< Updated upstream
+=======
+        // --- Eau (shader animé si disponible) ---
+>>>>>>> Stashed changes
         Shader wSh   = waterSh != null ? waterSh : chosen;
         matWater     = NewMat(wSh,   new Color(0.14f, 0.46f, 0.68f, 0.60f), 0.60f, 0.92f, true);
         matWaterDeep = NewMat(chosen, new Color(0.08f, 0.22f, 0.45f, 0.72f), 0.72f, 0.95f, true);
 
+<<<<<<< Updated upstream
+=======
+        // --- Bois & végétation ---
+>>>>>>> Stashed changes
         matWood      = NewMat(chosen, new Color(0.38f, 0.24f, 0.14f), 1f, 0.14f);
         matWoodDark  = NewMat(chosen, new Color(0.24f, 0.14f, 0.08f), 1f, 0.10f);
         matLeaf      = NewMat(chosen, new Color(0.18f, 0.46f, 0.15f), 1f, 0.10f);
         matLeafLight = NewMat(chosen, new Color(0.35f, 0.58f, 0.22f), 1f, 0.08f);
         matLeafDark  = NewMat(chosen, new Color(0.10f, 0.30f, 0.10f), 1f, 0.12f);
 
+<<<<<<< Updated upstream
+=======
+        // --- Toitures ---
+>>>>>>> Stashed changes
         matRoofDark  = NewMat(chosen, new Color(0.18f, 0.06f, 0.04f), 1f, 0.12f);
         matRoofRed   = NewMat(chosen, new Color(0.55f, 0.18f, 0.10f), 1f, 0.15f);
         matRoofBrown = NewMat(chosen, new Color(0.32f, 0.18f, 0.10f), 1f, 0.14f);
 
+<<<<<<< Updated upstream
+=======
+        // --- Pierre ---
+>>>>>>> Stashed changes
         matStone      = NewMat(chosen, new Color(0.68f, 0.65f, 0.60f), 1f, 0.22f);
         matStoneDark  = NewMat(chosen, new Color(0.32f, 0.30f, 0.28f), 1f, 0.18f);
         matPlaster    = NewMat(chosen, new Color(0.88f, 0.84f, 0.76f), 1f, 0.12f);
         matPlasterWarm= NewMat(chosen, new Color(0.82f, 0.72f, 0.58f), 1f, 0.10f);
         matPlasterGrey= NewMat(chosen, new Color(0.70f, 0.70f, 0.68f), 1f, 0.12f);
 
+<<<<<<< Updated upstream
+=======
+        // --- Divers ---
+        matBoardLight = NewMat(chosen, new Color(0.94f, 0.94f, 0.92f), 1f, 0.25f);
+        matBoardDark  = NewMat(chosen, new Color(0.06f, 0.06f, 0.06f), 1f, 0.25f);
+>>>>>>> Stashed changes
         matPath       = NewMat(chosen, new Color(0.60f, 0.52f, 0.40f), 1f, 0.06f);
         matPathDark   = NewMat(chosen, new Color(0.38f, 0.30f, 0.22f), 1f, 0.05f);
         matWindow     = NewMat(chosen, new Color(0.55f, 0.75f, 0.90f, 0.55f), 0.55f, 0.95f, true);
@@ -387,6 +461,10 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             m.renderQueue = 3000;
             m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
             m.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+<<<<<<< Updated upstream
+=======
+            // Built-in pipeline transparency
+>>>>>>> Stashed changes
             m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             m.SetInt("_ZWrite", 0);
@@ -402,6 +480,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     // ──────────────────────────────────────────────────────────────────
     float TerrainHeight(float x, float z)
     {
+<<<<<<< Updated upstream
         float r  = new Vector2(x, z).magnitude;
         float sf = (float)seed;
 
@@ -431,6 +510,51 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         float noiseAmp    = t * islandMaxHeight * 0.48f;
 
         float h = (rise + noiseSigned * noiseAmp) * edgeMask;
+=======
+        float r    = new Vector2(x, z).magnitude;
+        float sf   = (float)seed;
+
+        // ── Zone plate au centre (arène + marge de confort) ──────────
+        float flatZone = parkRadius + 2.5f;   // ~6.5 unités plat garanti
+        if (r <= flatZone) return 0f;
+
+        // ── Masque de bord (l'île retombe à 0 sur la côte) ───────────
+        float edgeStart = islandRadius - islandEdgeFalloff;
+        float edgeMask  = 1f - Mathf.SmoothStep(edgeStart, islandRadius, r);
+
+        // ── Montée progressive : t = 0 au bord de la zone plate,
+        //    t = 1 au début du falloff côtier ─────────────────────────
+        float t = Mathf.Clamp01((r - flatZone) / Mathf.Max(0.1f, edgeStart - flatZone));
+
+        // Courbe quadratique : douce au début, plus marquée vers les bords
+        float rise = t * t * islandMaxHeight;
+
+        // ── FBM 3 octaves pour un relief naturel ─────────────────────
+        // Octave 1 : grandes vagues (formes générales)
+        float n1 = Mathf.PerlinNoise((x + sf * 0.11f) * largeNoiseScale,
+                                      (z - sf * 0.17f) * largeNoiseScale);
+        // Octave 2 : détails moyens (collines)
+        float n2 = Mathf.PerlinNoise((x - sf * 0.07f) * mediumNoiseScale,
+                                      (z + sf * 0.13f) * mediumNoiseScale);
+        // Octave 3 : micro-relief (rochers, bosses)
+        float n3 = Mathf.PerlinNoise((x + sf * 0.23f) * smallNoiseScale,
+                                      (z - sf * 0.31f) * smallNoiseScale);
+        // Octave 4 : très fine rugosité
+        float n4 = Mathf.PerlinNoise((x - sf * 0.19f) * smallNoiseScale * 2.2f,
+                                      (z + sf * 0.27f) * smallNoiseScale * 2.2f);
+
+        float fbm = n1 * 0.50f + n2 * 0.28f + n3 * 0.14f + n4 * 0.08f;
+        // fbm est dans [0,1], on centre autour de 0 → [-1, 1]
+        float noiseSigned = (fbm - 0.5f) * 2f;
+
+        // L'amplitude du bruit grossit avec t (peu de variation près du centre,
+        // beaucoup vers les crêtes)
+        float noiseAmp = t * islandMaxHeight * 0.45f;
+
+        // ── Hauteur finale ────────────────────────────────────────────
+        float h = (rise + noiseSigned * noiseAmp) * edgeMask;
+
+>>>>>>> Stashed changes
         return Mathf.Max(0f, h);
     }
 
@@ -463,12 +587,18 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         Mesh colliderMesh    = GenerateIslandMesh(islandResolution);
         mf.sharedMesh        = colliderMesh;
         mc.sharedMesh        = colliderMesh;
+<<<<<<< Updated upstream
         mr.sharedMaterial    = matTerrain;
         mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
         mr.receiveShadows    = true;
         mr.enabled           = !useGPUIslandVisual;
 
         BuildOcean(group.transform);
+=======
+        mr.sharedMaterial    = matGrass;
+        mr.enabled           = !useGPUIslandVisual;
+
+>>>>>>> Stashed changes
         BuildIslandColorOverlay(group.transform);
 
         if (useGPUIslandVisual && islandGPUShader != null)
@@ -491,6 +621,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         return group;
     }
 
+<<<<<<< Updated upstream
     void BuildOcean(Transform parent)
     {
         float oceanR = islandRadius * 3.2f;
@@ -533,6 +664,16 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     void BuildIslandColorOverlay(Transform parent)
     {
         for (int i = 0; i < 80; i++)
+=======
+    void BuildIslandColorOverlay(Transform parent)
+    {
+        // Le mesh de l'île (Island_CPU) EST le sol — on n'ajoute que des décorations
+        // ponctuelles par-dessus, pas de patches de couverture qui créent des incohérences.
+
+        // Quelques grosses taches de couleur très plates (épaisseur 0.01)
+        // pour casser l'uniformité du matériau du mesh — elles suivent exactement le sol
+        for (int i = 0; i < 250; i++)
+>>>>>>> Stashed changes
         {
             float ang  = (float)rng.NextDouble() * Mathf.PI * 2f;
             float rad  = Mathf.Sqrt((float)rng.NextDouble()) * (islandRadius - 3f);
@@ -549,6 +690,10 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             patch.layer = gameObject.layer;
             float sx = Mathf.Lerp(1.0f, 5.0f, (float)rng.NextDouble());
             float sz = Mathf.Lerp(1.0f, 5.0f, (float)rng.NextDouble());
+<<<<<<< Updated upstream
+=======
+            // On colle la tache exactement sur le mesh (épaisseur 1cm)
+>>>>>>> Stashed changes
             patch.transform.position   = new Vector3(x, gy + 0.005f, z);
             patch.transform.rotation   = Quaternion.Euler(0f, (float)rng.NextDouble() * 180f, 0f);
             patch.transform.localScale = new Vector3(sx, 0.01f, sz);
@@ -561,6 +706,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
 
     void AddScatterRocks(Transform parent)
     {
+<<<<<<< Updated upstream
         int clusterCount = 55;
         for (int i = 0; i < clusterCount; i++)
         {
@@ -599,6 +745,34 @@ public class VoidMapGeneratorGPU : MonoBehaviour
                 rock.GetComponent<MeshRenderer>().sharedMaterial = mat;
                 SafeRemoveCollider(rock.GetComponent<BoxCollider>());
             }
+=======
+        int rockCount = 80;
+        for (int i = 0; i < rockCount; i++)
+        {
+            float ang = (float)rng.NextDouble() * Mathf.PI * 2f;
+            float rad = Mathf.Sqrt((float)rng.NextDouble()) * (islandRadius - 1f);
+            float x = Mathf.Cos(ang) * rad;
+            float z = Mathf.Sin(ang) * rad;
+            float h = TerrainHeight(x, z);
+            if (rad < parkRadius + 4f) continue;   // garder l'arène libre de rochers
+            bool highZone  = h > islandMaxHeight * 0.50f;
+            bool coastZone = (islandRadius - rad) < beachBand + 3f;
+            if (!highZone && !coastZone) continue;
+            float size        = Mathf.Lerp(0.25f, 0.90f, (float)rng.NextDouble());
+            float heightScale = Mathf.Lerp(0.20f, 0.60f, (float)rng.NextDouble());
+            GameObject rock = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            rock.name = "Rock";
+            rock.transform.SetParent(parent);
+            rock.layer = gameObject.layer;
+            rock.transform.position  = new Vector3(x, h + heightScale * 0.3f, z);
+            rock.transform.rotation  = Quaternion.Euler(
+                (float)rng.NextDouble() * 25f - 12f,
+                (float)rng.NextDouble() * 360f,
+                (float)rng.NextDouble() * 20f - 10f);
+            rock.transform.localScale = new Vector3(size, heightScale, size * Mathf.Lerp(0.7f, 1.3f, (float)rng.NextDouble()));
+            rock.GetComponent<MeshRenderer>().sharedMaterial = highZone ? matRockDark : matRock;
+            SafeRemoveCollider(rock.GetComponent<BoxCollider>());
+>>>>>>> Stashed changes
         }
     }
 
@@ -646,6 +820,10 @@ public class VoidMapGeneratorGPU : MonoBehaviour
 
         float cy = TerrainHeight(0f, 0f);
 
+<<<<<<< Updated upstream
+=======
+        // Socle en terre sous les dalles
+>>>>>>> Stashed changes
         float boardWorldSize = Mathf.Ceil(chessboardSize / chessTile) * chessTile;
         GameObject boardPad = GameObject.CreatePrimitive(PrimitiveType.Cube);
         boardPad.name = "BoardPad";
@@ -656,10 +834,12 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         boardPad.GetComponent<MeshRenderer>().sharedMaterial = matDirt;
         SafeRemoveCollider(boardPad.GetComponent<BoxCollider>());
 
+        // Dalles de chemin irrégulières (remplace le damier)
         int tiles = Mathf.Clamp(Mathf.RoundToInt(chessboardSize / chessTile), 4, 12);
         if (tiles % 2 != 0) tiles += 1;
         float boardSize = tiles * chessTile;
         float start     = -boardSize * 0.5f + chessTile * 0.5f;
+<<<<<<< Updated upstream
 
         Material[] stoneVariants = new Material[]
         {
@@ -675,28 +855,66 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             var quad = GameObject.CreatePrimitive(PrimitiveType.Cube);
             quad.name = $"Tile_{x}_{y}";
             quad.tag = "Tile";
+=======
+>>>>>>> Stashed changes
 
+        Material[] stoneVariants = new Material[]
+        {
+            NewMat(Shader.Find("Standard"), new Color(0.62f, 0.58f, 0.50f), 1f, 0.18f),
+            NewMat(Shader.Find("Standard"), new Color(0.52f, 0.50f, 0.46f), 1f, 0.14f),
+            NewMat(Shader.Find("Standard"), new Color(0.70f, 0.64f, 0.54f), 1f, 0.20f),
+        };
+
+        for (int yy = 0; yy < tiles; yy++)
+        for (int xx = 0; xx < tiles; xx++)
+        {
+            int   variant  = (xx * 3 + yy * 7 + seed) % 3;
+            float jitterX  = ((xx * 17 + yy * 11 + seed) % 100 / 100f - 0.5f) * chessTile * 0.08f;
+            float jitterZ  = ((xx * 13 + yy * 19 + seed) % 100 / 100f - 0.5f) * chessTile * 0.08f;
+            float sizeJit  = 1f - ((xx * 7  + yy * 5  + seed) % 100 / 100f) * 0.12f;
+            float rotJit   = ((xx * 11 + yy * 13 + seed) % 100 / 100f - 0.5f) * 8f;
+            float heightJit= ((xx * 5  + yy * 17 + seed) % 100 / 100f) * 0.015f;
+
+            GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            quad.name = "Tile_" + xx + "_" + yy;
+            quad.tag  = "Tile";
             quad.transform.SetParent(group.transform);
             quad.layer = gameObject.layer;
-            quad.transform.localScale = new Vector3(chessTile, 0.06f, chessTile);
-            quad.transform.localPosition = new Vector3(start + x * chessTile, cy + arenaRaise + 0.06f, start + y * chessTile);
-            quad.GetComponent<MeshRenderer>().sharedMaterial = dark ? matBoardDark : matBoardLight;
-
-
-            // Add the GridCell script
-            quad.AddComponent<GridCell>();
-            // SafeRemoveCollider(quad.GetComponent<BoxCollider>()); Prefab need BoxCollider
+            quad.transform.localScale    = new Vector3(chessTile * sizeJit - 0.04f, 0.06f + heightJit, chessTile * sizeJit - 0.04f);
+            quad.transform.localPosition = new Vector3(start + xx * chessTile + jitterX,
+                                                       cy + arenaRaise + 0.07f + heightJit,
+                                                       start + yy * chessTile + jitterZ);
+            quad.transform.localRotation = Quaternion.Euler(0f, rotJit, 0f);
+            quad.GetComponent<MeshRenderer>().sharedMaterial = stoneVariants[variant];
+            if (quad.GetComponent<GridCell>() == null)
+                quad.AddComponent<GridCell>();
         }
 
+<<<<<<< Updated upstream
         AddPathJoints(group.transform, cy + arenaRaise, boardSize);
+=======
+        // Joints entre les dalles : fine couche de sable/terre
+        AddPathJoints(group.transform, cy + arenaRaise, boardSize);
+
+        // Décoration organique autour de l'échiquier
+>>>>>>> Stashed changes
         AddArenaOrganic(group.transform, cy + arenaRaise, boardWorldSize);
 
         return group;
     }
 
+<<<<<<< Updated upstream
     void AddPathJoints(Transform parent, float y, float boardSize)
     {
         float half = boardSize * 0.5f + 0.1f;
+=======
+    // Couche de sable entre les dalles pour simuler les joints
+    void AddPathJoints(Transform parent, float y, float boardSize)
+    {
+        float half = boardSize * 0.5f + 0.1f;
+        // Fond plat continu (joints = espace vide entre dalles laisse voir le socle dirt)
+        // On ajoute juste quelques brins de mousse dans les coins
+>>>>>>> Stashed changes
         int mossCount = 10;
         for (int i = 0; i < mossCount; i++)
         {
@@ -714,10 +932,50 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    void AddBoardFrame(Transform parent, float y, float boardWorldSize)
+    {
+        float half = boardWorldSize * 0.5f + 0.15f;
+        float thick = 0.18f;
+        float frameY = y + 0.09f;
+
+        // 4 bordures
+        string[] names = { "Frame_N", "Frame_S", "Frame_E", "Frame_W" };
+        Vector3[] positions = {
+            new Vector3(0f,    frameY, +half),
+            new Vector3(0f,    frameY, -half),
+            new Vector3(+half, frameY, 0f),
+            new Vector3(-half, frameY, 0f)
+        };
+        Vector3[] scales = {
+            new Vector3(boardWorldSize + thick * 2f + 0.02f, thick, thick),
+            new Vector3(boardWorldSize + thick * 2f + 0.02f, thick, thick),
+            new Vector3(thick, thick, boardWorldSize + 0.02f),
+            new Vector3(thick, thick, boardWorldSize + 0.02f)
+        };
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject frame = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            frame.name = names[i];
+            frame.transform.SetParent(parent);
+            frame.layer = gameObject.layer;
+            frame.transform.position   = positions[i];
+            frame.transform.localScale = scales[i];
+            frame.GetComponent<MeshRenderer>().sharedMaterial = matStoneDark;
+            SafeRemoveCollider(frame.GetComponent<BoxCollider>());
+        }
+    }
+
+>>>>>>> Stashed changes
     void AddArenaOrganic(Transform parent, float y, float boardWorldSize)
     {
         float innerR = boardWorldSize * 0.5f + 0.3f;
 
+<<<<<<< Updated upstream
+=======
+        // Petits buissons (sphères)
+>>>>>>> Stashed changes
         int bushCount = 18;
         for (int i = 0; i < bushCount; i++)
         {
@@ -738,6 +996,10 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             SafeRemoveCollider(bush.GetComponent<SphereCollider>());
         }
 
+<<<<<<< Updated upstream
+=======
+        // Petits rochers décoratifs
+>>>>>>> Stashed changes
         int rockCount = 12;
         for (int i = 0; i < rockCount; i++)
         {
@@ -759,6 +1021,10 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             SafeRemoveCollider(rock.GetComponent<BoxCollider>());
         }
 
+<<<<<<< Updated upstream
+=======
+        // Patches d'herbe au sol
+>>>>>>> Stashed changes
         int patchCount = 30;
         for (int i = 0; i < patchCount; i++)
         {
@@ -790,12 +1056,16 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         g.gameObject.layer = gameObject.layer;
         if (count <= 0) return g;
 
+<<<<<<< Updated upstream
         // On utilise treeMinSpacing comme radius Poisson pour espacer les arbres
         List<Vector2> samples = PoissonDisk(
             new Vector2(islandRadius * 2f, islandRadius * 2f),
             treeMinSpacing,   // ← espacement minimum paramétrable (était 2.5f fixe)
             30);
 
+=======
+        List<Vector2> samples = PoissonDisk(new Vector2(islandRadius * 2f, islandRadius * 2f), 2.5f, 30);
+>>>>>>> Stashed changes
         int placed = 0;
         for (int i = 0; i < samples.Count; i++)
         {
@@ -806,16 +1076,20 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             if (IsInsideVillageRadius(pos))         continue;
             if (IsInsideLake(pos))                  continue;
             if (pos.magnitude > islandRadius - 3f)  continue;
+<<<<<<< Updated upstream
             if (IsInClearing(pos))                  continue;  // ← nouveau : exclure les clairières
 
             // Exclure les zones trop en pente / trop hautes pour un look naturel
             float h = TerrainHeight(pos.x, pos.z);
             if (h > islandMaxHeight * 0.82f) continue;  // pas d'arbres sur les sommets rocheux
 
+=======
+>>>>>>> Stashed changes
             PlaceTree(g, pos);
             placed++;
         }
 
+<<<<<<< Updated upstream
         // ─── Anneau de lisière (remplace le ring avec ringTrees illimité) ───
         // L'anneau est maintenant capé et inclus dans le total "count"
         if (placed < count)
@@ -826,6 +1100,16 @@ public class VoidMapGeneratorGPU : MonoBehaviour
                 : parkRadius + 14f;
 
             if (outer > inner + 0.5f)
+=======
+        float inner = parkRadius + 2f;
+        float outer = phase >= 1
+            ? Mathf.Min(GetVillageRadius() - 1.5f, parkRadius + 14f)
+            : parkRadius + 14f;
+        if (outer > inner + 0.5f)
+        {
+            int ringTrees = Mathf.RoundToInt((outer - inner) * 24f);
+            for (int i = 0; i < ringTrees; i++)
+>>>>>>> Stashed changes
             {
                 // On tente jusqu'à 3× le nombre restant pour remplir l'anneau proprement
                 int remaining = count - placed;
@@ -863,6 +1147,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
 
     void PlaceTree(Transform parent, Vector3 pos)
     {
+<<<<<<< Updated upstream
         float groundY   = TerrainHeight(pos.x, pos.z);
         float h         = Mathf.Lerp(treeHeightRange.x, treeHeightRange.y, (float)rng.NextDouble());
         int   treeStyle = (int)(rng.NextDouble() * 3); // 0=feuillu large, 1=feuillu moyen, 2=pin
@@ -870,6 +1155,13 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         float trunkRatio = isPine ? 0.38f : 0.28f;
         float trunk     = h * trunkRatio;
         float width     = h * (isPine ? 0.07f : 0.12f);
+=======
+        float groundY  = TerrainHeight(pos.x, pos.z);
+        float h        = Mathf.Lerp(treeHeightRange.x, treeHeightRange.y, (float)rng.NextDouble());
+        int   treeStyle = (int)(rng.NextDouble() * 3);
+        float trunk    = h * 0.28f;
+        float width    = h * 0.12f;
+>>>>>>> Stashed changes
 
         GameObject tree = new GameObject("Tree");
         tree.transform.SetParent(parent);
@@ -877,16 +1169,25 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         tree.transform.position = new Vector3(pos.x, groundY, pos.z);
         tree.transform.rotation = Quaternion.Euler(0f, (float)rng.NextDouble() * 360f, 0f);
 
+<<<<<<< Updated upstream
         Material trunkMat = isPine ? matWoodDark : matWood;
+=======
+        Material trunkMat = (treeStyle == 2) ? matWoodDark : matWood;
+>>>>>>> Stashed changes
         GameObject trunkGO = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         trunkGO.name = "Tree_Trunk";
         trunkGO.transform.SetParent(tree.transform);
         trunkGO.gameObject.layer = gameObject.layer;
+<<<<<<< Updated upstream
         trunkGO.transform.localScale    = new Vector3(width * (isPine ? 0.55f : 0.40f), trunk * 0.5f, width * (isPine ? 0.55f : 0.40f));
+=======
+        trunkGO.transform.localScale    = new Vector3(width * 0.40f, trunk * 0.5f, width * 0.40f);
+>>>>>>> Stashed changes
         trunkGO.transform.localPosition = new Vector3(0f, trunk * 0.5f, 0f);
         trunkGO.GetComponent<MeshRenderer>().sharedMaterial = trunkMat;
         SafeRemoveCollider(trunkGO.GetComponent<Collider>());
 
+<<<<<<< Updated upstream
         if (isPine)
             PlacePineCrown(tree.transform, width, h, trunk);
         else
@@ -918,11 +1219,34 @@ public class VoidMapGeneratorGPU : MonoBehaviour
                                                     h * heights[i],
                                                     width * sizes[i] * 1.2f); // ← 1.8 → 1.2
             c.transform.localPosition = new Vector3(ox, trunk + h * offsets[i] * 0.52f, oz);
+=======
+        Material leafMat = treeStyle == 0 ? matLeafDark : treeStyle == 1 ? matLeaf : matLeafLight;
+        PlaceTreeCrown(tree.transform, width, h, trunk, leafMat);
+    }
+
+    void PlaceTreeCrown(Transform tree, float width, float h, float trunk, Material leafMat)
+    {
+        float[] crownSizes   = { 2.0f, 1.50f, 1.10f, 0.70f };
+        float[] crownHeights = { 0.38f, 0.28f, 0.20f, 0.14f };
+        float[] crownOffsets = { 0.30f, 0.62f, 0.84f, 1.02f };
+        for (int layer = 0; layer < crownSizes.Length; layer++)
+        {
+            GameObject c = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            c.name = "Crown_" + layer;
+            c.transform.SetParent(tree);
+            c.gameObject.layer = tree.gameObject.layer;
+            c.transform.localScale    = new Vector3(
+                width * crownSizes[layer] * 1.7f,
+                h * crownHeights[layer],
+                width * crownSizes[layer] * 1.7f);
+            c.transform.localPosition = new Vector3(0f, trunk + h * crownOffsets[layer] * 0.55f, 0f);
+>>>>>>> Stashed changes
             c.GetComponent<MeshRenderer>().sharedMaterial = leafMat;
             SafeRemoveCollider(c.GetComponent<Collider>());
         }
     }
 
+<<<<<<< Updated upstream
     // Pins : 5 disques sphériques empilés — aussi réduits proportionnellement
     void PlacePineCrown(Transform tree, float width, float h, float trunk)
     {
@@ -1111,6 +1435,8 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         SafeRemoveCollider(top.GetComponent<Collider>());
     }
 
+=======
+>>>>>>> Stashed changes
     // ──────────────────────────────────────────────────────────────────
     Transform BuildVillage()
     {
@@ -1688,6 +2014,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             lakeRock.GetComponent<MeshRenderer>().sharedMaterial = matRock;
             SafeRemoveCollider(lakeRock.GetComponent<BoxCollider>());
         }
+<<<<<<< Updated upstream
         AddLakeVegetation(lakeRoot.transform, gy);
         return lakeRoot;
     }
@@ -1758,6 +2085,11 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         }
     }
 
+=======
+        return lakeRoot;
+    }
+
+>>>>>>> Stashed changes
     // ──────────────────────────────────────────────────────────────────
     GameObject BuildCastle()
     {
@@ -1802,6 +2134,9 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             AddTowerCrenels(tower.transform);
             AddTowerRoof(g.transform, pos, gy + castleWallHeight, ang);
         }
+
+        // Donjon central supprimé (v1)
+        // AddKeep(g.transform);
 
         return g;
     }
