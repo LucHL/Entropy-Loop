@@ -10,7 +10,6 @@ public class EnemySpawnAlgo : MonoBehaviour
     public void Awake()
     {
         instance = this;
-        // enemyPrefab = Resources.Load<GameObject>("Enemy_tmp");
     }
 
     public void SpawnEnemies(float tileSize)

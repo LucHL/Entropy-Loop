@@ -406,6 +406,10 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 979792249216981173, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 117e4089c316e05b7b4e9e82bb12c993, type: 2}
     - target: {fileID: 979792249222255647, guid: 022bb2559f561f045a382a9e40957d06, type: 3}
       propertyPath: m_Name
       value: HumanMeleeWarrior
