@@ -1,24 +1,49 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class GridCell : MonoBehaviour
 {
     private GameObject spawnedUnit;
 
+    private Renderer cellRenderer;
+    private Color originalColor;
+    private bool isHighlighted = false;
+
     void Start()
     {
-        GameObject[] entities = GameObject.FindGameObjectsWithTag("Entities");
-        foreach (GameObject e in entities) {
-            e.GetComponentInChildren<Units>().enabled = false;
+        cellRenderer = GetComponent<Renderer>();
+        if (cellRenderer != null) {
+            originalColor = cellRenderer.material.color;
+        }
+    }
+
+    public void SetHighlight(bool shouldHighlight, Color color)
+    {
+        if (cellRenderer == null)
+            return;
+
+        if (color == Color.white)
+            color = originalColor;
+
+        if (shouldHighlight && !isHighlighted) {
+            cellRenderer.material.color = color;
+            isHighlighted = true;
+        }
+        else if (!shouldHighlight && isHighlighted) {
+            cellRenderer.material.color = originalColor;
+            isHighlighted = false;
         }
     }
 
     private void OnMouseDown()
     {
+        if (IsPointerOverBlockingUI())
+            return;
+
         Debug.Log("GridCell OnMouseDown");
 
-        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard())
-        {
+        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard()) {
             Debug.Log("GridCell clicked");
 
 
@@ -27,12 +52,9 @@ public class GridCell : MonoBehaviour
 
             int cost = card.cardData.manaCost;
 
-            if (!mana.HasEnoughMana(cost))
-            {
+            if (!mana.HasEnoughMana(cost)) {
                 return;
             }
-
-            Debug.Log("Mana OK, spawn autorisé");
 
             SpawnUnit();
             mana.SpendMana(cost);
@@ -43,8 +65,29 @@ public class GridCell : MonoBehaviour
             card.GetComponent<HandSlot>().ClearSlot();
             GameManager.Instance.DeselectCard();
         } else {
-            Debug.LogWarning("No card select");
+            FloatingTextManager.instance.Show("No card selected");
         }
+    }
+
+    private bool IsPointerOverBlockingUI()
+    {
+        if (GameLoopManager.instance.isGameRunning)
+            return true;
+
+        PointerEventData eventData = new(EventSystem.current) {
+            position = Input.mousePosition
+        };
+
+        var results = new System.Collections.Generic.List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (var result in results)
+        {
+            if (result.gameObject.CompareTag("BlockClick"))
+                return true;
+        }
+
+        return false;
     }
 
     private void SpawnUnit()
@@ -55,11 +98,11 @@ public class GridCell : MonoBehaviour
             if (unitPrefab != null) {
                 //spawnedUnit = Instantiate(unitPrefab, position, Quaternion.identity);
                 unitPrefab.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                // Movements are NOT managed by the navmesh
-                unitPrefab.GetComponent<NavMeshAgent>().enabled = false;
 
-                spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new Vector3(1f, 2.3f, 1f)), Quaternion.identity);
-                spawnedUnit.GetComponentInChildren<Units>().enabled = false;
+                // unitPrefab.GetComponent<NavMeshAgent>().enabled = false;
+
+                spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new(1f, 1f, 1f)), Quaternion.identity);
+                // spawnedUnit.GetComponentInChildren<Units>().enabled = false;
 
                 GameLoopManager.instance.RegisterUnit(spawnedUnit, true);
 

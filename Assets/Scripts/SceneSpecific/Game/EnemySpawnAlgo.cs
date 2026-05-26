@@ -1,9 +1,155 @@
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawnAlgo : MonoBehaviour
 {
+    public static EnemySpawnAlgo instance;
+    public int numberEnemy = 3;
+
+    public void Awake()
+    {
+        instance = this;
+    }
+
+    public void SpawnEnemies(float tileSize)
+    {
+        // Vector2 tilePos = GetRandomTilePosition();
+        // float x = tilePos.x + (tileSize / 2);
+        // float y = tilePos.y + (tileSize / 2);
+
+        GameObject cocodilePrefab = Resources.Load<GameObject>("CrocodilePrefab");
+        // GameObject enemyInstance = Instantiate(cocodilePrefab, new Vector3(x, 2f, y), Quaternion.identity);
+        GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(-2f, 2f, 0f), Quaternion.identity);
+        cocodileInstance.transform.Rotate(0, 180, 0);
+
+        // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
+
+        GameLoopManager.instance.RegisterUnit(cocodileInstance, false);
+
+        BugTracker.Info("CocodilePrefab spawn.");
+
+        // TMP Create a Prefab
+        // while((tilePos = GetRandomTilePosition()) == tilePos);
+
+        // x = tilePos.x + (tileSize / 2);
+        // y = tilePos.y + (tileSize / 2);
+
+        GameObject tigerPrefab = Resources.Load<GameObject>("TigerPrefab");
+        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(x, 2f, y), Quaternion.identity);
+        GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(0f, 2f, 0f), Quaternion.identity);
+        tigerInstance.transform.Rotate(0, 180, 0);
+
+        // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
+
+        GameLoopManager.instance.RegisterUnit(tigerInstance, false);
+
+        BugTracker.Info("TigerPrefab spawn.");
+        // EnemySpawnAlgo.instance.SpawnEnemies();
+
+        // TMP Create a Prefab
+        // while((tilePos = GetRandomTilePosition()) == tilePos);
+
+        // x = tilePos.x + (tileSize / 2);
+        // y = tilePos.y + (tileSize / 2);
+
+        GameObject enemy_tmpPrefab = Resources.Load<GameObject>("Enemy_tmp");
+        // GameObject enemyInstance1 = Instantiate(prefabEnemy1, new Vector3(x, 2f, y), Quaternion.identity);
+        GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(2f, 2f, 0f), Quaternion.identity);
+        enemy_tmpInstance.transform.Rotate(0, 180, 0);
+
+        // enemyInstance1.GetComponent<NavMeshAgent>().enabled = false;
+
+        GameLoopManager.instance.RegisterUnit(enemy_tmpInstance, false);
+
+        BugTracker.Info("Enemy_tmp spawn.");
+    }
+
+    private Vector2 GetRandomTilePosition()
+    {
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
+        
+        int maxX = int.MinValue;
+        int maxY = int.MinValue;
+
+        foreach (GameObject t in tiles)
+        {
+            string[] parts = t.name.Split('_');
+            int x = int.Parse(parts[1]);
+            int y = int.Parse(parts[2]);
+
+            if (y > maxY)
+                maxY = y;
+            if (x > maxX)
+                maxX = x;
+        }
+
+        int randomX = Random.Range(0, maxX);
+        int randomy = Random.Range(0, maxY / 2); // only half of the board
+
+        foreach (GameObject t in tiles) {
+            if (t.name == ("Tile_" + randomX + "_" + randomy))
+                return new Vector2(t.transform.position.x, t.transform.position.y);
+        }
+        Debug.Log("Tile doesn't exist.");
+        return new Vector2(0, 0);
+    }
+
+    // public void SpawnEnemies()
+    // {
+        // GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
+
+        // List<GameObject> spawnTiles = new();
+
+        // int maxY = int.MinValue;
+
+        // foreach (GameObject tile in tiles)
+        // {
+        //     string[] parts = tile.name.Split('_');
+        //     int y = int.Parse(parts[2]);
+
+        //     if (y > maxY)
+        //         maxY = y;
+        // }
+
+        // foreach (GameObject tile in tiles)
+        // {
+        //     string[] parts = tile.name.Split('_');
+        //     int y = int.Parse(parts[2]);
+
+        //     if (y >= maxY - 3)
+        //         spawnTiles.Add(tile);
+        // }
+
+        // for (int i = 0; i < numberEnemy && spawnTiles.Count > 0; i++)
+        // {
+        //     int index = Random.Range(0, spawnTiles.Count);
+        //     GameObject tile = spawnTiles[index];
+        //     spawnTiles.RemoveAt(index);
+
+        //     Vector3 spawnPos = tile.transform.position + Vector3.up * 2f;
+
+        //     GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        //     enemy.transform.Rotate(0, 180, 0);
+
+        //     enemy.GetComponent<NavMeshAgent>().enabled = false;
+
+        //     GameLoopManager.instance.RegisterUnit(enemy, false);
+        // }
+        // // TMP Create a Prefab
+        // GameObject prefabEnemy = Resources.Load<GameObject>("Enemy_tmp");
+        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
+        // enemyInstance.transform.Rotate(0, 180, 0);
+
+        // // Movements are NOT managed by the navmesh
+        // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
+
+        // GameLoopManager.instance.RegisterUnit(enemyInstance, false);
+    // }
+
+
+
+
     // public interface UnitsOnBoard
     // {
     //     Units units;

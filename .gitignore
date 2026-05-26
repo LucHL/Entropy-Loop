@@ -77,5 +77,6 @@ crashlytics-build.properties
 .env
 .slnx
 bugtracker.log
+/_Recovery
 
 Assets/MobileDependencyResolver/

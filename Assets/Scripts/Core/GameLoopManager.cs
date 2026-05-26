@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GameLoopManager : MonoBehaviour
 {
     public static GameLoopManager instance;
     public GameObject popupEndGame;
+    public bool isGameRunning { get; set; } = false;
 
-    // the bool define if the entity is still alive
     private List<GameObject> playerUnits = new();
     private List<GameObject> enemyUnits = new();
 
@@ -18,13 +19,17 @@ public class GameLoopManager : MonoBehaviour
 
     void Update()
     {
+        if (isGameRunning)
+            return;
+
         if (Input.GetMouseButtonDown(1)) { // right click
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out RaycastHit hit)) {
                 GameObject clickedObject = hit.collider.gameObject;
 
-                RemoveUnit(clickedObject);
+                if (clickedObject.GetComponentInChildren<EntityTeam>() != null && clickedObject.GetComponentInChildren<EntityTeam>().CompareTag("Champion"))
+                    RemoveUnit(clickedObject);
             }
         }
     }
@@ -60,6 +65,7 @@ public class GameLoopManager : MonoBehaviour
 
     private void EndGame(bool isPlayerVictorious)
     {
+        isGameRunning = false;
         popupEndGame.SetActive(true);
 
         if (isPlayerVictorious) {
@@ -106,12 +112,14 @@ public class GameLoopManager : MonoBehaviour
 
     public void StartOrStopCombat(bool enabled = true)
     {
+        isGameRunning = enabled;
+
         GameObject[] entities = GameObject.FindGameObjectsWithTag("Entities");
         if (entities == null)
             return;
 
         foreach (GameObject e in entities) {
-            e.GetComponentInChildren<Units>().enabled = enabled;
+            e.GetComponentInChildren<Units>().isGameRunning = enabled;
         }
     }
 }

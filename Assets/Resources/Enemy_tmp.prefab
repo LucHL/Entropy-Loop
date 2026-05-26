@@ -1289,6 +1289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5028670973977435553}
   - component: {fileID: 5028670973984436797}
+  - component: {fileID: 6510307690443899206}
   m_Layer: 0
   m_Name: HumanMeleeWarrior
   m_TagString: Untagged
@@ -1323,7 +1324,7 @@ Animator:
   m_GameObject: {fileID: 5028670973977133121}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 9035850883732af4daf57c888e1fefce, type: 3}
-  m_Controller: {fileID: 9100000, guid: 92efc5a6051953a4db45a52f72df44cc, type: 2}
+  m_Controller: {fileID: 9100000, guid: b7b51020b5c7f92b595fe4264365cf6c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1335,6 +1336,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6510307690443899206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028670973977133121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 860050c63d75095408d14bb5d362e0b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationEvent
 --- !u!1 &5028670973977133127
 GameObject:
   m_ObjectHideFlags: 0
@@ -2597,20 +2610,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f4557213a4f49c46a9814ae7276e2f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityTag: Champion
-  hp: 100
-  attackRate: 1
-  attackRange: 15
-  damagePerAttack: 10
-  speed: 20
-  animationSpeed: 3
-  timeBeforeFirstAttack: 0
-  unitsClass: 
-  isCapaciteAlreadyUse: 0
-  attackEffect: {fileID: 0}
+  instance: {fileID: 0}
   navMeshAgent: {fileID: 8981559609334556152}
   hpBarCanvas: {fileID: 3267663579756370344}
   modelPosition: {fileID: 5028670973977435553}
+  damagePerAttack: 10
+  manaCost: 3
+  entityType: 1
+  isAlive: 1
+  team: 0
+  audioSource: {fileID: 7926323460743587458}
+  attackSound: {fileID: 8300000, guid: 63f8dd6ea4153c664aa9b9544002d7d6, type: 3}
+  deathSound: {fileID: 8300000, guid: 0992108b52bb128828e615e1ca4a6bf0, type: 3}
+  attackEffect: {fileID: 0}
+  isGameRunning: 0
 --- !u!195 &8981559609334556152
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2618,7 +2631,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5612032281036378260}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 10
@@ -2632,7 +2645,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!54 &5393434120908155317
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2652,13 +2665,13 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!65 &4290732782232125975
 BoxCollider:
@@ -2690,7 +2703,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8558392609085913535}
-  - component: {fileID: 7443130717554031614}
   - component: {fileID: 7926323460743587458}
   m_Layer: 0
   m_Name: EntityAudioManager
@@ -2714,21 +2726,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8961343751048200428}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7443130717554031614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6272442638207350780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcf82173cec4f633f86807b388fc69c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSource: {fileID: 7926323460743587458}
-  swordSound: {fileID: 8300000, guid: b94312eb0c245244e9f38a685e4a12c5, type: 3}
-  animator: {fileID: 5028670973984436797}
 --- !u!82 &7926323460743587458
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2740,8 +2737,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -9151300098422719518, guid: c8997603e7eeb33188c2afc31233ba84, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: b94312eb0c245244e9f38a685e4a12c5, type: 3}
-  m_PlayOnAwake: 1
+  m_Resource: {fileID: 8300000, guid: 63f8dd6ea4153c664aa9b9544002d7d6, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -2925,6 +2922,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4526718270024326540}
+  - component: {fileID: 3129569755727065469}
   m_Layer: 0
   m_Name: Entity Model
   m_TagString: Enemy
@@ -2948,6 +2946,18 @@ Transform:
   - {fileID: 5028670973977435553}
   m_Father: {fileID: 8961343751048200428}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3129569755727065469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8777478838832467352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d85875428688f64daf853933b2c1532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityTeam
 --- !u!1 &9149825326150598566
 GameObject:
   m_ObjectHideFlags: 0

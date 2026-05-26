@@ -14,6 +14,6 @@ public class LevelButtonUI : MonoBehaviour
 
     public void OnClick()
     {
-        LoadingScene.Instance.LoadScene("Game");
+        LoadingScene.Instance.LoadGame();
     }
 }
