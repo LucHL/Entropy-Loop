@@ -56,6 +56,11 @@ public class Units : MonoBehaviour
     protected float attackAnimDuration = 1f;
     public EntityType entityType = EntityType.Basic;
     protected float timeBeforeFirstAttack = 0f;
+
+    // reward system //
+    public int reward_value = 100;
+
+    /* end */
     public bool isAlive = true;
     public UnitsTeam team;
 
@@ -330,6 +335,12 @@ public class Units : MonoBehaviour
         isAlive = false;
 
         BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
+
+        // DONNER L'OR
+        if (ShopManager.instance != null)
+        {
+            ShopManager.instance.AddGold(reward_value);
+        }
 
         GameLoopManager.instance.CheckVictory();
     }

@@ -5,11 +5,18 @@ using System.Collections.Generic;
 
 public class ShopManager : MonoBehaviour
 {
+    // instace pour relier la récompense à l'or du player" //
+    public static ShopManager instance;
+
     [Header("UI")]
     public GameObject shopPopup;
     public TextMeshProUGUI moneyText;
     public Button closeButton;
 
+    void Awake()
+    {
+        instance = this;
+    }
     [Header("Shop Slots")]
     public GameObject shopSlotPrefab;
     public Transform cardsContainer;
@@ -83,6 +90,13 @@ public class ShopManager : MonoBehaviour
         BugTracker.Info($"[ShopManager] {count} cartes affichées dans le shop.");
     }
 
+    public void AddGold(int amount)
+    {
+        playerGold += amount;
+        UpdateMoneyUI();
+    }
+
+    public void SpendGold(int amount)
     void ClearSlots()
     {
         foreach (var slot in currentSlots)
