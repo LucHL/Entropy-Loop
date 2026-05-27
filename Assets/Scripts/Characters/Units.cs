@@ -56,9 +56,8 @@ public class Units : MonoBehaviour
     protected float attackAnimDuration = 1f;
     public EntityType entityType = EntityType.Basic;
     protected float timeBeforeFirstAttack = 0f;
+    public int reward_value = 10; // Reward System
 
-    // reward system //
-    public int reward_value = 100;
 
     /* end */
     public bool isAlive = true;

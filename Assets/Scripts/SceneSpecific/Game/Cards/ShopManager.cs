@@ -96,7 +96,6 @@ public class ShopManager : MonoBehaviour
         UpdateMoneyUI();
     }
 
-    public void SpendGold(int amount)
     void ClearSlots()
     {
         foreach (var slot in currentSlots)
