@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public ManaManager manaManager;
     public GameObject settings;
     public DeckData selectedDeck;
+    public LevelData currentLevelData;
 
     private bool isPaused = false;
 
@@ -25,6 +26,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // ---- SETTINGS ----
+
     public void PauseGame()
     {
         isPaused = true;
@@ -38,6 +41,8 @@ public class GameManager : MonoBehaviour
         settings.SetActive(false);
         Time.timeScale = 1f;
     }
+
+    // ---- CARD ----
 
     public void SetSelectedCard(CardUI card)
     {
@@ -67,5 +72,14 @@ public class GameManager : MonoBehaviour
     public GameObject GetSelectedUnitPrefab()
     {
         return selectedCard != null ? selectedCard.cardData.unitPrefab : null;
+    }
+
+
+    // ---- LEVELS ----
+
+    public void SaveLevelConfig(LevelData levelData)
+    {
+        BugTracker.Info("Save current level data, current level: '" + levelData.currentlevel + "'.");
+        currentLevelData = levelData;
     }
 }
