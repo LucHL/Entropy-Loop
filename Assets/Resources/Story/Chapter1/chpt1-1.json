@@ -1,35 +1,31 @@
 {
-    "previous-chapter": null,
-    "next-chapter": "Chapter-1/chapter1-2.json",
-    "chapter-before-game": [0, 3],
-    "chapter-after-game": [],
-
-    "chpt1-1-dialog-0": {
-      "backgroundName": "bg_city",
-      "charLeftImg": "keronas_idle",
-      "charRightImg": null,
-      "speakerName": "Keronas",
-      "text": "HEHEHEHA"
+    "dialogues": [
+    {
+        "backgroundName": "bg_city",
+        "charLeftImg": "keronas_idle",
+        "charRightImg": "",
+        "speakerName": "Keronas",
+        "text": "Bonsoir je suis Bob L"
     },
-    "chpt1-1-dialog-1": {
-      "backgroundName": "bg_city",
-      "charLeftImg": "keronas_idle",
-      "charRightImg": null,
-      "speakerName": "Keronas",
-      "text": "HEHEHEHA"
+    {
+        "backgroundName": "bg_city",
+        "charLeftImg": "keronas_idle",
+        "charRightImg": "",
+        "speakerName": "Keronas",
+        "text": "HEHEHEHA"
     },
-    "chpt1-1-dialog-2": {
-      "backgroundName": "bg_city",
-      "charLeftImg": "keronas_idle",
-      "charRightImg": null,
-      "speakerName": "Keronas",
-      "text": "HEHEHEHA"
+    {
+        "backgroundName": "bg_city",
+        "charLeftImg": "keronas_idle",
+        "charRightImg": "",
+        "speakerName": "Keronas",
+        "text": "HEHEHEHA"
     },
-    "chpt1-1-dialog-3": {
-      "backgroundName": "bg_city",
-      "charLeftImg": "keronas_idle",
-      "charRightImg": null,
-      "speakerName": "Keronas",
-      "text": "HEHEHEHA"
+    {
+        "backgroundName": "bg_city",
+        "charLeftImg": "keronas_idle",
+        "charRightImg": "",
+        "speakerName": "Keronas",
+        "text": "HEHEHEHA"
     }
-}
+]}

@@ -3,12 +3,19 @@ using UnityEngine;
 [System.Serializable]
 public struct DialogueLine
 {
-    public Sprite background;
-    public Sprite characterLeft;
-    public Sprite characterRight;
+    public string backgroundName;
+    public string charLeftImg;
+    public string charRightImg;
     public string speakerName;
     public string text;
 }
+
+[System.Serializable]
+public class DialoguesWrapper
+{
+    public DialogueLine[] dialogues;
+}
+
 
 [System.Serializable]
 public class LevelData

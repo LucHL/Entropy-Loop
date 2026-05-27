@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class StoryManager : MonoBehaviour
 {
@@ -10,25 +11,48 @@ public class StoryManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI dialogueText;
 
-    private LevelData currentStory;
+    private LevelData currentLevel;
+    private DialogueLine[] dialogueLines;
+    private string currentChapter;
     private int currentLineIndex = 0;
 
-    public void LoadStory(LevelData story)
+    void Start()
     {
-        currentStory = story;
+        LoadLevelInformation();
+    }
+
+    void Update()
+    {
+        // si clic, afficher le text en entier ou passer au suivant
+    }
+
+    public void LoadLevelInformation()
+    {
+        currentLevel = GameManager.Instance.currentLevelData;
+        currentChapter = "Story/" + currentLevel.chaptersBeforeGame;
+
+        TextAsset jsonFile = Resources.Load<TextAsset>(currentChapter);
+
+        if (jsonFile != null) {
+            DialoguesWrapper wrapper = JsonUtility.FromJson<DialoguesWrapper>(jsonFile.text);
+            dialogueLines = wrapper.dialogues;
+            Debug.Log(dialogueLines[0].speakerName);
+        } else {
+            BugTracker.Critical("[StoryManager] Failed to parse Json for the Story.");
+            return;
+        }
+
         currentLineIndex = 0;
         DisplayLine();
     }
 
-    public void OnScreenClicked()
+    public void OnNextClicked()
     {
-        // currentLineIndex++;
-        // if (currentLineIndex < currentStory.lines.Length) {
-        //     DisplayLine();
-        // }
-        // else {
-        //     EndStory();
-        // }
+        currentLineIndex++;
+        if (currentLineIndex < dialogueLines.Length)
+            DisplayLine();
+        else
+            EndStory();
     }
 
     public void OnSkipClicked()
@@ -38,27 +62,36 @@ public class StoryManager : MonoBehaviour
 
     private void DisplayLine()
     {
-        // DialogueLine line = currentStory.lines[currentLineIndex];
+        if (dialogueLines == null || currentLineIndex >= dialogueLines.Length) {
+            EndStory();
+            return;
+        }
 
-        // dialogueText.text = line.text;
-        // nameText.text = line.speakerName;
-        // backgroundImage.sprite = line.background;
+        DialogueLine currentDialogue = dialogueLines[currentLineIndex];
 
-        // if (line.characterLeft != null) {
-        //     charLeftImage.gameObject.SetActive(true);
-        //     charLeftImage.sprite = line.characterLeft;
-        // } else
-        //     charLeftImage.gameObject.SetActive(false);
+        dialogueText.text = currentDialogue.text;
+        nameText.text = currentDialogue.speakerName;
 
-        // if (line.characterRight != null) {
-        //     charRightImage.gameObject.SetActive(true);
-        //     charRightImage.sprite = line.characterRight;
-        // } else
-        //     charRightImage.gameObject.SetActive(false);
+        UpdateCharacterSprite(currentDialogue.backgroundName, backgroundImage);
+        UpdateCharacterSprite(currentDialogue.charLeftImg, charLeftImage);
+        UpdateCharacterSprite(currentDialogue.charRightImg, charRightImage);
+    }
+
+    void UpdateCharacterSprite(string spriteName, Image targetImage)
+    {
+        if (!string.IsNullOrEmpty(spriteName)) {
+            Sprite loadedSprite = Resources.Load<Sprite>("Sprites/" + spriteName);
+            if (loadedSprite != null) {
+                targetImage.gameObject.SetActive(true);
+                targetImage.sprite = loadedSprite;
+            }
+        } else {
+            targetImage.gameObject.SetActive(false);
+        }
     }
 
     private void EndStory()
     {
-        // Scene GAME avec le bon niveau
+        // gameManager pour switch vers la game avec la ne currentlevel
     }
 }

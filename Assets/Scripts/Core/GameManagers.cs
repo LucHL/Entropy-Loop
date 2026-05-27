@@ -1,13 +1,17 @@
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [Header("Deck & Mana manager")]
     public CardUI selectedCard;
     public ManaManager manaManager;
     public GameObject settings;
     public DeckData selectedDeck;
+
+    [Header("Current Level informations")]
     public LevelData currentLevelData;
 
     private bool isPaused = false;
@@ -15,6 +19,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update() {
@@ -81,5 +86,6 @@ public class GameManager : MonoBehaviour
     {
         BugTracker.Info("Save current level data, current level: '" + levelData.currentlevel + "'.");
         currentLevelData = levelData;
+
     }
 }
