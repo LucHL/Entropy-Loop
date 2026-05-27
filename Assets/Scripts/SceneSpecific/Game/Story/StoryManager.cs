@@ -22,13 +22,13 @@ public class StoryManager : MonoBehaviour
 
     public void OnScreenClicked()
     {
-        currentLineIndex++;
-        if (currentLineIndex < currentStory.lines.Length) {
-            DisplayLine();
-        }
-        else {
-            EndStory();
-        }
+        // currentLineIndex++;
+        // if (currentLineIndex < currentStory.lines.Length) {
+        //     DisplayLine();
+        // }
+        // else {
+        //     EndStory();
+        // }
     }
 
     public void OnSkipClicked()
@@ -38,23 +38,23 @@ public class StoryManager : MonoBehaviour
 
     private void DisplayLine()
     {
-        DialogueLine line = currentStory.lines[currentLineIndex];
+        // DialogueLine line = currentStory.lines[currentLineIndex];
 
-        dialogueText.text = line.text;
-        nameText.text = line.speakerName;
-        backgroundImage.sprite = line.background;
+        // dialogueText.text = line.text;
+        // nameText.text = line.speakerName;
+        // backgroundImage.sprite = line.background;
 
-        if (line.characterLeft != null) {
-            charLeftImage.gameObject.SetActive(true);
-            charLeftImage.sprite = line.characterLeft;
-        } else
-            charLeftImage.gameObject.SetActive(false);
+        // if (line.characterLeft != null) {
+        //     charLeftImage.gameObject.SetActive(true);
+        //     charLeftImage.sprite = line.characterLeft;
+        // } else
+        //     charLeftImage.gameObject.SetActive(false);
 
-        if (line.characterRight != null) {
-            charRightImage.gameObject.SetActive(true);
-            charRightImage.sprite = line.characterRight;
-        } else
-            charRightImage.gameObject.SetActive(false);
+        // if (line.characterRight != null) {
+        //     charRightImage.gameObject.SetActive(true);
+        //     charRightImage.sprite = line.characterRight;
+        // } else
+        //     charRightImage.gameObject.SetActive(false);
     }
 
     private void EndStory()

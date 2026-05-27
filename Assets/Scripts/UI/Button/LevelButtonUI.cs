@@ -11,15 +11,15 @@ public class LevelButtonUI : MonoBehaviour
     public void Init(LevelData data)
     {
         levelData = data;
-        levelIndex = levelData.currentLevel;
-        levelText.text = "Level " + levelData.currentLevel.ToString();
+        levelIndex = levelData.currentlevel;
+        levelText.text = "Level " + levelData.currentlevel.ToString();
     }
 
     public void OnClick()
     {
-        if (levelData.hasStory) {
-            // load story
-        }
+        // if (levelData.hasStory) {
+        //     // load story
+        // }
         LoadingScene.Instance.LoadGame();
     }
 }

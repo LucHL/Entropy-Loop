@@ -1,0 +1,17 @@
+{
+    "levels": [
+    {
+        "currentlevel": 1,
+        "chaptersBeforeGame": "chapter1/chpt1-1",
+        "chaptersAfterGame": "chapter1/chpt1-2",
+        "nbrSublevel": 0,
+        "isBoss": false
+    },
+    {
+        "currentlevel": 2,
+        "chaptersBeforeGame": null,
+        "chaptersAfterGame": null,
+        "nbrSublevel": 0,
+        "isBoss": false
+    }
+]}

@@ -6,16 +6,28 @@ public class LevelSelectManager : MonoBehaviour
     public GameObject levelButtonPrefab;
     public int levelCount = 50;
 
-    private LevelData levelConfig;
+    private LevelData[] levels;
 
     void Start()
     {
+        LoadLevelsConfig();
         GenerateLevels();
+    }
+
+    void LoadLevelsConfig()
+    {
+        TextAsset jsonFile = Resources.Load<TextAsset>("Levels/levels_config");
+
+        if (jsonFile != null) {
+            LevelsWrapper wrapper = JsonUtility.FromJson<LevelsWrapper>(jsonFile.text);
+            levels = wrapper.levels;
+        } else
+            BugTracker.Critical("Failed to load levels configs from 'levels_config.json'.");
     }
 
     void GenerateLevels()
     {
-        for (int i = 1; i <= levelCount; i++) {
+        for (int i = 1; i <= levels.Length; i++) {
             GameObject btn = Instantiate(levelButtonPrefab, transform);
 
             RectTransform rt = btn.GetComponent<RectTransform>();
@@ -24,8 +36,7 @@ public class LevelSelectManager : MonoBehaviour
 
             LevelButtonUI ui = btn.GetComponent<LevelButtonUI>();
 
-            levelConfig.currentLevel = i;
-            ui.Init(levelConfig);
+            ui.Init(levels[i - 1]);
 
             Button button = btn.GetComponent<Button>();
             button.onClick.AddListener(ui.OnClick);

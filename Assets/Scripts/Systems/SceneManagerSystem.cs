@@ -50,7 +50,7 @@ public class LoadingScene : MonoBehaviour
 
     public void LoadStory(LevelData levelData)
     {
-        BugTracker.Info("Scene change to 'Story', load chapter : [" + levelData.chapters + "].");
+        // BugTracker.Info("Scene change to 'Story', load chapter : [" + levelData.chapters + "].");
         // StartCoroutine(LoadSceneAsync("Story"));
     }
 
