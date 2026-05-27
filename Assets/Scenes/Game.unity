@@ -11603,7 +11603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardUI
   cardSelected: {fileID: 1097474104}
-  cardData: {fileID: 11400000, guid: d50c634db743a9c499bb11c191279ada, type: 2}
+  cardData: {fileID: 0}
   cardImage: {fileID: 1451508965}
 --- !u!114 &1451508968
 MonoBehaviour:

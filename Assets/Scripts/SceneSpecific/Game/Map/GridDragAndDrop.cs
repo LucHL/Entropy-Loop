@@ -72,7 +72,12 @@ public class GridDragAndDrop : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 200f)) {
             if (hit.collider.gameObject.tag.StartsWith("Tile")) {
-                selectedUnit.position = new Vector3(hit.collider.gameObject.transform.position.x, 2f, hit.collider.gameObject.transform.position.z);
+                String []list = hit.collider.gameObject.name.Split("_");
+
+                if (int.Parse(list[2]) < 4)
+                    selectedUnit.position = new Vector3(hit.collider.gameObject.transform.position.x, 2f, hit.collider.gameObject.transform.position.z);
+                else
+                    selectedUnit.position = new Vector3(originalPosition.x, 2f, originalPosition.z);
             }
         }
         selectedRigidbody.isKinematic = false;
