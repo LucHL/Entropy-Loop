@@ -15,7 +15,8 @@ public class LevelButtonUI : MonoBehaviour
 
     public void OnClick()
     {
-        if (levelData.chaptersBeforeGame == null) {
+        if (levelData.chaptersBeforeGame != "") {
+            Debug.Log(levelData.chaptersBeforeGame);
             GameManager.Instance.SaveLevelConfig(levelData);
 
             LoadingScene.Instance.LoadStory();

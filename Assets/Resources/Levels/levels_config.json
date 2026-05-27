@@ -9,8 +9,8 @@
     },
     {
         "currentlevel": 2,
-        "chaptersBeforeGame": null,
-        "chaptersAfterGame": null,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
         "nbrSublevel": 0,
         "isBoss": false
     }
