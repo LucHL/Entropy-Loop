@@ -6,14 +6,20 @@ public class LevelButtonUI : MonoBehaviour
     public TMP_Text levelText;
     int levelIndex;
 
-    public void Init(int index)
+    private LevelData levelData;
+
+    public void Init(LevelData data)
     {
-        levelIndex = index;
-        levelText.text = "Level " + index.ToString();
+        levelData = data;
+        levelIndex = levelData.currentLevel;
+        levelText.text = "Level " + levelData.currentLevel.ToString();
     }
 
     public void OnClick()
     {
+        if (levelData.hasStory) {
+            // load story
+        }
         LoadingScene.Instance.LoadGame();
     }
 }

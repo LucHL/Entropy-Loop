@@ -6,6 +6,8 @@ public class LevelSelectManager : MonoBehaviour
     public GameObject levelButtonPrefab;
     public int levelCount = 50;
 
+    private LevelData levelConfig;
+
     void Start()
     {
         GenerateLevels();
@@ -21,7 +23,9 @@ public class LevelSelectManager : MonoBehaviour
             rt.anchoredPosition = new Vector2((i - 1) * 200f - 600, 0f); // TODO delete -600
 
             LevelButtonUI ui = btn.GetComponent<LevelButtonUI>();
-            ui.Init(i);
+
+            levelConfig.currentLevel = i;
+            ui.Init(levelConfig);
 
             Button button = btn.GetComponent<Button>();
             button.onClick.AddListener(ui.OnClick);
