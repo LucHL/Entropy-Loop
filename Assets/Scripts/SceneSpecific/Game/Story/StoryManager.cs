@@ -78,7 +78,6 @@ public class StoryManager : MonoBehaviour
     void UpdateCharacterSprite(string spriteName, Image targetImage)
     {
         if (!string.IsNullOrEmpty(spriteName)) {
-            Debug.Log(spriteName);
             Sprite loadedSprite = Resources.Load<Sprite>("Sprites/" + spriteName);
             if (loadedSprite != null) {
                 targetImage.gameObject.SetActive(true);
@@ -92,7 +91,6 @@ public class StoryManager : MonoBehaviour
     private void EndStory()
     {
         BugTracker.Info("End of story for level '" + currentLevel.currentlevel + "'.");
-        // gameManager pour switch vers la game avec le currentlevel
         LoadingScene.Instance.LoadGame();
     }
 }

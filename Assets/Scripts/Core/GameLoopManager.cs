@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -41,7 +42,7 @@ public class GameLoopManager : MonoBehaviour
         else
             enemyUnits.Add(unit);
         
-        BugTracker.Info("New entity add in the list: '" + unit.name + "'");
+        BugTracker.Info("New entity add in the list: '" + unit.name + "'.");
     }
 
     private void RemoveUnit(GameObject unit)
@@ -79,12 +80,18 @@ public class GameLoopManager : MonoBehaviour
         int countEnemy = 0;
 
         foreach (GameObject p in playerUnits) {
-            if (p.GetComponent<Units>().isAlive)
+            if (p.GetComponent<Units>().isAlive) {
+                Debug.Log(p.name + ": player");
                 countPlayer++;
+            } else
+                StartCoroutine(DesableEntityAfterDeath(p));
         }
         foreach (GameObject e in enemyUnits) {
-            if (e.GetComponent<Units>().isAlive)
+            if (e.GetComponent<Units>().isAlive) {
+                Debug.Log(e.name + ": enemy");
                 countEnemy++;
+            } else
+                StartCoroutine(DesableEntityAfterDeath(e));
         }
 
         if (countPlayer == 0) {
@@ -100,9 +107,11 @@ public class GameLoopManager : MonoBehaviour
     {
         popupEndGame.SetActive(false);
         foreach (GameObject key in playerUnits) {
+            key.SetActive(true);
             key.GetComponent<Units>().ResetUnit();
         }
         foreach (GameObject key in enemyUnits) {
+            key.SetActive(true);
             key.GetComponent<Units>().ResetUnit();
         }
         StartOrStopCombat(false);
@@ -121,5 +130,11 @@ public class GameLoopManager : MonoBehaviour
         foreach (GameObject e in entities) {
             e.GetComponentInChildren<Units>().isGameRunning = enabled;
         }
+    }
+
+    private IEnumerator DesableEntityAfterDeath(GameObject entity)
+    {
+        yield return new WaitForSeconds(1f);
+        entity.SetActive(false);
     }
 }
