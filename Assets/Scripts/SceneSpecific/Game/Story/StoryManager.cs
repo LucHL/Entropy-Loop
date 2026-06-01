@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting;
 
 public class StoryManager : MonoBehaviour
 {
@@ -36,7 +35,6 @@ public class StoryManager : MonoBehaviour
         if (jsonFile != null) {
             DialoguesWrapper wrapper = JsonUtility.FromJson<DialoguesWrapper>(jsonFile.text);
             dialogueLines = wrapper.dialogues;
-            Debug.Log(dialogueLines[0].speakerName);
         } else {
             BugTracker.Critical("[StoryManager] Failed to parse Json for the Story.");
             return;
@@ -80,6 +78,7 @@ public class StoryManager : MonoBehaviour
     void UpdateCharacterSprite(string spriteName, Image targetImage)
     {
         if (!string.IsNullOrEmpty(spriteName)) {
+            Debug.Log(spriteName);
             Sprite loadedSprite = Resources.Load<Sprite>("Sprites/" + spriteName);
             if (loadedSprite != null) {
                 targetImage.gameObject.SetActive(true);
@@ -92,6 +91,8 @@ public class StoryManager : MonoBehaviour
 
     private void EndStory()
     {
-        // gameManager pour switch vers la game avec la ne currentlevel
+        BugTracker.Info("End of story for level '" + currentLevel.currentlevel + "'.");
+        // gameManager pour switch vers la game avec le currentlevel
+        LoadingScene.Instance.LoadGame();
     }
 }

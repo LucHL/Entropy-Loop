@@ -2,28 +2,28 @@
     "dialogues": [
     {
         "backgroundName": "bg_city",
-        "charLeftImg": "keronas_idle",
-        "charRightImg": "",
+        "charLeftImg": "",
+        "charRightImg": "King_blue_laughing_final",
         "speakerName": "Keronas",
         "text": "Bonsoir je suis Bob L"
     },
     {
         "backgroundName": "bg_city",
-        "charLeftImg": "keronas_idle",
+        "charLeftImg": "",
+        "charRightImg": "keronas_idle",
+        "speakerName": "Keronas",
+        "text": "HEHEHEHA"
+    },
+    {
+        "backgroundName": "",
+        "charLeftImg": "",
         "charRightImg": "",
         "speakerName": "Keronas",
         "text": "HEHEHEHA"
     },
     {
-        "backgroundName": "bg_city",
-        "charLeftImg": "keronas_idle",
-        "charRightImg": "",
-        "speakerName": "Keronas",
-        "text": "HEHEHEHA"
-    },
-    {
-        "backgroundName": "bg_city",
-        "charLeftImg": "keronas_idle",
+        "backgroundName": "",
+        "charLeftImg": "",
         "charRightImg": "",
         "speakerName": "Keronas",
         "text": "HEHEHEHA"

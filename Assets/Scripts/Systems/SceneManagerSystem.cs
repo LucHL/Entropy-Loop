@@ -1,15 +1,16 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections;
 
 public class LoadingScene : MonoBehaviour
 {
     public static LoadingScene Instance { get; private set; }
 
-    public GameObject loadingScreen;
-    public UnityEngine.UI.Image loadingBar;
+    [SerializeField] GameObject loadingScreen;
+    [SerializeField] Image loadingBar;
 
-    private void Awake()
+    void Awake()
     {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -17,7 +18,13 @@ public class LoadingScene : MonoBehaviour
         }
 
         Instance = this;
-        // DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
+    }
+
+    void Start()
+    {
+        if (loadingScreen != null)
+            loadingScreen.SetActive(false);
     }
 
     //
@@ -66,5 +73,9 @@ public class LoadingScene : MonoBehaviour
             loadingBar.fillAmount = progressValue;
             yield return null;
         }
+        loadingBar.fillAmount = 1f;
+        yield return new WaitForEndOfFrame();
+
+        loadingScreen.SetActive(false);
     }
 }

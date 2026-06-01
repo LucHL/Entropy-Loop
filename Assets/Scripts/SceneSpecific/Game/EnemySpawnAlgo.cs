@@ -14,13 +14,13 @@ public class EnemySpawnAlgo : MonoBehaviour
 
     public void SpawnEnemies(float tileSize)
     {
-        // Vector2 tilePos = GetRandomTilePosition();
-        // float x = tilePos.x + (tileSize / 2);
-        // float y = tilePos.y + (tileSize / 2);
+        Vector2 tilePos = GetRandomTilePosition();
+        // x = tilePos.x + (tileSize / 2);
+        // y = tilePos.y + (tileSize / 2);
 
         GameObject cocodilePrefab = Resources.Load<GameObject>("CrocodilePrefab");
-        // GameObject enemyInstance = Instantiate(cocodilePrefab, new Vector3(x, 2f, y), Quaternion.identity);
-        GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(-2f, 2f, 0f), Quaternion.identity);
+        GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
+        // GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(-2f, 2f, 0f), Quaternion.identity);
         cocodileInstance.transform.Rotate(0, 180, 0);
 
         // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
@@ -30,14 +30,14 @@ public class EnemySpawnAlgo : MonoBehaviour
         BugTracker.Info("CocodilePrefab spawn.");
 
         // TMP Create a Prefab
-        // while((tilePos = GetRandomTilePosition()) == tilePos);
+        while((tilePos = GetRandomTilePosition()) != tilePos);
 
         // x = tilePos.x + (tileSize / 2);
         // y = tilePos.y + (tileSize / 2);
 
         GameObject tigerPrefab = Resources.Load<GameObject>("TigerPrefab");
-        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(x, 2f, y), Quaternion.identity);
-        GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(0f, 2f, 0f), Quaternion.identity);
+        GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
+        // GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(0f, 2f, 0f), Quaternion.identity);
         tigerInstance.transform.Rotate(0, 180, 0);
 
         // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
@@ -48,14 +48,14 @@ public class EnemySpawnAlgo : MonoBehaviour
         // EnemySpawnAlgo.instance.SpawnEnemies();
 
         // TMP Create a Prefab
-        // while((tilePos = GetRandomTilePosition()) == tilePos);
+        while((tilePos = GetRandomTilePosition()) != tilePos);
 
         // x = tilePos.x + (tileSize / 2);
         // y = tilePos.y + (tileSize / 2);
 
         GameObject enemy_tmpPrefab = Resources.Load<GameObject>("Enemy_tmp");
-        // GameObject enemyInstance1 = Instantiate(prefabEnemy1, new Vector3(x, 2f, y), Quaternion.identity);
-        GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(2f, 2f, 0f), Quaternion.identity);
+        GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
+        // GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(2f, 2f, 0f), Quaternion.identity);
         enemy_tmpInstance.transform.Rotate(0, 180, 0);
 
         // enemyInstance1.GetComponent<NavMeshAgent>().enabled = false;
@@ -85,10 +85,10 @@ public class EnemySpawnAlgo : MonoBehaviour
         }
 
         int randomX = Random.Range(0, maxX);
-        int randomy = Random.Range(0, maxY / 2); // only half of the board
+        int randomY = Random.Range(0, maxY / 2); // only half of the board
 
         foreach (GameObject t in tiles) {
-            if (t.name == ("Tile_" + randomX + "_" + randomy))
+            if (t.name == ("Tile_" + randomX + "_" + randomY))
                 return new Vector2(t.transform.position.x, t.transform.position.y);
         }
         Debug.Log("Tile doesn't exist.");

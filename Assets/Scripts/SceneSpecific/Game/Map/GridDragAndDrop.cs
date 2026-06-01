@@ -20,6 +20,9 @@ public class GridDragAndDrop : MonoBehaviour
 
     void Update()
     {
+        if (GameLoopManager.instance.isGameRunning)
+            return;
+
         if (Input.GetMouseButtonDown(0) && selectedUnit == null)
             SelectUnit();
 
