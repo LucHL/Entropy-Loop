@@ -98,8 +98,8 @@ MonoBehaviour:
   instance: {fileID: 0}
   navMeshAgent: {fileID: 6895135250863905532}
   hpBarCanvas: {fileID: 4151159326295130401}
-  hpSlider: {fileID: 246920217915767877}
-  shieldSlider: {fileID: 4158521075186691887}
+  hpSlider: {fileID: 4158521075186691887}
+  shieldSlider: {fileID: 246920217915767877}
   modelPosition: {fileID: 5850395088792518696}
   damagePerAttack: 10
   manaCost: 3

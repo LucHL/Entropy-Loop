@@ -107,6 +107,7 @@ public class Units : MonoBehaviour
         ResetHpBarQuaternion();
 
         hp = totalHealth;
+        shield = totalShield;
 
         chessTileSize = VoidbornMapGeneratorHybrid.instance.chessTile;
 
@@ -128,6 +129,7 @@ public class Units : MonoBehaviour
         gameObject.layer = 0;
         isAlive = true;
         hpSlider.value = totalHealth;
+        shieldSlider.value = totalShield;
         isCapaciteAlreadyUse = false;
         gameObject.transform.SetPositionAndRotation(backupUnits.position, backupUnits.rotation);
 
