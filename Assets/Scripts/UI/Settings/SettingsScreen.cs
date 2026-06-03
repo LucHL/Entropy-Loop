@@ -12,7 +12,7 @@ public class SettingsScript : MonoBehaviour
     [SerializeField] TMP_Dropdown graphicsDropdown;
 
     [Header("AUDIO")]
-    [SerializeField] Slider masterVolume;
+    [SerializeField] Slider MasterVolume;
     [SerializeField] Slider MusicVolume;
     [SerializeField] Slider SfxVolume;
     [SerializeField] AudioMixer MainAudioMixer;
@@ -29,23 +29,33 @@ public class SettingsScript : MonoBehaviour
         //     vsincTog.isOn = false;
         // else
         //     vsincTog.isOn = true;
+
+        float volume;
+        MainAudioMixer.GetFloat("MasterVolume", out volume);
+        MasterVolume.value = Mathf.Pow(10f, volume / 20f);
+
+        MainAudioMixer.GetFloat("MusicVolume", out volume);
+        MusicVolume.value = Mathf.Pow(10f, volume / 20f);
+
+        MainAudioMixer.GetFloat("SfxVolume", out volume);
+        SfxVolume.value = Mathf.Pow(10f, volume / 20f);
     }
 
     /* AUDIO */
 
     public void ChangeMasterVolume()
     {
-        MainAudioMixer.SetFloat("MasterVolume", masterVolume.value);
+        MainAudioMixer.SetFloat("MasterVolume", Mathf.Log10(MasterVolume.value) * 20f);
     }
 
     public void ChangeMusicVolume()
     {
-        MainAudioMixer.SetFloat("MusicVolume", MusicVolume.value);
+        MainAudioMixer.SetFloat("MusicVolume", Mathf.Log10(MusicVolume.value) * 20f);
     }
 
     public void ChangeSfxVolume()
     {
-        MainAudioMixer.SetFloat("SfxVolume", SfxVolume.value);
+        MainAudioMixer.SetFloat("SfxVolume", Mathf.Log10(SfxVolume.value) * 20f);
     }
 
 
@@ -69,5 +79,10 @@ public class SettingsScript : MonoBehaviour
         //     QualitySettings.vSyncCount = 1;
         // else
         //     QualitySettings.vSyncCount = 0;
+    }
+
+    public void CloseSettingsScreen()
+    {
+        GameManager.instance.ResumeGame();
     }
 }

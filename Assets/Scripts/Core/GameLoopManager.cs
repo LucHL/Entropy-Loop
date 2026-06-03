@@ -26,9 +26,6 @@ public class GameLoopManager : MonoBehaviour
 
     void Update()
     {
-        if (isGameRunning)
-            return;
-        
         if (Input.GetKeyDown(KeyCode.Escape)) {
             if (GameManager.instance.isPaused) {
                 GameManager.instance.ResumeGame();
@@ -38,6 +35,9 @@ public class GameLoopManager : MonoBehaviour
                 settings.SetActive(true);
             }
         }
+
+        if (isGameRunning)
+            return;
 
         if (Input.GetMouseButtonDown(1)) { // right click
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
