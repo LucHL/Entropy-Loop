@@ -5,22 +5,22 @@ using UnityEngine.Audio;
 
 public class SettingsScript : MonoBehaviour
 {
-    public Toggle fullscreenTog;
-    public Toggle vsincTog;
+    [SerializeField] Toggle fullscreenTog;
+    [SerializeField] Toggle vsincTog;
 
     [Header("GRAPHIC")]
-    public TMP_Dropdown graphicsDropdown;
+    [SerializeField] TMP_Dropdown graphicsDropdown;
 
     [Header("AUDIO")]
-    public Slider masterVolume;
-    public Slider MusicVolume;
-    public Slider SfxVolume;
-    public AudioMixer MainAudioMixer;
+    [SerializeField] Slider masterVolume;
+    [SerializeField] Slider MusicVolume;
+    [SerializeField] Slider SfxVolume;
+    [SerializeField] AudioMixer MainAudioMixer;
 
     [Header("AUDIO")]
-    public TextMeshProUGUI logFilePath;
+    [SerializeField] TextMeshProUGUI logFilePath;
 
-    void Start()
+    void Awake()
     {
         logFilePath.text = BugTracker.logPath;
         // fullscreenTog.isOn = Screen.fullScreen;
@@ -30,7 +30,6 @@ public class SettingsScript : MonoBehaviour
         // else
         //     vsincTog.isOn = true;
     }
-
 
     /* AUDIO */
 

@@ -27,7 +27,7 @@ public class StoryManager : MonoBehaviour
 
     public void LoadLevelInformation()
     {
-        currentLevel = GameManager.Instance.currentLevelData;
+        currentLevel = GameManager.instance.currentLevelData;
         currentChapter = "Story/" + currentLevel.chaptersBeforeGame;
 
         TextAsset jsonFile = Resources.Load<TextAsset>(currentChapter);
@@ -91,6 +91,7 @@ public class StoryManager : MonoBehaviour
     private void EndStory()
     {
         BugTracker.Info("End of story for level '" + currentLevel.currentlevel + "'.");
+        backgroundImage.GetComponentInParent<Canvas>().gameObject.SetActive(false);
         LoadingScene.Instance.LoadGame();
     }
 }

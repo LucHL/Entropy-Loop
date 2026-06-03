@@ -41,7 +41,8 @@ public class Units : MonoBehaviour
 
     [Header("HP Bar")]
     [SerializeField] Canvas hpBarCanvas;
-    protected Slider hpSlider;
+    [SerializeField] Slider hpSlider;
+    [SerializeField] Slider shieldSlider;
     public Transform modelPosition;
 
     [Header("Must be handle in each entities script")]
@@ -49,6 +50,8 @@ public class Units : MonoBehaviour
     public int manaCost = 3;
     protected float totalHealth = 100;
     protected float hp = 0;
+    protected float totalShield = 100;
+    protected float shield = 0;
     protected float attackRate = 1f; // every seconde
     protected float attackRange = 1.5f; // 1f is equal to 1 chess tile
     protected float speed = 1f;
@@ -89,9 +92,9 @@ public class Units : MonoBehaviour
     void Awake()
     {
         BugTracker.Info("New entity '" + gameObject.name + "' created.");
+
         animator = GetComponentInChildren<Animator>();
         currentAnimationState = AnimationState.Idle;
-        hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
         team = UnitsTeam.Enemy;
         gameObject.layer = 0;
     }
@@ -130,6 +133,8 @@ public class Units : MonoBehaviour
 
         target = null;
         Start();
+
+        Debug.Log("Entity '" + gameObject.name + "' has been reset.");
 
         BugTracker.Info("Entity '" + gameObject.name + "' has been reset.");
     }
@@ -281,6 +286,15 @@ public class Units : MonoBehaviour
             BugTracker.Error("'" + gameObject.name + "' has a hpSlider null !");
 
         DamagePopupManager.instance.Init(transform, damage);
+
+        // if (shield > 0 && shieldSlider != null) {
+        //     shield -= damage;
+        //     shieldSlider.value = hp / totalShield;
+
+        //     if (shield < 0)
+        //         damage = shield * -1;
+        // }
+
         hp -= damage;
         hpSlider.value = hp / totalHealth;
         if (hp <= 0) {

@@ -98,12 +98,15 @@ MonoBehaviour:
   instance: {fileID: 0}
   navMeshAgent: {fileID: 6895135250863905532}
   hpBarCanvas: {fileID: 4151159326295130401}
-  modelPosition: {fileID: 0}
+  hpSlider: {fileID: 4158521075186691887}
+  shieldSlider: {fileID: 246920217915767877}
+  modelPosition: {fileID: 1995601805507754111}
   damagePerAttack: 10
   manaCost: 3
   entityType: 1
+  reward_value: 10
   isAlive: 1
-  team: 0
+  team: 1
   audioSource: {fileID: 7527798960168742340}
   attackSound: {fileID: 0}
   deathSound: {fileID: 0}
@@ -482,11 +485,33 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
+--- !u!114 &246920217915767877 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4047846324142677808, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
+  m_PrefabInstance: {fileID: 4269951655385899893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!223 &4151159326295130401 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 205488834379588180, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
   m_PrefabInstance: {fileID: 4269951655385899893}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4158521075186691887 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 213888593383672922, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
+  m_PrefabInstance: {fileID: 4269951655385899893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7459385512975648306 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6684720576428631367, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}

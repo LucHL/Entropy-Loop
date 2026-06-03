@@ -13,6 +13,12 @@ public class GameLoopManager : MonoBehaviour
     private List<GameObject> playerUnits = new();
     private List<GameObject> enemyUnits = new();
 
+    [Header("Deck & Mana manager")]
+    public CardUI selectedCard;
+    public ManaManager manaManager;
+    [SerializeField] GameObject settings;
+    public DeckData selectedDeck;
+
     void Awake()
     {
         instance = this;
@@ -22,6 +28,16 @@ public class GameLoopManager : MonoBehaviour
     {
         if (isGameRunning)
             return;
+        
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (GameManager.instance.isPaused) {
+                GameManager.instance.ResumeGame();
+                settings.SetActive(false);
+            } else {
+                GameManager.instance.PauseGame();
+                settings.SetActive(true);
+            }
+        }
 
         if (Input.GetMouseButtonDown(1)) { // right click
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -136,5 +152,38 @@ public class GameLoopManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         entity.SetActive(false);
+    }
+
+
+    // ---- CARD ----
+
+    public void SetSelectedCard(CardUI card)
+    {
+        if (selectedCard != null && selectedCard != card)
+        {
+            selectedCard.DeselectCard();
+        }
+
+        selectedCard = card;
+        Debug.Log("Carte sélectionnée : " + card.cardData.cardName);
+    }
+
+    public void DeselectCard()
+    {
+        if (selectedCard != null)
+        {
+            selectedCard.DeselectCard();
+            selectedCard = null;
+        }
+    }
+
+    public bool HasSelectedCard()
+    {
+        return selectedCard != null;
+    }
+
+    public GameObject GetSelectedUnitPrefab()
+    {
+        return selectedCard != null ? selectedCard.cardData.unitPrefab : null;
     }
 }

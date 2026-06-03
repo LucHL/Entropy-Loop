@@ -19,8 +19,8 @@ public class EnemySpawnAlgo : MonoBehaviour
         // y = tilePos.y + (tileSize / 2);
 
         GameObject cocodilePrefab = Resources.Load<GameObject>("CrocodilePrefab");
-        GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
-        // GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(-2f, 2f, 0f), Quaternion.identity);
+        // GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
+        GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(-2f, 2f, 0f), Quaternion.identity);
         cocodileInstance.transform.Rotate(0, 180, 0);
 
         // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
@@ -36,8 +36,8 @@ public class EnemySpawnAlgo : MonoBehaviour
         // y = tilePos.y + (tileSize / 2);
 
         GameObject tigerPrefab = Resources.Load<GameObject>("TigerPrefab");
-        GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
-        // GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(0f, 2f, 0f), Quaternion.identity);
+        // GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
+        GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(0f, 2f, 0f), Quaternion.identity);
         tigerInstance.transform.Rotate(0, 180, 0);
 
         // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
@@ -54,8 +54,8 @@ public class EnemySpawnAlgo : MonoBehaviour
         // y = tilePos.y + (tileSize / 2);
 
         GameObject enemy_tmpPrefab = Resources.Load<GameObject>("Enemy_tmp");
-        GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
-        // GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(2f, 2f, 0f), Quaternion.identity);
+        // GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
+        GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(2f, 2f, 0f), Quaternion.identity);
         enemy_tmpInstance.transform.Rotate(0, 180, 0);
 
         // enemyInstance1.GetComponent<NavMeshAgent>().enabled = false;

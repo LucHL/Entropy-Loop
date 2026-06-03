@@ -41,7 +41,7 @@ public class ShopManager : MonoBehaviour
 
     void LoadCards()
     {
-        DeckData deck = GameManager.Instance.selectedDeck;
+        DeckData deck = GameLoopManager.instance.selectedDeck;
         if (deck == null)
         {
             BugTracker.Error("[ShopManager] Aucun deck sélectionné dans le GameManager !");
