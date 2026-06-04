@@ -29,39 +29,39 @@ public class EnemySpawnAlgo : MonoBehaviour
         instance = this;
     }
 
-    public void SpawnEnemies(float tileSize)
-    {
-        BugTracker.Info("[Enemy Spawn Algo] Start algo spawn enemy.");
-        List<GameObject> allEntities = new();
+    // public void SpawnEnemies(float tileSize)
+    // {
+    //     BugTracker.Info("[Enemy Spawn Algo] Start algo spawn enemy.");
+    //     List<GameObject> allEntities = new();
 
-        allEntities.Add(Resources.Load<GameObject>("CrocodilePrefab"));
-        allEntities.Add(Resources.Load<GameObject>("TigerPrefab"));
-        allEntities.Add(Resources.Load<GameObject>("Enemy_tmp"));
+    //     allEntities.Add(Resources.Load<GameObject>("CrocodilePrefab"));
+    //     allEntities.Add(Resources.Load<GameObject>("TigerPrefab"));
+    //     allEntities.Add(Resources.Load<GameObject>("Enemy_tmp"));
         
-        _tileSize = tileSize;
-        int nbrEntities = 0;
-        int safetyExit = 0;
-        currentMana = manaMax;
+    //     _tileSize = tileSize;
+    //     int nbrEntities = 0;
+    //     int safetyExit = 0;
+    //     currentMana = manaMax;
 
-        currentStrategy = Strategy.Aggressive;
-        BugTracker.Info("[Enemy Spawn Algo] current algo strategy: '"+currentStrategy+"'.");
+    //     currentStrategy = Strategy.Aggressive;
+    //     BugTracker.Info("[Enemy Spawn Algo] current algo strategy: '"+currentStrategy+"'.");
 
-        List<GameObject> filtered = FilteredByStrategy(allEntities, currentStrategy);
-        List<GameObject> affordableUnits = new();
+    //     List<GameObject> filtered = FilteredByStrategy(allEntities, currentStrategy);
+    //     List<GameObject> affordableUnits = new();
 
-        while (currentMana > 0 && safetyExit < 100 && nbrEntities < maxEntity) {
-            safetyExit++;
+    //     while (currentMana > 0 && safetyExit < 100 && nbrEntities < maxEntity) {
+    //         safetyExit++;
 
-            GameObject entity = filtered[Random.Range(0, filtered.Count)];
-            if (entity.GetComponent<Units>().manaCost - currentMana <= 0) {
-                currentMana -= entity.GetComponent<Units>().manaCost;
-                affordableUnits.Add(entity);
-                nbrEntities++;
-                BugTracker.Info("[Enemy Spawn Algo] Entity '"+entity.name+"' add to the spawn list.");
-            }
-        }
-        IntiateEntity(affordableUnits);
-    }
+    //         GameObject entity = filtered[Random.Range(0, filtered.Count)];
+    //         if (entity.GetComponent<Units>().manaCost - currentMana <= 0) {
+    //             currentMana -= entity.GetComponent<Units>().manaCost;
+    //             affordableUnits.Add(entity);
+    //             nbrEntities++;
+    //             BugTracker.Info("[Enemy Spawn Algo] Entity '"+entity.name+"' add to the spawn list.");
+    //         }
+    //     }
+    //     IntiateEntity(affordableUnits);
+    // }
 
     private void IntiateEntity(List<GameObject> entities)
     {
@@ -211,7 +211,7 @@ public class EnemySpawnAlgo : MonoBehaviour
     }
 
 
-    public void SpawnEnemiesssssss(float tileSize)
+    public void SpawnEnemies(float tileSize)
     {
         Vector2 tilePos = GetRandomTilePosition();
         // x = tilePos.x + (tileSize / 2);
@@ -292,62 +292,4 @@ public class EnemySpawnAlgo : MonoBehaviour
         Debug.Log("Tile doesn't exist.");
         return new Vector2(0, 0);
     }
-
-    // --------------------------------------
-    
-    // public List<GameObject> enemyPrefabsPool; 
-
-    // private HashSet<Vector2> occupiedTiles = new HashSet<Vector2>();
-
-    // private int minY = 4;
-    // private int maxY = 7;
-
-    // public void GenerateVague(int totalBudget)
-    // {
-    //     occupiedTiles.Clear();
-    //     int currentBudget = totalBudget;
-
-    //     int safetyCheck = 0; 
-
-    //     while (currentBudget > 0 && safetyCheck < 100) {
-    //         safetyCheck++;
-
-    //         GameObject randomPrefab = Resources.Load<GameObject>("Enemy_tmp");
-            
-    //         Units unitScript = randomPrefab.GetComponent<Units>();
-            
-    //         if (unitScript == null)
-    //             continue;
-
-    //         int unitCost = unitScript.manaCost;
-
-    //         if (unitCost > currentBudget)
-    //             continue; 
-
-    //         // Vector2 spawnPos = GetStrategicPos(unitScript);
-
-    //         // if (spawnPos != new Vector2(-1, -1)) {
-    //         //     GameObject spawnedEnemy = Instantiate(randomPrefab, new Vector3(spawnPos.x, 2f, spawnPos.y), Quaternion.identity);
-    //         //     occupiedTiles.Add(spawnPos);
-    //         //     currentBudget -= unitCost;
-    //         // } else
-    //         //     break;
-    //     }
-    // }
-
-    // private void GetStrategicPos(Units unitScript)
-    // {
-    //     List<Vector2> potentialTiles = new();
-
-    //     int targetMinY = (unitScript.attackRange <= 1.5f) ? 4 : 6;
-    //     int targetMaxY = (unitScript.attackRange <= 1.5f) ? 5 : 7;
-
-
-    //     if (unitScript.unitsClass.Contains(UnitsClass.Tank) || unitScript.unitsClass.Contains(UnitsClass.Dps)) {
-            
-    //     }
-    //     if (unitScript.unitsClass.Contains(UnitsClass.Archer) || unitScript.unitsClass.Contains(UnitsClass.Dps)) {
-            
-    //     }
-    // }
 }
