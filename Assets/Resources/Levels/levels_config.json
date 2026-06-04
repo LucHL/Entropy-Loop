@@ -1,0 +1,52 @@
+{
+    "levels": [
+    {
+        "currentlevel": 1,
+        "chaptersBeforeGame": "Chapter1/chpt1-1",
+        "chaptersAfterGame": "Chapter1/chpt1-2",
+        "nbrSublevel": 0,
+        "isBoss": false
+    },
+    {
+        "currentlevel": 2,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "nbrSublevel": 0,
+        "isBoss": false
+    },
+    {
+        "currentlevel": 3,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "nbrSublevel": 0,
+        "isBoss": false
+    },
+    {
+        "currentlevel": 4,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "nbrSublevel": 0,
+        "isBoss": false
+    },
+    {
+        "currentlevel": 5,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "nbrSublevel": 0,
+        "isBoss": false
+    },
+    {
+        "currentlevel": 6,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "nbrSublevel": 0,
+        "isBoss": false
+    },
+    {
+        "currentlevel": 7,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "nbrSublevel": 0,
+        "isBoss": false
+    }
+]}

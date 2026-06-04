@@ -28,6 +28,8 @@ public static class BugTracker
         logPath = Path.Combine(folder, "bugtracker.log");
         initialized = true;
         Report(IssueLevel.Info, "BugTracker initialized.");
+        Report(IssueLevel.Info, "Current version: '" + Application.version + "'.");
+
         Debug.Log("BugTracker initialized ! Log saved to: " + logPath);
     }
 

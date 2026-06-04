@@ -98,10 +98,20 @@ MonoBehaviour:
   instance: {fileID: 0}
   navMeshAgent: {fileID: 6895135250863905532}
   hpBarCanvas: {fileID: 4151159326295130401}
+  hpSlider: {fileID: 4158521075186691887}
   modelPosition: {fileID: 5850395088792518696}
   damagePerAttack: 10
   manaCost: 3
+  totalHealth: 100
+  hp: 0
+  shield: 10
+  attackRate: 1
+  attackRange: 1.5
+  speed: 1
+  attackAnimDuration: 1
   entityType: 1
+  rewardValue: 10
+  unitsClass: 
   isAlive: 1
   team: 0
   audioSource: {fileID: 7527798960168742340}
@@ -376,6 +386,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8315829836708319092, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8315829836708319092, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -386,6 +404,17 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 205488834379588180, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
   m_PrefabInstance: {fileID: 4269951655385899893}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4158521075186691887 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 213888593383672922, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
+  m_PrefabInstance: {fileID: 4269951655385899893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7459385512975648306 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6684720576428631367, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}

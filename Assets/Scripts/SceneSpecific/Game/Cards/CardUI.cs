@@ -41,13 +41,13 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
 
     public void SelectCard()
     {
-        if (GameManager.Instance != null && cardData != null) {
-            ManaManager mana = GameManager.Instance.manaManager;
+        if (GameLoopManager.instance != null && cardData != null) {
+            ManaManager mana = GameLoopManager.instance.manaManager;
             if (!mana.HasEnoughMana(cardData.manaCost)) {
                 FloatingTextManager.instance.Show("Not enough mana");
                 return;
             }
-            GameManager.Instance.SetSelectedCard(this);
+            GameLoopManager.instance.SetSelectedCard(this);
             GetComponent<Image>().color = Color.yellow;
         }
     }

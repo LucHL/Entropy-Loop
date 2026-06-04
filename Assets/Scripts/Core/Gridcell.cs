@@ -41,14 +41,9 @@ public class GridCell : MonoBehaviour
         if (IsPointerOverBlockingUI())
             return;
 
-        Debug.Log("GridCell OnMouseDown");
-
-        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard()) {
-            Debug.Log("GridCell clicked");
-
-
-            CardUI card = GameManager.Instance.selectedCard;
-            ManaManager mana = GameManager.Instance.manaManager;
+        if (GameLoopManager.instance != null && GameLoopManager.instance.HasSelectedCard()) {
+            CardUI card = GameLoopManager.instance.selectedCard;
+            ManaManager mana = GameLoopManager.instance.manaManager;
 
             int cost = card.cardData.manaCost;
 
@@ -60,10 +55,9 @@ public class GridCell : MonoBehaviour
             mana.SpendMana(cost);
 
             HandSlot slot = card.GetComponent<HandSlot>();
-            Debug.Log(slot == null ? "HandSlot NULL" : "HandSlot OK");
 
             card.GetComponent<HandSlot>().ClearSlot();
-            GameManager.Instance.DeselectCard();
+            GameLoopManager.instance.DeselectCard();
         } else {
             FloatingTextManager.instance.Show("No card selected");
         }
@@ -94,7 +88,7 @@ public class GridCell : MonoBehaviour
     {
         if (spawnedUnit == null)
         {
-            GameObject unitPrefab = GameManager.Instance.GetSelectedUnitPrefab();
+            GameObject unitPrefab = GameLoopManager.instance.GetSelectedUnitPrefab();
             if (unitPrefab != null) {
                 //spawnedUnit = Instantiate(unitPrefab, position, Quaternion.identity);
                 unitPrefab.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);

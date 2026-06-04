@@ -4,16 +4,23 @@ using TMPro;
 public class LevelButtonUI : MonoBehaviour
 {
     public TMP_Text levelText;
-    int levelIndex;
 
-    public void Init(int index)
+    private LevelData levelData;
+
+    public void Init(LevelData data)
     {
-        levelIndex = index;
-        levelText.text = "Level " + index.ToString();
+        levelData = data;
+        levelText.text = "Level " + levelData.currentlevel.ToString();
     }
 
     public void OnClick()
     {
+        if (levelData.chaptersBeforeGame != "") {
+            GameManager.instance.SaveLevelConfig(levelData);
+            LoadingScene.Instance.LoadStory();
+            return;
+        }
+
         LoadingScene.Instance.LoadGame();
     }
 }

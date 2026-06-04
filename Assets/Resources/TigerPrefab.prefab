@@ -67,7 +67,7 @@ PrefabInstance:
     - target: {fileID: 595034180047212090, guid: 19aa38e16b77b3766bddc2e15d9ae0f6, type: 3}
       propertyPath: attackSound
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: 63f8dd6ea4153c664aa9b9544002d7d6, type: 3}
     - target: {fileID: 644082205927338446, guid: 19aa38e16b77b3766bddc2e15d9ae0f6, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -12,6 +13,12 @@ public class GameLoopManager : MonoBehaviour
     private List<GameObject> playerUnits = new();
     private List<GameObject> enemyUnits = new();
 
+    [Header("Deck & Mana manager")]
+    public CardUI selectedCard;
+    public ManaManager manaManager;
+    [SerializeField] GameObject settings;
+    public DeckData selectedDeck;
+
     void Awake()
     {
         instance = this;
@@ -19,6 +26,16 @@ public class GameLoopManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (GameManager.instance.isPaused) {
+                GameManager.instance.ResumeGame();
+                settings.SetActive(false);
+            } else {
+                GameManager.instance.PauseGame();
+                settings.SetActive(true);
+            }
+        }
+
         if (isGameRunning)
             return;
 
@@ -41,7 +58,7 @@ public class GameLoopManager : MonoBehaviour
         else
             enemyUnits.Add(unit);
         
-        BugTracker.Info("New entity add in the list: '" + unit.name + "'");
+        BugTracker.Info("New entity add in the list: '" + unit.name + "'.");
     }
 
     private void RemoveUnit(GameObject unit)
@@ -66,8 +83,14 @@ public class GameLoopManager : MonoBehaviour
     private void EndGame(bool isPlayerVictorious)
     {
         isGameRunning = false;
-        popupEndGame.SetActive(true);
 
+        if (GameManager.instance.currentLevelData.chaptersAfterGame != "" && GameManager.instance.currentLevelData != null) {
+            GameManager.instance.nextStory = GameManager.instance.currentLevelData.chaptersAfterGame;
+            LoadingScene.Instance.LoadStory();
+            return;
+        }
+
+        popupEndGame.SetActive(true);
         if (isPlayerVictorious) {
             popupEndGame.GetComponentInChildren<TextMeshProUGUI>().text = "You win";
         }
@@ -79,19 +102,21 @@ public class GameLoopManager : MonoBehaviour
         int countEnemy = 0;
 
         foreach (GameObject p in playerUnits) {
-            if (p.GetComponent<Units>().isAlive)
+            if (p.GetComponent<Units>().isAlive) {
                 countPlayer++;
+            } else
+                StartCoroutine(DesableEntityAfterDeath(p));
         }
         foreach (GameObject e in enemyUnits) {
-            if (e.GetComponent<Units>().isAlive)
+            if (e.GetComponent<Units>().isAlive) {
                 countEnemy++;
+            } else
+                StartCoroutine(DesableEntityAfterDeath(e));
         }
 
         if (countPlayer == 0) {
-            Debug.Log("Enemy wins");
             EndGame(false);
         } else if (countEnemy == 0) {
-            Debug.Log("Player wins");
             EndGame(true);
         }
     }
@@ -100,9 +125,11 @@ public class GameLoopManager : MonoBehaviour
     {
         popupEndGame.SetActive(false);
         foreach (GameObject key in playerUnits) {
+            key.SetActive(true);
             key.GetComponent<Units>().ResetUnit();
         }
         foreach (GameObject key in enemyUnits) {
+            key.SetActive(true);
             key.GetComponent<Units>().ResetUnit();
         }
         StartOrStopCombat(false);
@@ -121,5 +148,43 @@ public class GameLoopManager : MonoBehaviour
         foreach (GameObject e in entities) {
             e.GetComponentInChildren<Units>().isGameRunning = enabled;
         }
+    }
+
+    private IEnumerator DesableEntityAfterDeath(GameObject entity)
+    {
+        yield return new WaitForSeconds(1f);
+        entity.SetActive(false);
+    }
+
+
+    // ---- CARD ----
+
+    public void SetSelectedCard(CardUI card)
+    {
+        if (selectedCard != null && selectedCard != card)
+        {
+            selectedCard.DeselectCard();
+        }
+
+        selectedCard = card;
+    }
+
+    public void DeselectCard()
+    {
+        if (selectedCard != null)
+        {
+            selectedCard.DeselectCard();
+            selectedCard = null;
+        }
+    }
+
+    public bool HasSelectedCard()
+    {
+        return selectedCard != null;
+    }
+
+    public GameObject GetSelectedUnitPrefab()
+    {
+        return selectedCard != null ? selectedCard.cardData.unitPrefab : null;
     }
 }
