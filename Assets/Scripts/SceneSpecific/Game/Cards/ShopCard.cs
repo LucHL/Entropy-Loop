@@ -1,37 +1,52 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.EventSystems;
 
 public class ShopCard : MonoBehaviour
 {
-    public CardData cardData;
+    [Header("UI References")]
+    public Image cardImage;
+    public TextMeshProUGUI priceText;
     public Button buyButton;
-    public int cardPrice = 25;
-    public ShopManager shopManager;
+    public GameObject goldIcon;
+    public TextMeshProUGUI soldText;
 
+    private CardData data;
+    private ShopManager shopManager;
     private DeckManager deckManager;
 
-    void Start()
+    public void Setup(CardData cardData, ShopManager manager)
     {
+        data = cardData;
+        shopManager = manager;
         deckManager = FindFirstObjectByType<DeckManager>();
-        shopManager = FindFirstObjectByType<ShopManager>();
+
+        if (cardImage != null && data.cardImage != null)
+            cardImage.sprite = data.cardImage;
+
+        if (priceText != null)
+            priceText.text = data.goldCost.ToString();
+
+        if (soldText != null)
+            soldText.gameObject.SetActive(false);
 
         buyButton.onClick.AddListener(BuyCard);
+
+        BugTracker.Info($"[ShopCard] Carte '{data.cardName}' initialisée. Prix: {data.goldCost}.");
     }
 
     void BuyCard()
     {
-        if (deckManager != null && cardData != null && shopManager != null)
+        if (shopManager.TrySpendGold(data.goldCost))
         {
-            if (shopManager.playerGold >= cardPrice)
-            {
-                deckManager.deck.Add(cardData);
-                shopManager.SpendGold(cardPrice);
-                Debug.Log("Carte achet�e : " + cardData.cardName);
-            }
-            else
-            {
-                Debug.Log("Pas assez d'or !");
-            }
+            deckManager?.deck.Add(data);
+            EventSystem.current.SetSelectedGameObject(null);
+            BugTracker.Info($"[ShopCard] '{data.cardName}' achetée. Deck: {deckManager?.deck.Count} cartes.");
+        }
+        else
+        {
+            BugTracker.Warning($"[ShopCard] Achat échoué pour '{data.cardName}'. Prix: {data.goldCost}.");
         }
     }
 }

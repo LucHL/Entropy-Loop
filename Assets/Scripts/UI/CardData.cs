@@ -8,4 +8,5 @@ public class CardData : ScriptableObject
     public Color unitColor;
     public GameObject unitPrefab;
     public int manaCost;
+    public int goldCost;
 }

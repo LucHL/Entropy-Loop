@@ -6,6 +6,36 @@ public class GridCell : MonoBehaviour
 {
     private GameObject spawnedUnit;
 
+    private Renderer cellRenderer;
+    private Color originalColor;
+    private bool isHighlighted = false;
+
+    void Start()
+    {
+        cellRenderer = GetComponent<Renderer>();
+        if (cellRenderer != null) {
+            originalColor = cellRenderer.material.color;
+        }
+    }
+
+    public void SetHighlight(bool shouldHighlight, Color color)
+    {
+        if (cellRenderer == null)
+            return;
+
+        if (color == Color.white)
+            color = originalColor;
+
+        if (shouldHighlight && !isHighlighted) {
+            cellRenderer.material.color = color;
+            isHighlighted = true;
+        }
+        else if (!shouldHighlight && isHighlighted) {
+            cellRenderer.material.color = originalColor;
+            isHighlighted = false;
+        }
+    }
+
     private void OnMouseDown()
     {
         if (IsPointerOverBlockingUI())
@@ -28,8 +58,6 @@ public class GridCell : MonoBehaviour
 
             SpawnUnit();
             mana.SpendMana(cost);
-
-            GameLogManager.Instance.AddLog("Joue : " + card.cardData.cardName + " (coût " + cost + ")");
 
             HandSlot slot = card.GetComponent<HandSlot>();
             Debug.Log(slot == null ? "HandSlot NULL" : "HandSlot OK");

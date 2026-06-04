@@ -11,9 +11,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0020b40e33e677b468780b273fcae1c4, type: 3}
   m_Name: Cavalier_Card
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Cavalier
   cardImage: {fileID: 21300000, guid: 97d91348f7e8c1d44b0588261262fe76, type: 3}
-  unitColor: {r: 0.018308623, g: 0, b: 0.8352941, a: 0}
+  unitColor: {r: 0, g: 0, b: 0, a: 0}
   unitPrefab: {fileID: 6774719691583486067, guid: 686142abb42bb198b9286759fd4f58ad, type: 3}
-  manaCost: 4
+  manaCost: 3
+  goldCost: 50
