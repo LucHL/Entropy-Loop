@@ -9,6 +9,7 @@ public class DrawButton : MonoBehaviour
         if (deckManager != null)
         {
             deckManager.DrawCard();
+            //GameLogManager.Instance.AddLog("Test log");
         }
     }
 }
