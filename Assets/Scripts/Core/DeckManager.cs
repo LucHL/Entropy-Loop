@@ -15,6 +15,7 @@ public class DeckManager : MonoBehaviour
             foreach (HandSlot slot in handSlots) {
                 if (slot.IsEmpty()) {
                     slot.SetCard(drawnCard);
+                    GameLogManager.Instance.AddLog("Pioche : " + drawnCard.cardName);
                     return;
                 }
             }

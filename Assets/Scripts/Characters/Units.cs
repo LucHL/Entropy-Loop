@@ -118,6 +118,8 @@ public class Units : MonoBehaviour
             enemyTag = "Enemy";
 
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
+
+        GameLogManager.Instance.AddLog(gameObject.name + " on the battlefield");
     }
 
     public void ResetUnit()
@@ -314,6 +316,8 @@ public class Units : MonoBehaviour
         isAlive = false;
         SetAnimationState(AnimationState.Dead);
         gameObject.layer = 6;
+
+        GameLogManager.Instance.AddLog(gameObject.name + " die");
 
         if (deathSound != null) {
             audioSource.PlayOneShot(deathSound);

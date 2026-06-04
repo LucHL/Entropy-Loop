@@ -59,6 +59,8 @@ public class GridCell : MonoBehaviour
             SpawnUnit();
             mana.SpendMana(cost);
 
+            GameLogManager.Instance.AddLog("Joue : " + card.cardData.cardName + " (coût " + cost + ")");
+
             HandSlot slot = card.GetComponent<HandSlot>();
             Debug.Log(slot == null ? "HandSlot NULL" : "HandSlot OK");
 
