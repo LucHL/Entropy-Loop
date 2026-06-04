@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine.Tilemaps;
 
 public enum Strategy {
     SmallUnits, // plein de petites units
@@ -21,6 +22,7 @@ public class EnemySpawnAlgo : MonoBehaviour
     public int maxEntity = 3;
 
     private HashSet<Vector2> occupiedGridPositions = new();
+    private float _tileSize;
 
     public void Awake()
     {
@@ -36,6 +38,7 @@ public class EnemySpawnAlgo : MonoBehaviour
         allEntities.Add(Resources.Load<GameObject>("TigerPrefab"));
         allEntities.Add(Resources.Load<GameObject>("Enemy_tmp"));
         
+        _tileSize = tileSize;
         int nbrEntities = 0;
         int safetyExit = 0;
         currentMana = manaMax;
@@ -69,9 +72,9 @@ public class EnemySpawnAlgo : MonoBehaviour
 
         foreach (GameObject e in entities) {
             Vector2 vector2 = GetStrategicTilePosition(e.GetComponent<Units>().unitsClass);
-            occupiedGridPositions.Add(vector2);
+            Debug.Log($"x: {vector2.x} y: {vector2.y}");
 
-            GameObject entityInstance = Instantiate(e, new Vector3(vector2.x, 2f, vector2.y), Quaternion.identity);
+            GameObject entityInstance = Instantiate(e, new Vector3(vector2.x + _tileSize, 2f, vector2.y), Quaternion.identity);
             entityInstance.transform.Rotate(0, 180, 0);
             GameLoopManager.instance.RegisterUnit(entityInstance, false);
 
@@ -86,7 +89,6 @@ public class EnemySpawnAlgo : MonoBehaviour
         int maxX = int.MinValue;
         int maxY = int.MinValue;
 
-        // 1. Calcul de la taille du plateau
         foreach (GameObject t in tiles) {
             string[] parts = t.name.Split('_');
             int x = int.Parse(parts[1]);
@@ -98,11 +100,11 @@ public class EnemySpawnAlgo : MonoBehaviour
                 maxX = x;
         }
 
-        int halfBoard = maxY / 2; // Ex: Si maxY = 7, halfBoard = 3 (Zone ennemie = 0 à 3)
+        int halfBoard = maxY / 2;
 
-        int enemyZoneHeight = halfBoard + 1; // Ex: de 0 à 3, cela fait 4 lignes
+        int enemyZoneHeight = halfBoard + 1;
 
-        float slice = (float)enemyZoneHeight / 4f; // Ex: 4 / 4 = 1.0f
+        float slice = (float)enemyZoneHeight / 4f;
 
         int RearY = 0;
         int FrontY = halfBoard;
@@ -135,58 +137,42 @@ public class EnemySpawnAlgo : MonoBehaviour
         RearY = Mathf.Clamp(RearY, 0, halfBoard);
         FrontY = Mathf.Clamp(FrontY, 0, halfBoard);
 
-        Debug.Log($"[{unitClass}] Zone cible Y : de la ligne {RearY} à {FrontY}");
+        List<GameObject> validTiles = new();
 
-        // // 3. Filtrer pour ne garder que les cases valides ET libres
-        // List<GameObject> validTiles = new List<GameObject>();
+        foreach (GameObject t in tiles) {
+            string[] parts = t.name.Split('_');
+            int x = int.Parse(parts[1]);
+            int y = int.Parse(parts[2]);
 
-        // foreach (GameObject t in tiles) {
-        //     string[] parts = t.name.Split('_');
-        //     int x = int.Parse(parts[1]);
-        //     int y = int.Parse(parts[2]);
+            if (x <= maxX && y >= RearY && y <= FrontY) {
+                if (!validTiles.Contains(t)) {
+                    validTiles.Add(t);
+                }
+            }
+        }
 
-        //     if (x <= maxX && y >= targetMinY && y <= targetMaxY) {
-        //         // On vérifie dans le HashSet que la case n'est pas déjà prise
-        //         if (!occupiedGridPositions.Contains(new Vector2(x, y))) {
-        //             validTiles.Add(t);
-        //         }
-        //     }
-        // }
+        if (validTiles.Count == 0) {
+            foreach (GameObject t in tiles) {
+                string[] parts = t.name.Split('_');
+                int x = int.Parse(parts[1]);
+                int y = int.Parse(parts[2]);
 
-        // // 4. Plan B si la zone idéale est pleine (on cherche partout sur la moitié haute)
-        // if (validTiles.Count == 0) {
-        //     foreach (GameObject t in tiles) {
-        //         string[] parts = t.name.Split('_');
-        //         int x = int.Parse(parts[1]);
-        //         int y = int.Parse(parts[2]);
+                if (x <= maxX && y >= 0 && y <= halfBoard) {
+                    if (!validTiles.Contains(t)) {
+                        validTiles.Add(t);
+                    }
+                }
+            }
+        }
 
-        //         if (x <= maxX && y > halfBoard) {
-        //             if (!occupiedGridPositions.Contains(new Vector2(x, y))) {
-        //                 validTiles.Add(t);
-        //             }
-        //         }
-        //     }
-        // }
+        if (validTiles.Count > 0) {
+            GameObject chosenTile = validTiles[Random.Range(0, validTiles.Count)];
+            occupiedGridPositions.Add(chosenTile.transform.position);
+            Debug.Log($"tile={chosenTile.name} x: {chosenTile.transform.position.x} y: {chosenTile.transform.position.y}");
 
-        // // 5. ON RETOURNE LA POSITION SPATIALE (Vector2) DE LA CASE CHOISIE
-        // if (validTiles.Count > 0) {
-        //     GameObject chosenTile = validTiles[Random.Range(0, validTiles.Count)];
-            
-        //     // On bloque la case dans le HashSet pour les prochains ennemis
-        //     string[] parts = chosenTile.name.Split('_');
-        //     int finalX = int.Parse(parts[1]);
-        //     int finalY = int.Parse(parts[2]);
-        //     occupiedGridPositions.Add(new Vector2(finalX, finalY));
-
-        //     // On extrait la position X et Y du monde (exactement comme dans ton GetRandomTilePosition)
-        //     return new Vector2(chosenTile.transform.position.x, chosenTile.transform.position.y);
-        // }
-
-        // // S'il n'y a plus aucune case sur le plateau, on retourne une valeur d'erreur
-        // Debug.LogWarning("Tile doesn't exist ou le plateau est plein.");
-        // return new Vector2(-1f, -1f); 
-
-        return new Vector2(0f, 0f);
+            return chosenTile.transform.position;
+        }
+        return new Vector2(-1f, -1f);
     }
 
 
