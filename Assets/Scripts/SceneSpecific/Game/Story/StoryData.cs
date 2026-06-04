@@ -1,3 +1,4 @@
+using System.Data;
 using UnityEngine;
 
 [System.Serializable]
@@ -25,6 +26,11 @@ public class LevelData
     public string chaptersAfterGame;
     public int nbrSublevel;
     public bool isBoss;
+
+    // Implement later
+
+    // public MapType mapType;
+    // public DeckData enemyDeck;
 }
 
 [System.Serializable]

@@ -55,7 +55,6 @@ public class GridCell : MonoBehaviour
             mana.SpendMana(cost);
 
             HandSlot slot = card.GetComponent<HandSlot>();
-            Debug.Log(slot == null ? "HandSlot NULL" : "HandSlot OK");
 
             card.GetComponent<HandSlot>().ClearSlot();
             GameLoopManager.instance.DeselectCard();

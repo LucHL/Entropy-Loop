@@ -21,6 +21,7 @@ public class LevelSelectManager : MonoBehaviour
         if (jsonFile != null) {
             LevelsWrapper wrapper = JsonUtility.FromJson<LevelsWrapper>(jsonFile.text);
             levels = wrapper.levels;
+            GameManager.instance.alllevelData = levels;
         } else
             BugTracker.Critical("Failed to load levels configs from 'levels_config.json'.");
     }

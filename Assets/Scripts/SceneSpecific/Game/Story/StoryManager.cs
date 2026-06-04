@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Purchasing;
 
 public class StoryManager : MonoBehaviour
 {
@@ -9,11 +10,18 @@ public class StoryManager : MonoBehaviour
     [SerializeField] Image charRightImage;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI dialogueText;
+    [SerializeField] GameObject popupEndStory;
+    [SerializeField] TextMeshProUGUI chapterName;
 
     private LevelData currentLevel;
     private DialogueLine[] dialogueLines;
     private string currentChapter;
     private int currentLineIndex = 0;
+
+    void Awake()
+    {
+        popupEndStory.SetActive(false);
+    }
 
     void Start()
     {
@@ -28,7 +36,7 @@ public class StoryManager : MonoBehaviour
     public void LoadLevelInformation()
     {
         currentLevel = GameManager.instance.currentLevelData;
-        currentChapter = "Story/" + currentLevel.chaptersBeforeGame;
+        currentChapter = "Story/" + GameManager.instance.nextStory;
 
         TextAsset jsonFile = Resources.Load<TextAsset>(currentChapter);
 
@@ -91,6 +99,14 @@ public class StoryManager : MonoBehaviour
     private void EndStory()
     {
         BugTracker.Info("End of story for level '" + currentLevel.currentlevel + "'.");
+
+        if (GameManager.instance.nextStory == currentLevel.chaptersAfterGame) {
+            string[] name = currentLevel.chaptersAfterGame.Split("t"); // "Chapter1/chpt1-1" => "1-1"
+            chapterName.text = "Chapter " + name[2];
+            popupEndStory.SetActive(true);
+            return;
+        }
+
         backgroundImage.GetComponentInParent<Canvas>().gameObject.SetActive(false);
         LoadingScene.Instance.LoadGame();
     }

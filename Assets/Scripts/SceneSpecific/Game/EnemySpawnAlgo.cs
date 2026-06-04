@@ -95,125 +95,61 @@ public class EnemySpawnAlgo : MonoBehaviour
         return new Vector2(0, 0);
     }
 
-    // public void SpawnEnemies()
+    // --------------------------------------
+    
+    // public List<GameObject> enemyPrefabsPool; 
+
+    // private HashSet<Vector2> occupiedTiles = new HashSet<Vector2>();
+
+    // private int minY = 4;
+    // private int maxY = 7;
+
+    // public void GenerateVague(int totalBudget)
     // {
-        // GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
+    //     occupiedTiles.Clear();
+    //     int currentBudget = totalBudget;
 
-        // List<GameObject> spawnTiles = new();
+    //     int safetyCheck = 0; 
 
-        // int maxY = int.MinValue;
+    //     while (currentBudget > 0 && safetyCheck < 100) {
+    //         safetyCheck++;
 
-        // foreach (GameObject tile in tiles)
-        // {
-        //     string[] parts = tile.name.Split('_');
-        //     int y = int.Parse(parts[2]);
-
-        //     if (y > maxY)
-        //         maxY = y;
-        // }
-
-        // foreach (GameObject tile in tiles)
-        // {
-        //     string[] parts = tile.name.Split('_');
-        //     int y = int.Parse(parts[2]);
-
-        //     if (y >= maxY - 3)
-        //         spawnTiles.Add(tile);
-        // }
-
-        // for (int i = 0; i < numberEnemy && spawnTiles.Count > 0; i++)
-        // {
-        //     int index = Random.Range(0, spawnTiles.Count);
-        //     GameObject tile = spawnTiles[index];
-        //     spawnTiles.RemoveAt(index);
-
-        //     Vector3 spawnPos = tile.transform.position + Vector3.up * 2f;
-
-        //     GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-        //     enemy.transform.Rotate(0, 180, 0);
-
-        //     enemy.GetComponent<NavMeshAgent>().enabled = false;
-
-        //     GameLoopManager.instance.RegisterUnit(enemy, false);
-        // }
-        // // TMP Create a Prefab
-        // GameObject prefabEnemy = Resources.Load<GameObject>("Enemy_tmp");
-        // GameObject enemyInstance = Instantiate(prefabEnemy, new Vector3(0f, 2f, 0f), Quaternion.identity);
-        // enemyInstance.transform.Rotate(0, 180, 0);
-
-        // // Movements are NOT managed by the navmesh
-        // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
-
-        // GameLoopManager.instance.RegisterUnit(enemyInstance, false);
-    // }
-
-
-
-
-    // public interface UnitsOnBoard
-    // {
-    //     Units units;
-    //     int tileNumber;
-    // }
-
-    // public Vector2 chessboardSize = new( 6, 6 );
-    // public Vector2 chessTileSize;
-    // public List<Units> enemyListAvailable;
-    // public List<Units> enemyListToPlaceOnBoard;
-    // public List<UnitsOnBoard> unitsOnBoards;
-    // public int DifficultyLevel = 1;
-
-    // private List board = new [
-    //     [0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0],
-    //     // do not use more, this is the player board
-    //     [0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0],
-    //     [0, 0, 0, 0, 0, 0],
-    // ]; // create board form 'chessboardSize'
-
-    // private void DefineNumberOfEnemy()
-    // {
-    //     int sizeBoardEnemy = chessboardSize.Y / 2;
-    //     int nbrEnemy = sizeBoardEnemy / 4; // change this by using a tree with afinity for each units
-
-    //     for (int i = 0; i < nbrEnemy; i++) {
-    //         EnemyListToPlaceOnBoard.Append(EnemyListAvailable[Random.Next(EnemyListAvailable.Count)]);
-    //     }
-    // }
-
-    // private void PutEnemyInBoard()
-    // {
-    //     int sizeBoardEnemy = chessboardSize.Y / 2;
-
-    //     for (int i = 0; i < EnemyListToPlaceOnBoard.Count; ++i) {
-    //         bool skip = false;
-    //         int randomRow = Random.Next(chessboardSize.X);
-    //         int randomColumn = Random.Next(chessboardSize.Y / 2);
-    //         int tileNbr = randomColumn * chessboardSize.Y + randomRow;
-
-    //         for (int e = 0; unitsOnBoards.Count; e++) {
-    //             if (unitsOnBoards[i].tileNumber == tileNbr) {
-    //                 skip = true;
-    //                 i--;
-    //                 break;
-    //             }
-    //         }
-    //         if (skip)
+    //         GameObject randomPrefab = Resources.Load<GameObject>("Enemy_tmp");
+            
+    //         Units unitScript = randomPrefab.GetComponent<Units>();
+            
+    //         if (unitScript == null)
     //             continue;
-    //         UnitsOnBoard newUnits = { EnemyListToPlaceOnBoard[i], tileNbr };
-    //         unitsOnBoards.Add();
+
+    //         int unitCost = unitScript.manaCost;
+
+    //         if (unitCost > currentBudget)
+    //             continue; 
+
+    //         // Vector2 spawnPos = GetStrategicPos(unitScript);
+
+    //         // if (spawnPos != new Vector2(-1, -1)) {
+    //         //     GameObject spawnedEnemy = Instantiate(randomPrefab, new Vector3(spawnPos.x, 2f, spawnPos.y), Quaternion.identity);
+    //         //     occupiedTiles.Add(spawnPos);
+    //         //     currentBudget -= unitCost;
+    //         // } else
+    //         //     break;
     //     }
     // }
 
-    // public void ClearEnemyListToPlaceOnBoard()
+    // private void GetStrategicPos(Units unitScript)
     // {
-    //     EnemyListToPlaceOnBoard.Clear();
-    // }
+    //     List<Vector2> potentialTiles = new();
 
-    // public void SelectEnemyDeck(String EnemyFolder)
-    // {
+    //     int targetMinY = (unitScript.attackRange <= 1.5f) ? 4 : 6;
+    //     int targetMaxY = (unitScript.attackRange <= 1.5f) ? 5 : 7;
 
+
+    //     if (unitScript.unitsClass.Contains(UnitsClass.Tank) || unitScript.unitsClass.Contains(UnitsClass.Dps)) {
+            
+    //     }
+    //     if (unitScript.unitsClass.Contains(UnitsClass.Archer) || unitScript.unitsClass.Contains(UnitsClass.Dps)) {
+            
+    //     }
     // }
 }

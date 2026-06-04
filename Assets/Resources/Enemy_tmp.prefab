@@ -2379,10 +2379,19 @@ MonoBehaviour:
   modelPosition: {fileID: 5028670973977435553}
   damagePerAttack: 10
   manaCost: 3
+  totalHealth: 100
+  hp: 0
+  totalShield: 100
+  shield: 0
+  attackRate: 1
+  attackRange: 1.5
+  speed: 1
+  attackAnimDuration: 1
   entityType: 1
-  reward_value: 10
+  rewardValue: 10
+  unitsClass: 
   isAlive: 1
-  team: 0
+  team: 1
   audioSource: {fileID: 7926323460743587458}
   attackSound: {fileID: 8300000, guid: 63f8dd6ea4153c664aa9b9544002d7d6, type: 3}
   deathSound: {fileID: 8300000, guid: 0992108b52bb128828e615e1ca4a6bf0, type: 3}

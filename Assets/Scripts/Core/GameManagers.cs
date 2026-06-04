@@ -6,7 +6,9 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [Header("Current Level informations")]
-    public LevelData currentLevelData;
+    public LevelData[] alllevelData;
+    public LevelData currentLevelData = null;
+    public string nextStory = "";
 
     public bool isPaused = false;
 
@@ -40,6 +42,6 @@ public class GameManager : MonoBehaviour
     {
         BugTracker.Info("Save current level data, current level: '" + levelData.currentlevel + "'.");
         currentLevelData = levelData;
-
+        nextStory = levelData.chaptersBeforeGame;
     }
 }

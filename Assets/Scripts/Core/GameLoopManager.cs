@@ -83,8 +83,14 @@ public class GameLoopManager : MonoBehaviour
     private void EndGame(bool isPlayerVictorious)
     {
         isGameRunning = false;
-        popupEndGame.SetActive(true);
 
+        if (GameManager.instance.currentLevelData.chaptersAfterGame != "" && GameManager.instance.currentLevelData != null) {
+            GameManager.instance.nextStory = GameManager.instance.currentLevelData.chaptersAfterGame;
+            LoadingScene.Instance.LoadStory();
+            return;
+        }
+
+        popupEndGame.SetActive(true);
         if (isPlayerVictorious) {
             popupEndGame.GetComponentInChildren<TextMeshProUGUI>().text = "You win";
         }
@@ -97,24 +103,20 @@ public class GameLoopManager : MonoBehaviour
 
         foreach (GameObject p in playerUnits) {
             if (p.GetComponent<Units>().isAlive) {
-                Debug.Log(p.name + ": player");
                 countPlayer++;
             } else
                 StartCoroutine(DesableEntityAfterDeath(p));
         }
         foreach (GameObject e in enemyUnits) {
             if (e.GetComponent<Units>().isAlive) {
-                Debug.Log(e.name + ": enemy");
                 countEnemy++;
             } else
                 StartCoroutine(DesableEntityAfterDeath(e));
         }
 
         if (countPlayer == 0) {
-            Debug.Log("Enemy wins");
             EndGame(false);
         } else if (countEnemy == 0) {
-            Debug.Log("Player wins");
             EndGame(true);
         }
     }
@@ -165,7 +167,6 @@ public class GameLoopManager : MonoBehaviour
         }
 
         selectedCard = card;
-        Debug.Log("Carte sélectionnée : " + card.cardData.cardName);
     }
 
     public void DeselectCard()

@@ -10,8 +10,18 @@ public enum UnitsTeam {
 }
 
 public enum UnitsClass {
-    OnLand,
-    Flying
+    // corps à corps
+    Tank,
+    Dps,
+
+    // milieu
+    Assassin,
+    Archer,
+    Mage,
+
+    // distance
+    Buffer,
+    Healer,
 }
 
 public enum EntityType {
@@ -42,23 +52,21 @@ public class Units : MonoBehaviour
     [Header("HP Bar")]
     [SerializeField] Canvas hpBarCanvas;
     [SerializeField] Slider hpSlider;
-    [SerializeField] Slider shieldSlider;
     public Transform modelPosition;
 
-    [Header("Must be handle in each entities script")]
+    [Header("Must be handle in each entities script")] // voir pour un UnitData
     public float damagePerAttack = 10;
     public int manaCost = 3;
-    protected float totalHealth = 100;
-    protected float hp = 0;
-    protected float totalShield = 100;
-    protected float shield = 0;
-    protected float attackRate = 1f; // every seconde
-    protected float attackRange = 1.5f; // 1f is equal to 1 chess tile
-    protected float speed = 1f;
-    protected float attackAnimDuration = 1f;
+    public float totalHealth = 100;
+    public float hp = 0;
+    public float shield = 10;
+    public float attackRate = 1f; // every seconde
+    public float attackRange = 1.5f; // 1f is equal to 1 chess tile
+    public float speed = 1f;
+    public float attackAnimDuration = 1f;
     public EntityType entityType = EntityType.Basic;
-    protected float timeBeforeFirstAttack = 0f;
-    public int reward_value = 10; // Reward System
+    public int rewardValue = 10; // Reward System
+    public List<UnitsClass> unitsClass = new();
 
 
     /* end */
@@ -75,7 +83,6 @@ public class Units : MonoBehaviour
 
     [Header("Do not touch")]
     protected string enemyTag = "Champion";
-    protected List<UnitsClass> unitsClass = new();
     protected GameObject target = null;
     protected Units targetUnitsComponent = null;
     protected GameObject[] entities = null;
@@ -100,6 +107,8 @@ public class Units : MonoBehaviour
     }
 
     protected virtual void Start() {
+        // LoadInformationsFromUnitData();
+
         isGameRunning = false;
 
         SetAnimationState(AnimationState.Idle);
@@ -107,20 +116,18 @@ public class Units : MonoBehaviour
         ResetHpBarQuaternion();
 
         hp = totalHealth;
-        shield = totalShield;
 
         chessTileSize = VoidbornMapGeneratorHybrid.instance.chessTile;
-
-        unitsClass.Add(UnitsClass.OnLand);
 
         backupUnits.position = gameObject.transform.position;
         backupUnits.rotation = gameObject.transform.rotation;
 
+        GetComponentInChildren<ChangeHealthBarColor>().ChangeColor(team);
         if (team == UnitsTeam.Enemy)
             enemyTag = "Champion";
         else
             enemyTag = "Enemy";
-
+        
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
     }
 
@@ -129,16 +136,23 @@ public class Units : MonoBehaviour
         gameObject.layer = 0;
         isAlive = true;
         hpSlider.value = totalHealth;
-        shieldSlider.value = totalShield;
         isCapaciteAlreadyUse = false;
         gameObject.transform.SetPositionAndRotation(backupUnits.position, backupUnits.rotation);
 
         target = null;
         Start();
-
-        Debug.Log("Entity '" + gameObject.name + "' has been reset.");
-
         BugTracker.Info("Entity '" + gameObject.name + "' has been reset.");
+    }
+
+    protected void LoadInformationsFromUnitData()
+    {
+        speed = 0.5f;
+        attackRate = 2f;
+        totalHealth = 150;
+        damagePerAttack = 25;
+        manaCost = 5;
+        team = UnitsTeam.Enemy;
+        entityType = EntityType.Champion;
     }
 
     private void LateUpdate() {
@@ -223,7 +237,6 @@ public class Units : MonoBehaviour
         {
             if (entity == null || entity == gameObject)
                 continue;
-            
             Units unit = entity.GetComponentInParent<Units>();
 
             if (unit == null || !unit.isAlive)
@@ -287,15 +300,14 @@ public class Units : MonoBehaviour
         if (hpSlider == null)
             BugTracker.Error("'" + gameObject.name + "' has a hpSlider null !");
 
+        if (damage - shield < 0) {
+            damage = 0;
+            // popup shield
+            // DamagePopupManager.instance.InitShield(transform);
+        } else
+            damage -= shield;
+
         DamagePopupManager.instance.Init(transform, damage);
-
-        // if (shield > 0 && shieldSlider != null) {
-        //     shield -= damage;
-        //     shieldSlider.value = hp / totalShield;
-
-        //     if (shield < 0)
-        //         damage = shield * -1;
-        // }
 
         hp -= damage;
         hpSlider.value = hp / totalHealth;
@@ -353,7 +365,7 @@ public class Units : MonoBehaviour
         // DONNER L'OR
         if (ShopManager.instance != null)
         {
-            ShopManager.instance.AddGold(reward_value);
+            ShopManager.instance.AddGold(rewardValue);
         }
 
         GameLoopManager.instance.CheckVictory();
