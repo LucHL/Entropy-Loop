@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Tiger : Units
 {
+    public override UnitsClass unitsClass => UnitsClass.Archer;
+
     protected override void Start()
     {
         attackRate = 2f;

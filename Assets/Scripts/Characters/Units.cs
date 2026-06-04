@@ -66,7 +66,7 @@ public class Units : MonoBehaviour
     public float attackAnimDuration = 1f;
     public EntityType entityType = EntityType.Basic;
     public int rewardValue = 10; // Reward System
-    public List<UnitsClass> unitsClass = new();
+    public virtual UnitsClass unitsClass => UnitsClass.Dps;
 
 
     /* end */
