@@ -11691,7 +11691,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46d29ab00bfac841680c35ff5c1023df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnAlgo
-  numberEnemy: 3
+  manaMax: 10
+  currentMana: 0
+  currentStrategy: 0
+  maxEntity: 3
 --- !u!1 &1460216435
 GameObject:
   m_ObjectHideFlags: 0
