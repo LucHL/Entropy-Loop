@@ -29,39 +29,39 @@ public class EnemySpawnAlgo : MonoBehaviour
         instance = this;
     }
 
-    // public void SpawnEnemies(float tileSize)
-    // {
-    //     BugTracker.Info("[Enemy Spawn Algo] Start algo spawn enemy.");
-    //     List<GameObject> allEntities = new();
+    public void SpawnEnemies(float tileSize)
+    {
+        BugTracker.Info("[Enemy Spawn Algo] Start algo spawn enemy.");
+        List<GameObject> allEntities = new();
 
-    //     allEntities.Add(Resources.Load<GameObject>("CrocodilePrefab"));
-    //     allEntities.Add(Resources.Load<GameObject>("TigerPrefab"));
-    //     allEntities.Add(Resources.Load<GameObject>("Enemy_tmp"));
+        allEntities.Add(Resources.Load<GameObject>("CrocodilePrefab"));
+        allEntities.Add(Resources.Load<GameObject>("TigerPrefab"));
+        allEntities.Add(Resources.Load<GameObject>("Enemy_tmp"));
         
-    //     _tileSize = tileSize;
-    //     int nbrEntities = 0;
-    //     int safetyExit = 0;
-    //     currentMana = manaMax;
+        _tileSize = tileSize;
+        int nbrEntities = 0;
+        int safetyExit = 0;
+        currentMana = manaMax;
 
-    //     currentStrategy = Strategy.Aggressive;
-    //     BugTracker.Info("[Enemy Spawn Algo] current algo strategy: '"+currentStrategy+"'.");
+        currentStrategy = Strategy.Aggressive;
+        BugTracker.Info("[Enemy Spawn Algo] current algo strategy: '"+currentStrategy+"'.");
 
-    //     List<GameObject> filtered = FilteredByStrategy(allEntities, currentStrategy);
-    //     List<GameObject> affordableUnits = new();
+        List<GameObject> filtered = FilteredByStrategy(allEntities, currentStrategy);
+        List<GameObject> affordableUnits = new();
 
-    //     while (currentMana > 0 && safetyExit < 100 && nbrEntities < maxEntity) {
-    //         safetyExit++;
+        while (currentMana > 0 && safetyExit < 100 && nbrEntities < maxEntity) {
+            safetyExit++;
 
-    //         GameObject entity = filtered[Random.Range(0, filtered.Count)];
-    //         if (entity.GetComponent<Units>().manaCost - currentMana <= 0) {
-    //             currentMana -= entity.GetComponent<Units>().manaCost;
-    //             affordableUnits.Add(entity);
-    //             nbrEntities++;
-    //             BugTracker.Info("[Enemy Spawn Algo] Entity '"+entity.name+"' add to the spawn list.");
-    //         }
-    //     }
-    //     IntiateEntity(affordableUnits);
-    // }
+            GameObject entity = filtered[Random.Range(0, filtered.Count)];
+            if (entity.GetComponent<Units>().manaCost - currentMana <= 0) {
+                currentMana -= entity.GetComponent<Units>().manaCost;
+                affordableUnits.Add(entity);
+                nbrEntities++;
+                BugTracker.Info("[Enemy Spawn Algo] Entity '"+entity.name+"' add to the spawn list.");
+            }
+        }
+        IntiateEntity(affordableUnits);
+    }
 
     private void IntiateEntity(List<GameObject> entities)
     {
@@ -211,7 +211,7 @@ public class EnemySpawnAlgo : MonoBehaviour
     }
 
 
-    public void SpawnEnemies(float tileSize)
+    public void SpawnEnemiesssss(float tileSize)
     {
         Vector2 tilePos = GetRandomTilePosition();
         // x = tilePos.x + (tileSize / 2);
