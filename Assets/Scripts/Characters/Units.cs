@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+
+public enum UnitsTeam {
+    Player,
+    Enemy
+}
 
 public enum UnitsClass {
     OnLand,
@@ -31,22 +35,18 @@ public class BackupUnits
 public class Units : MonoBehaviour
 {
     public Units instance;
-    public GameObject attackEffect;
 
     [Header("NavMesh")]
-    public NavMeshAgent navMeshAgent;
+    [SerializeField] NavMeshAgent navMeshAgent;
 
     [Header("HP Bar")]
-    public Canvas hpBarCanvas;
+    [SerializeField] Canvas hpBarCanvas;
     protected Slider hpSlider;
     public Transform modelPosition;
-
-    public GameObject damagePopupPrefab;
 
     [Header("Must be handle in each entities script")]
     public float damagePerAttack = 10;
     public int manaCost = 3;
-    protected string enemyTag = "Champion";
     protected float totalHealth = 100;
     protected float hp = 0;
     protected float attackRate = 1f; // every seconde
@@ -55,14 +55,23 @@ public class Units : MonoBehaviour
     protected float attackAnimDuration = 1f;
     public EntityType entityType = EntityType.Basic;
     protected float timeBeforeFirstAttack = 0f;
+    public int reward_value = 10; // Reward System
+
+
+    /* end */
     public bool isAlive = true;
+    public UnitsTeam team;
 
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip attackSound = null;
-    public AudioClip deathSound;
-    /* end */
+    public AudioClip deathSound = null;
+    
+    [Header("Effects")]
+    public GameObject attackEffect;
 
+    [Header("Do not touch")]
+    protected string enemyTag = "Champion";
     protected List<UnitsClass> unitsClass = new();
     protected GameObject target = null;
     protected Units targetUnitsComponent = null;
@@ -83,7 +92,8 @@ public class Units : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         currentAnimationState = AnimationState.Idle;
         hpSlider = hpBarCanvas.GetComponentInChildren<Slider>();
-        unitsClass.Add(UnitsClass.OnLand);
+        team = UnitsTeam.Enemy;
+        gameObject.layer = 0;
     }
 
     protected virtual void Start() {
@@ -97,8 +107,16 @@ public class Units : MonoBehaviour
 
         chessTileSize = VoidbornMapGeneratorHybrid.instance.chessTile;
 
+        unitsClass.Add(UnitsClass.OnLand);
+
         backupUnits.position = gameObject.transform.position;
         backupUnits.rotation = gameObject.transform.rotation;
+
+        if (team == UnitsTeam.Enemy)
+            enemyTag = "Champion";
+        else
+            enemyTag = "Enemy";
+
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
 
         GameLogManager.Instance.AddLog(gameObject.name + " on the battlefield");
@@ -106,6 +124,7 @@ public class Units : MonoBehaviour
 
     public void ResetUnit()
     {
+        gameObject.layer = 0;
         isAlive = true;
         hpSlider.value = totalHealth;
         isCapaciteAlreadyUse = false;
@@ -263,6 +282,7 @@ public class Units : MonoBehaviour
         if (hpSlider == null)
             BugTracker.Error("'" + gameObject.name + "' has a hpSlider null !");
 
+        DamagePopupManager.instance.Init(transform, damage);
         hp -= damage;
         hpSlider.value = hp / totalHealth;
         if (hp <= 0) {
@@ -295,6 +315,7 @@ public class Units : MonoBehaviour
 
         isAlive = false;
         SetAnimationState(AnimationState.Dead);
+        gameObject.layer = 6;
 
         GameLogManager.Instance.AddLog(gameObject.name + " die");
 
@@ -303,7 +324,6 @@ public class Units : MonoBehaviour
             StartCoroutine(DisablePrefabAfterDeathSound());
             return;
         }
-
 
         BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
 
@@ -317,6 +337,12 @@ public class Units : MonoBehaviour
         isAlive = false;
 
         BugTracker.Info("Entity '" + gameObject.name + "' is dead.");
+
+        // DONNER L'OR
+        if (ShopManager.instance != null)
+        {
+            ShopManager.instance.AddGold(reward_value);
+        }
 
         GameLoopManager.instance.CheckVictory();
     }
@@ -335,17 +361,5 @@ public class Units : MonoBehaviour
             audioSource.PlayOneShot(audioClip);
         else
             BugTracker.Warning("Function 'PlaySound': "+ audioClip.name + " is null.");
-    }
-
-    protected void InstatiateParticule(GameObject particule, Transform t, float duration)
-    {
-        StartCoroutine(HandleParticule(particule, t, duration));
-    }
-
-    private IEnumerator HandleParticule(GameObject particule, Transform t, float duration)
-    {
-        GameObject p = Instantiate(particule, t);
-        yield return new WaitForSeconds(duration);
-        Destroy(p);
     }
 }
