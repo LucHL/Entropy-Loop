@@ -2645,7 +2645,6 @@ MonoBehaviour:
     currentlevel: 0
     chaptersBeforeGame: 
     chaptersAfterGame: 
-    nbrSublevel: 0
     spawnAlgo:
       spawnStartegy: 
       deck: []

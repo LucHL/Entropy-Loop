@@ -47,7 +47,7 @@ public class EnemySpawnAlgo : MonoBehaviour
         currentMana = manaMax;
 
         BugTracker.Info("[Enemy Spawn Algo] current algo strategy: '"+currentStrategy+"'.");
-        BugTracker.Info("[Enemy Spawn Algo] max mana: '"+manaMax+"'.");
+        BugTracker.Info("[Enemy Spawn Algo] max mana: "+manaMax+".");
 
         List<GameObject> filtered = FilteredByStrategy(allEntities, currentStrategy);
         List<GameObject> affordableUnits = new();

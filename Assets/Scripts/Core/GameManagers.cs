@@ -100,11 +100,13 @@ public class GameManager : MonoBehaviour
         currentDeck = spawnAlgoData.deck[0];
         currentManaCost = spawnAlgoData.manaCost[0];
 
-        nbrSubLevelTotal = spawnAlgoData.spawnStartegy.Length;
+        nbrSubLevelTotal = spawnAlgoData.spawnStartegy.Length - 1;
 
-        nbrSubLevelRemaining = nbrSubLevelTotal + 1;
+        nbrSubLevelRemaining = nbrSubLevelTotal;
         BugTracker.Info("Number total of sub levels: " + nbrSubLevelTotal + ".");
-        BugTracker.Info("Number remaining of sub levels: " + (nbrSubLevelRemaining - 1) + ".");
+        BugTracker.Info("Number remaining of sub levels: " + nbrSubLevelRemaining + ".");
+
+        Debug.Log(currentStrategy);
     }
 
     private void SetNextStrategy()

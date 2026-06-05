@@ -8728,7 +8728,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Continue
+  m_text: Restart
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -16121,7 +16121,6 @@ GameObject:
   - component: {fileID: 1493871645}
   - component: {fileID: 1493871644}
   - component: {fileID: 1493871643}
-  - component: {fileID: 1493871642}
   m_Layer: 5
   m_Name: Continue
   m_TagString: Untagged
@@ -16149,19 +16148,6 @@ RectTransform:
   m_AnchoredPosition: {x: -194, y: -246}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1493871642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1493871640}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4781c482f283453e2b9f91f125aa5b6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ChangeSceneButton
-  sceneName: Game
 --- !u!114 &1493871643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16205,19 +16191,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1493871644}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1623300421}
-        m_TargetAssemblyTypeName: GameLoopManager, Assembly-CSharp
-        m_MethodName: RestartGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1493871644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17276,7 +17250,7 @@ GameObject:
   - component: {fileID: 1623300422}
   - component: {fileID: 1623300421}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: GameLoopManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17295,10 +17269,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameLoopManager
   popupEndGame: {fileID: 1425579394}
+  buttonNextOrRestart: {fileID: 1493871643}
   selectedCard: {fileID: 1227744278}
   manaManager: {fileID: 2123759539}
   settings: {fileID: 1722673971}
   selectedDeck: {fileID: 11400000, guid: e94581a26cc35dc408edfc28a32074b0, type: 2}
+  isGameRunning: 0
 --- !u!4 &1623300422
 Transform:
   m_ObjectHideFlags: 0

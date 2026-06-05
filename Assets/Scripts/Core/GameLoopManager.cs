@@ -2,22 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class GameLoopManager : MonoBehaviour
 {
     public static GameLoopManager instance;
-    public GameObject popupEndGame;
-    public bool isGameRunning = false;
 
-    private List<GameObject> playerUnits = new();
-    private List<GameObject> enemyUnits = new();
+    [Header("Popup End Game")]
+    [SerializeField] GameObject popupEndGame;
+    [SerializeField] Button buttonNextOrRestart;
 
     [Header("Deck & Mana manager")]
     public CardUI selectedCard;
     public ManaManager manaManager;
     [SerializeField] GameObject settings;
     public DeckData selectedDeck;
+
+
+    public bool isGameRunning = false;
+    private List<GameObject> playerUnits = new();
+    private List<GameObject> enemyUnits = new();
 
     void Awake()
     {
@@ -84,6 +88,8 @@ public class GameLoopManager : MonoBehaviour
     {
         isGameRunning = false;
 
+        BugTracker.Info("End of the game, player win: '" + isPlayerVictorious + "'.");
+
         if (isPlayerVictorious && GameManager.instance.currentLevelData.chaptersAfterGame != "" && GameManager.instance.currentLevelData != null) {
             GameManager.instance.nextStory = GameManager.instance.currentLevelData.chaptersAfterGame;
             LoadingScene.Instance.LoadStory();
@@ -93,7 +99,13 @@ public class GameLoopManager : MonoBehaviour
         popupEndGame.SetActive(true);
         if (isPlayerVictorious) {
             popupEndGame.GetComponentInChildren<TextMeshProUGUI>().text = "You win";
+
+            buttonNextOrRestart.GetComponentInChildren<TextMeshProUGUI>().text = "Next";
+            buttonNextOrRestart.onClick.AddListener(GameManager.instance.SetNextLevel);
+            return;
         }
+
+        buttonNextOrRestart.onClick.AddListener(RestartGame);
     }
 
     public void CheckVictory()
@@ -123,6 +135,8 @@ public class GameLoopManager : MonoBehaviour
 
     public void RestartGame()
     {
+        BugTracker.Info("Game is restarting...");
+
         popupEndGame.SetActive(false);
         foreach (GameObject key in playerUnits) {
             key.SetActive(true);
