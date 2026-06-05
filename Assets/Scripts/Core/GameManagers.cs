@@ -105,8 +105,6 @@ public class GameManager : MonoBehaviour
         nbrSubLevelRemaining = nbrSubLevelTotal;
         BugTracker.Info("Number total of sub levels: " + nbrSubLevelTotal + ".");
         BugTracker.Info("Number remaining of sub levels: " + nbrSubLevelRemaining + ".");
-
-        Debug.Log(currentStrategy);
     }
 
     private void SetNextStrategy()

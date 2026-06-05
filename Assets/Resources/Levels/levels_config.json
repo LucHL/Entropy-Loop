@@ -5,7 +5,7 @@
         "chaptersBeforeGame": "Chapter1/chpt1-1",
         "chaptersAfterGame": "Chapter1/chpt1-2",
         "spawnAlgo": {
-            "spawnStartegy": ["Ranged"],
+            "spawnStartegy": [0],
             "deck": [""],
             "manaCost": [3]
         }
@@ -15,7 +15,7 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": ["BigUnits"],
+            "spawnStartegy": [1],
             "deck": [""],
             "manaCost": [5]
         }
@@ -25,7 +25,7 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": ["Aggressive"],
+            "spawnStartegy": [3],
             "deck": [""],
             "manaCost": [10]
         }
@@ -35,7 +35,7 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": ["Turtle"],
+            "spawnStartegy": [4],
             "deck": [""],
             "manaCost": [10]
         }
@@ -45,7 +45,7 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": ["Ranged", "Aggressive", "Boss"],
+            "spawnStartegy": [5, 3, 3],
             "deck": [""],
             "manaCost": [10, 15, 20]
         }
@@ -55,7 +55,7 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": ["Aggressive"],
+            "spawnStartegy": [3],
             "deck": [""],
             "manaCost": [10]
         }
@@ -65,7 +65,7 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": ["Aggressive"],
+            "spawnStartegy": [3],
             "deck": [""],
             "manaCost": [10]
         }
