@@ -87,6 +87,7 @@ public class Units : MonoBehaviour
     protected Units targetUnitsComponent = null;
     protected GameObject[] entities = null;
     protected Animator animator;
+    protected Rigidbody unitsRigidbody;
     protected AnimationState state = AnimationState.Idle;
     protected float attackTimer = 0f;
     protected bool isCapaciteAlreadyUse = false;
@@ -101,9 +102,11 @@ public class Units : MonoBehaviour
         BugTracker.Info("New entity '" + gameObject.name + "' created.");
 
         animator = GetComponentInChildren<Animator>();
+        unitsRigidbody = GetComponent<Rigidbody>();
         currentAnimationState = AnimationState.Idle;
         team = UnitsTeam.Enemy;
         gameObject.layer = 0;
+        unitsRigidbody.isKinematic = true;
     }
 
     protected virtual void Start() {
@@ -128,6 +131,8 @@ public class Units : MonoBehaviour
         else
             enemyTag = "Enemy";
         
+        unitsRigidbody.isKinematic = false;
+
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
     }
 
@@ -138,6 +143,7 @@ public class Units : MonoBehaviour
         hpSlider.value = totalHealth;
         isCapaciteAlreadyUse = false;
         gameObject.transform.SetPositionAndRotation(backupUnits.position, backupUnits.rotation);
+        unitsRigidbody.isKinematic = true;
 
         target = null;
         Start();

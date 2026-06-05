@@ -8,7 +8,7 @@ public class GameLoopManager : MonoBehaviour
 {
     public static GameLoopManager instance;
     public GameObject popupEndGame;
-    public bool isGameRunning { get; set; } = false;
+    public bool isGameRunning = false;
 
     private List<GameObject> playerUnits = new();
     private List<GameObject> enemyUnits = new();
@@ -84,7 +84,7 @@ public class GameLoopManager : MonoBehaviour
     {
         isGameRunning = false;
 
-        if (GameManager.instance.currentLevelData.chaptersAfterGame != "" && GameManager.instance.currentLevelData != null) {
+        if (isPlayerVictorious && GameManager.instance.currentLevelData.chaptersAfterGame != "" && GameManager.instance.currentLevelData != null) {
             GameManager.instance.nextStory = GameManager.instance.currentLevelData.chaptersAfterGame;
             LoadingScene.Instance.LoadStory();
             return;
@@ -162,17 +162,14 @@ public class GameLoopManager : MonoBehaviour
     public void SetSelectedCard(CardUI card)
     {
         if (selectedCard != null && selectedCard != card)
-        {
             selectedCard.DeselectCard();
-        }
 
         selectedCard = card;
     }
 
     public void DeselectCard()
     {
-        if (selectedCard != null)
-        {
+        if (selectedCard != null) {
             selectedCard.DeselectCard();
             selectedCard = null;
         }

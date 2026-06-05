@@ -21,7 +21,7 @@ public class EnemySpawnAlgo : MonoBehaviour
     public Strategy currentStrategy;
     public int maxEntity = 3;
 
-    private HashSet<Vector2> occupiedGridPositions = new();
+    private HashSet<string> occupiedGridPositions = new();
     private float _tileSize;
 
     public void Awake()
@@ -38,13 +38,16 @@ public class EnemySpawnAlgo : MonoBehaviour
         allEntities.Add(Resources.Load<GameObject>("TigerPrefab"));
         allEntities.Add(Resources.Load<GameObject>("Enemy_tmp"));
         
+        currentStrategy = GameManager.instance.currentStrategy;
+        manaMax = GameManager.instance.currentManaCost;
+
         _tileSize = tileSize;
         int nbrEntities = 0;
         int safetyExit = 0;
         currentMana = manaMax;
 
-        currentStrategy = Strategy.Aggressive;
         BugTracker.Info("[Enemy Spawn Algo] current algo strategy: '"+currentStrategy+"'.");
+        BugTracker.Info("[Enemy Spawn Algo] max mana: '"+manaMax+"'.");
 
         List<GameObject> filtered = FilteredByStrategy(allEntities, currentStrategy);
         List<GameObject> affordableUnits = new();
@@ -72,9 +75,13 @@ public class EnemySpawnAlgo : MonoBehaviour
 
         foreach (GameObject e in entities) {
             Vector2 vector2 = GetStrategicTilePosition(e.GetComponent<Units>().unitsClass);
-            Debug.Log($"x: {vector2.x} y: {vector2.y}");
 
-            GameObject entityInstance = Instantiate(e, new Vector3(vector2.x + _tileSize, 2f, vector2.y), Quaternion.identity);
+            if (vector2 == new Vector2(-1f, -1f)) {
+                BugTracker.Error("'" + e.name + "' vector2 is -1f, failed to instantiate units.");
+                return;
+            }
+
+            GameObject entityInstance = Instantiate(e, new Vector3(vector2.x, 2f, vector2.y), Quaternion.identity);
             entityInstance.transform.Rotate(0, 180, 0);
             GameLoopManager.instance.RegisterUnit(entityInstance, false);
 
@@ -110,32 +117,32 @@ public class EnemySpawnAlgo : MonoBehaviour
         int FrontY = halfBoard;
 
         switch (unitClass) {
-            case UnitsClass.Healer:
-            case UnitsClass.Buffer:
-                RearY = 0;
-                FrontY = Mathf.FloorToInt((slice * 1));
-                break;
-
-            case UnitsClass.Archer:
-            case UnitsClass.Mage:
-                RearY = Mathf.FloorToInt(slice * 1);
-                FrontY = Mathf.FloorToInt((slice * 2));
+            case UnitsClass.Tank:
+                RearY = halfBoard + 1;
+                FrontY = Mathf.FloorToInt(halfBoard + slice);
                 break;
 
             case UnitsClass.Dps:
             case UnitsClass.Assassin:
-                RearY = Mathf.FloorToInt(slice * 2);
-                FrontY = Mathf.FloorToInt((slice * 3));
+                RearY = Mathf.FloorToInt(halfBoard + slice) + 1;
+                FrontY = Mathf.FloorToInt(halfBoard + (slice * 2));
                 break;
 
-            case UnitsClass.Tank:
-                RearY = Mathf.FloorToInt(slice * 3);
-                FrontY = halfBoard;
+            case UnitsClass.Archer:
+            case UnitsClass.Mage:
+                RearY = Mathf.FloorToInt(halfBoard + (slice * 2)) + 1;
+                FrontY = Mathf.FloorToInt(halfBoard + (slice * 3));
+                break;
+
+            case UnitsClass.Healer:
+            case UnitsClass.Buffer:
+                RearY = Mathf.FloorToInt(halfBoard + (slice * 3)) + 1;
+                FrontY = maxY;
                 break;
         }
 
-        RearY = Mathf.Clamp(RearY, 0, halfBoard);
-        FrontY = Mathf.Clamp(FrontY, 0, halfBoard);
+        RearY = Mathf.Clamp(RearY, halfBoard + 1, maxY);
+        FrontY = Mathf.Clamp(FrontY, halfBoard + 1, maxY);
 
         List<GameObject> validTiles = new();
 
@@ -145,32 +152,17 @@ public class EnemySpawnAlgo : MonoBehaviour
             int y = int.Parse(parts[2]);
 
             if (x <= maxX && y >= RearY && y <= FrontY) {
-                if (!validTiles.Contains(t)) {
+                if (!validTiles.Contains(t) && !occupiedGridPositions.Contains(t.name)) {
                     validTiles.Add(t);
-                }
-            }
-        }
-
-        if (validTiles.Count == 0) {
-            foreach (GameObject t in tiles) {
-                string[] parts = t.name.Split('_');
-                int x = int.Parse(parts[1]);
-                int y = int.Parse(parts[2]);
-
-                if (x <= maxX && y >= 0 && y <= halfBoard) {
-                    if (!validTiles.Contains(t)) {
-                        validTiles.Add(t);
-                    }
                 }
             }
         }
 
         if (validTiles.Count > 0) {
             GameObject chosenTile = validTiles[Random.Range(0, validTiles.Count)];
-            occupiedGridPositions.Add(chosenTile.transform.position);
-            Debug.Log($"tile={chosenTile.name} x: {chosenTile.transform.position.x} y: {chosenTile.transform.position.y}");
+            occupiedGridPositions.Add(chosenTile.name);
 
-            return chosenTile.transform.position;
+            return new Vector2(chosenTile.transform.position.x, chosenTile.transform.position.z);
         }
         return new Vector2(-1f, -1f);
     }
@@ -208,88 +200,5 @@ public class EnemySpawnAlgo : MonoBehaviour
             default:
                 return allEntity;
         }
-    }
-
-
-    public void SpawnEnemiesssss(float tileSize)
-    {
-        Vector2 tilePos = GetRandomTilePosition();
-        // x = tilePos.x + (tileSize / 2);
-        // y = tilePos.y + (tileSize / 2);
-
-        GameObject cocodilePrefab = Resources.Load<GameObject>("CrocodilePrefab");
-        // GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
-        GameObject cocodileInstance = Instantiate(cocodilePrefab, new Vector3(-2f, 2f, 0f), Quaternion.identity);
-        cocodileInstance.transform.Rotate(0, 180, 0);
-
-        // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
-
-        GameLoopManager.instance.RegisterUnit(cocodileInstance, false);
-
-        BugTracker.Info("CocodilePrefab spawn.");
-
-        // TMP Create a Prefab
-        while((tilePos = GetRandomTilePosition()) != tilePos);
-
-        // x = tilePos.x + (tileSize / 2);
-        // y = tilePos.y + (tileSize / 2);
-
-        GameObject tigerPrefab = Resources.Load<GameObject>("TigerPrefab");
-        // GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
-        GameObject tigerInstance = Instantiate(tigerPrefab, new Vector3(0f, 2f, 0f), Quaternion.identity);
-        tigerInstance.transform.Rotate(0, 180, 0);
-
-        // enemyInstance.GetComponent<NavMeshAgent>().enabled = false;
-
-        GameLoopManager.instance.RegisterUnit(tigerInstance, false);
-
-        BugTracker.Info("TigerPrefab spawn.");
-        // EnemySpawnAlgo.instance.SpawnEnemies();
-
-        // TMP Create a Prefab
-        while((tilePos = GetRandomTilePosition()) != tilePos);
-
-        // x = tilePos.x + (tileSize / 2);
-        // y = tilePos.y + (tileSize / 2);
-
-        GameObject enemy_tmpPrefab = Resources.Load<GameObject>("Enemy_tmp");
-        // GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(tilePos.x, 2f, tilePos.y), Quaternion.identity);
-        GameObject enemy_tmpInstance = Instantiate(enemy_tmpPrefab, new Vector3(2f, 2f, 0f), Quaternion.identity);
-        enemy_tmpInstance.transform.Rotate(0, 180, 0);
-
-        // enemyInstance1.GetComponent<NavMeshAgent>().enabled = false;
-
-        GameLoopManager.instance.RegisterUnit(enemy_tmpInstance, false);
-
-        BugTracker.Info("Enemy_tmp spawn.");
-    }
-
-    private Vector2 GetRandomTilePosition()
-    {
-        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");
-        
-        int maxX = int.MinValue;
-        int maxY = int.MinValue;
-
-        foreach (GameObject t in tiles) {
-            string[] parts = t.name.Split('_');
-            int x = int.Parse(parts[1]);
-            int y = int.Parse(parts[2]);
-
-            if (y > maxY)
-                maxY = y;
-            if (x > maxX)
-                maxX = x;
-        }
-
-        int randomX = Random.Range(0, maxX);
-        int randomY = Random.Range(0, maxY / 2); // only half of the board
-
-        foreach (GameObject t in tiles) {
-            if (t.name == ("Tile_" + randomX + "_" + randomY))
-                return new Vector2(t.transform.position.x, t.transform.position.y);
-        }
-        Debug.Log("Tile doesn't exist.");
-        return new Vector2(0, 0);
     }
 }

@@ -2640,13 +2640,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93e9063f8be5d64883e41ccbadacfba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  alllevelData: []
   currentLevelData:
     currentlevel: 0
     chaptersBeforeGame: 
     chaptersAfterGame: 
     nbrSublevel: 0
-    isBoss: 0
+    spawnAlgo:
+      spawnStartegy: 
+      deck: []
+      manaCost: 
+  nextStory: 
+  spawnAlgoData:
+    spawnStartegy: 
+    deck: []
+    manaCost: 
+  nbrSubLevelTotal: 0
+  nbrSubLevelRemaining: 0
+  currentStrategy: 0
+  currentDeck: 
+  currentManaCost: 0
   isPaused: 0
+  maxLevelReach: 0
+  maxLevelFinish: 0
 --- !u!1001 &4947647886593123126
 PrefabInstance:
   m_ObjectHideFlags: 0

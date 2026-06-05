@@ -4,49 +4,70 @@
         "currentlevel": 1,
         "chaptersBeforeGame": "Chapter1/chpt1-1",
         "chaptersAfterGame": "Chapter1/chpt1-2",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": ["Ranged"],
+            "deck": [""],
+            "manaCost": [3]
+        }
     },
     {
         "currentlevel": 2,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": ["BigUnits"],
+            "deck": [""],
+            "manaCost": [5]
+        }
     },
     {
         "currentlevel": 3,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": ["Aggressive"],
+            "deck": [""],
+            "manaCost": [10]
+        }
     },
     {
         "currentlevel": 4,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": ["Turtle"],
+            "deck": [""],
+            "manaCost": [10]
+        }
     },
     {
         "currentlevel": 5,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": ["Ranged", "Aggressive", "Boss"],
+            "deck": [""],
+            "manaCost": [10, 15, 20]
+        }
     },
     {
         "currentlevel": 6,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": ["Aggressive"],
+            "deck": [""],
+            "manaCost": [10]
+        }
     },
     {
         "currentlevel": 7,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": ["Aggressive"],
+            "deck": [""],
+            "manaCost": [10]
+        }
     }
 ]}
