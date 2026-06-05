@@ -85,4 +85,12 @@ public class SettingsScript : MonoBehaviour
     {
         GameManager.instance.ResumeGame();
     }
+
+
+    /* SYSTEM */
+
+    public void ResetLogFile()
+    {
+        BugTracker.ResetBugTrackerFile();
+    }
 }

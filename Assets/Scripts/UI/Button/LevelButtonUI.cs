@@ -3,7 +3,7 @@ using TMPro;
 
 public class LevelButtonUI : MonoBehaviour
 {
-    public TMP_Text levelText;
+    public TextMeshProUGUI levelText;
 
     private LevelData levelData;
 
@@ -11,12 +11,16 @@ public class LevelButtonUI : MonoBehaviour
     {
         levelData = data;
         levelText.text = "Level " + levelData.currentlevel.ToString();
+
+        if (levelData.currentlevel <= GameManager.instance.maxLevelFinish)
+            levelText.color = new Color32(81, 255, 0, 255);
     }
 
     public void OnClick()
     {
+        GameManager.instance.SaveLevelConfig(levelData);
+
         if (levelData.chaptersBeforeGame != "") {
-            GameManager.instance.SaveLevelConfig(levelData);
             LoadingScene.Instance.LoadStory();
             return;
         }

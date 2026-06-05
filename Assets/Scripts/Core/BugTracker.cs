@@ -49,6 +49,8 @@ public static class BugTracker
         string path = Path.Combine(Application.persistentDataPath, "Logs");
         if (!Directory.Exists(path))
             Directory.Delete(path);
+        
+        Initialize();
     }
 
     public static void Error(string msg) => Report(IssueLevel.Error, msg);

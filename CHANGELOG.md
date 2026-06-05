@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 - log system with UI button
 - HP bar with different color for the player and enemy
 - new level & level is now handle with a json file
+- spawn algo for enemy, with differents trategy
+- use of json for the level generation
 
 ### Fixed
 - settings menu: sound now can be modified
