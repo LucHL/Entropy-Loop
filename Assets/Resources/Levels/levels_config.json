@@ -35,7 +35,7 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": [4],
+            "spawnStartegy": [5],
             "deck": [""],
             "manaCost": [10]
         }

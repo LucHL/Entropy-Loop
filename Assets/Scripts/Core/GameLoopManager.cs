@@ -138,14 +138,13 @@ public class GameLoopManager : MonoBehaviour
         BugTracker.Info("Game is restarting...");
 
         popupEndGame.SetActive(false);
-        foreach (GameObject key in playerUnits) {
-            key.SetActive(true);
+
+        foreach (GameObject key in playerUnits)
             key.GetComponent<Units>().ResetUnit();
-        }
-        foreach (GameObject key in enemyUnits) {
-            key.SetActive(true);
+
+        foreach (GameObject key in enemyUnits)
             key.GetComponent<Units>().ResetUnit();
-        }
+
         StartOrStopCombat(false);
 
         ManaManager.instance.AddMana(3);

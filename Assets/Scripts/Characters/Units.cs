@@ -138,6 +138,8 @@ public class Units : MonoBehaviour
 
     public void ResetUnit()
     {
+        gameObject.SetActive(true);
+
         gameObject.layer = 0;
         isAlive = true;
         hpSlider.value = totalHealth;
