@@ -28,6 +28,11 @@ public class GameLoopManager : MonoBehaviour
         instance = this;
     }
 
+    void Start()
+    {
+        LevelInformationFadeTextManager.instance.DisplayTextWithFade(GameManager.instance.currentLevelData.currentlevel.ToString(), "Facile");
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) {
