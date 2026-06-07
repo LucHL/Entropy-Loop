@@ -2,8 +2,8 @@
     "levels": [
     {
         "currentlevel": 1,
-        "chaptersBeforeGame": "Chapter1/chpt1-1",
-        "chaptersAfterGame": "Chapter1/chpt1-2",
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
         "spawnAlgo": {
             "spawnStartegy": [0],
             "deck": [""],
