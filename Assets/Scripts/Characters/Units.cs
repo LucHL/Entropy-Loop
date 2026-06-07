@@ -13,6 +13,7 @@ public enum UnitsClass {
     // corps à corps
     Tank,
     Dps,
+    Support,
 
     // milieu
     Assassin,
@@ -57,15 +58,17 @@ public class Units : MonoBehaviour
     [Header("Must be handle in each entities script")] // voir pour un UnitData
     public float damagePerAttack = 10;
     public int manaCost = 3;
-    public float totalHealth = 100;
+    public float totalHealth;
     public float hp = 0;
-    public float shield = 10;
+    public float defense = 10;
     public float attackRate = 1f; // every seconde
     public float attackRange = 1.5f; // 1f is equal to 1 chess tile
     public float speed = 1f;
     public float attackAnimDuration = 1f;
-    public EntityType entityType = EntityType.Basic;
-    public int rewardValue = 10; // Reward System
+    protected EntityType entityType = EntityType.Basic;
+    protected int rewardValue = 10; // Reward System
+    protected bool EntityHasCapacity = false;
+
     public virtual UnitsClass unitsClass => UnitsClass.Dps;
 
 
@@ -90,12 +93,23 @@ public class Units : MonoBehaviour
     protected Rigidbody unitsRigidbody;
     protected AnimationState state = AnimationState.Idle;
     protected float attackTimer = 0f;
-    protected bool isCapaciteAlreadyUse = false;
+    protected int multiplierTotalHp = 5;
 
     private AnimationState currentAnimationState;
     private BackupUnits backupUnits = new();
     public bool isGameRunning = false;
     private float chessTileSize = 1f;
+
+    protected float capacityTriggerMax = 100f;
+    protected float capacityPoints = 0f;
+
+
+    // hp * 5
+    // 4 def = 40%
+    // 100% = 10 def
+    // capacité: faire un jauge (ex: 100 pts, atk recu 5pts, defense 10pts) // lucas
+    // passif: c'est en permanant (sauf si temps)
+
 
     void Awake()
     {
@@ -122,8 +136,7 @@ public class Units : MonoBehaviour
 
         chessTileSize = VoidbornMapGeneratorHybrid.instance.chessTile;
 
-        backupUnits.position = gameObject.transform.position;
-        backupUnits.rotation = gameObject.transform.rotation;
+        SaveNewPosition();
 
         GetComponentInChildren<ChangeHealthBarColor>().ChangeColor(team);
         if (team == UnitsTeam.Enemy)
@@ -143,13 +156,12 @@ public class Units : MonoBehaviour
         gameObject.layer = 0;
         isAlive = true;
         hpSlider.value = totalHealth;
-        isCapaciteAlreadyUse = false;
         gameObject.transform.SetPositionAndRotation(backupUnits.position, backupUnits.rotation);
         unitsRigidbody.isKinematic = true;
 
         target = null;
-        Start();
         BugTracker.Info("Entity '" + gameObject.name + "' has been reset.");
+        Start();
     }
 
     protected void LoadInformationsFromUnitData()
@@ -184,9 +196,6 @@ public class Units : MonoBehaviour
         if (!isGameRunning)
             return;
 
-        if (!isCapaciteAlreadyUse)
-            Capacite();
-
         attackTimer -= Time.deltaTime;
 
         if (target != null && targetUnitsComponent != null) {
@@ -212,6 +221,15 @@ public class Units : MonoBehaviour
             if (target != null)
                 targetUnitsComponent = target.GetComponent<Units>();
         }
+
+        if (EntityHasCapacity && capacityPoints >= capacityTriggerMax) {
+            capacityPoints = 0;
+
+            BugTracker.Info("'"+name+"' capacity points is full, Capacity() activation.");
+            GameLogManager.Instance.AddLog("'"+name.Split("(")[0] +"' activated Capacity");
+
+            Capacite();
+        }
     }
 
     protected void SetAnimationState(AnimationState newState)
@@ -229,6 +247,11 @@ public class Units : MonoBehaviour
     }
 
     protected virtual void Capacite()
+    {
+        return;
+    }
+
+    protected virtual void Passif()
     {
         return;
     }
@@ -308,22 +331,20 @@ public class Units : MonoBehaviour
         if (hpSlider == null)
             BugTracker.Error("'" + gameObject.name + "' has a hpSlider null !");
 
-        if (damage - shield < 0) {
-            damage = 0;
-            // popup shield
-            // DamagePopupManager.instance.InitShield(transform);
-        } else
-            damage -= shield;
+        float reduction = defense * 0.05f;
+        reduction = Mathf.Clamp(reduction, 0f, 1f);
+        float multiplier = 1f - reduction;
+        damage *= multiplier;
 
         DamagePopupManager.instance.Init(transform, damage);
 
+        GainCapacityPoints(reduction * 10 / 2);
+
         hp -= damage;
         hpSlider.value = hp / totalHealth;
-        if (hp <= 0) {
-            // Capacite(); // exemple: in case of a commander who can revive
-            // can be change with a bool and wait for 1 more loop before going to Die();
+
+        if (hp <= 0)
             Die();
-        }
     }
 
     public virtual void Attack()
@@ -331,10 +352,12 @@ public class Units : MonoBehaviour
         if (target == null)
             return;
 
+        GainCapacityPoints(damagePerAttack);
+
         target.GetComponent<Units>().TakeDamage(damagePerAttack);
         PlaySound(attackSound);
 
-        BugTracker.Info("Entity '" + gameObject.name + "' attack '"+ target.name + "' and deal '" + damagePerAttack + "' damage. (hp: "+target.GetComponent<Units>().hp+"/"+target.GetComponent<Units>().totalHealth+").");
+        BugTracker.Info("Entity '" + gameObject.name + "' attack '"+ target.name + "' and deal " + damagePerAttack + " damage. (hp: "+target.GetComponent<Units>().hp+"/"+target.GetComponent<Units>().totalHealth+").");
         // if (attackEffect != null)
         // {
         //     GameObject effect = Instantiate(attackEffect, target.transform.position + new Vector3(0, 10, 0), Quaternion.identity);
@@ -393,5 +416,16 @@ public class Units : MonoBehaviour
             audioSource.PlayOneShot(audioClip);
         else
             BugTracker.Warning("Function 'PlaySound': "+ audioClip.name + " is null.");
+    }
+
+    private void GainCapacityPoints(float pts)
+    {
+        capacityPoints += pts;
+    }
+
+    public void SaveNewPosition()
+    {
+        backupUnits.position = gameObject.transform.position;
+        backupUnits.rotation = gameObject.transform.rotation;
     }
 }

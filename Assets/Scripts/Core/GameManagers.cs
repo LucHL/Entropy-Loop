@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
     // strategy
     public Strategy currentStrategy;
 
-    // deck
-    public string currentDeck;
+    // deck Enemy
+    public string currentEnemyDeck;
     public int currentManaCost;
 
 
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
         spawnAlgoData = currentLevelData.spawnAlgo;
 
         currentStrategy = spawnAlgoData.spawnStartegy[0];
-        currentDeck = spawnAlgoData.deck[0];
+        currentEnemyDeck = spawnAlgoData.deck[0];
         currentManaCost = spawnAlgoData.manaCost[0];
 
         nbrSubLevelTotal = spawnAlgoData.spawnStartegy.Length - 1;
@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
         nbrSubLevelRemaining -= 1;
 
         currentStrategy = spawnAlgoData.spawnStartegy[nbrSubLevelTotal - nbrSubLevelRemaining];
-        currentDeck = spawnAlgoData.deck[nbrSubLevelTotal - nbrSubLevelRemaining];
+        currentEnemyDeck = spawnAlgoData.deck[nbrSubLevelTotal - nbrSubLevelRemaining];
         currentManaCost = spawnAlgoData.manaCost[nbrSubLevelTotal - nbrSubLevelRemaining];
 
         BugTracker.Info("Loading next sub levels, remaining: " + (nbrSubLevelRemaining - 1) + ".");
