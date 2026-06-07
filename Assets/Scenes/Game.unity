@@ -7352,10 +7352,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07b4ecd7c5a84137a92836e39d305283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelInformationFadeTextManager
+  canvas: {fileID: 776570669}
   currentLevel: {fileID: 266925366}
   difficulty: {fileID: 677002890}
-  delayBeforeFade: 2
-  fadeDuration: 1
 --- !u!1 &677002888
 GameObject:
   m_ObjectHideFlags: 0

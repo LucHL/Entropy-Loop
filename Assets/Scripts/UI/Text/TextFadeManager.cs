@@ -6,6 +6,7 @@ public class LevelInformationFadeTextManager : MonoBehaviour
 {
     public static LevelInformationFadeTextManager instance;
 
+    [SerializeField] GameObject canvas;
     [SerializeField] TextMeshProUGUI currentLevel;
     [SerializeField] TextMeshProUGUI difficulty;
 
@@ -27,7 +28,7 @@ public class LevelInformationFadeTextManager : MonoBehaviour
     private IEnumerator FadeOutRoutine()
     {
         Color originalColorLevel = currentLevel.color;
-        Color originalColorDifficulty = currentLevel.color;
+        Color originalColorDifficulty = difficulty.color;
         currentLevel.color = new Color(originalColorLevel.r, originalColorLevel.g, originalColorLevel.b, 1f);
         difficulty.color = new Color(originalColorDifficulty.r, originalColorDifficulty.g, originalColorDifficulty.b, 1f);
 
@@ -47,5 +48,6 @@ public class LevelInformationFadeTextManager : MonoBehaviour
 
         currentLevel.color = new Color(originalColorLevel.r, originalColorLevel.g, originalColorLevel.b, 0f);
         difficulty.color = new Color(originalColorDifficulty.r, originalColorDifficulty.g, originalColorDifficulty.b, 0f);
+        canvas.SetActive(false);
     }
 }

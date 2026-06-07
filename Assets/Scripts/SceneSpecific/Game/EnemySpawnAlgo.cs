@@ -19,10 +19,10 @@ public class EnemySpawnAlgo : MonoBehaviour
     public int manaMax = 10;
     public int currentMana;
     public Strategy currentStrategy;
-    public int maxEntity = 3;
 
     private HashSet<string> occupiedGridPositions = new();
     private float _tileSize;
+    private int maxEntity = 10;
 
     public void Awake()
     {
@@ -52,11 +52,11 @@ public class EnemySpawnAlgo : MonoBehaviour
         List<GameObject> filtered = FilteredByStrategy(allEntities, currentStrategy);
         List<GameObject> affordableUnits = new();
 
-        while (currentMana > 0 && safetyExit < 100 && nbrEntities < maxEntity) {
+        while (currentMana > 0 && safetyExit < 100 && nbrEntities <= maxEntity) {
             safetyExit++;
 
             GameObject entity = filtered[Random.Range(0, filtered.Count)];
-            if (entity.GetComponent<Units>().manaCost - currentMana <= 0) {
+            if (currentMana - entity.GetComponent<Units>().manaCost >= 0) {
                 currentMana -= entity.GetComponent<Units>().manaCost;
                 affordableUnits.Add(entity);
                 nbrEntities++;
@@ -124,19 +124,20 @@ public class EnemySpawnAlgo : MonoBehaviour
 
             case UnitsClass.Dps:
             case UnitsClass.Assassin:
-                RearY = Mathf.FloorToInt(halfBoard + slice) + 1;
+            case UnitsClass.Support:
+                RearY = Mathf.FloorToInt(halfBoard + slice);
                 FrontY = Mathf.FloorToInt(halfBoard + (slice * 2));
                 break;
 
             case UnitsClass.Archer:
             case UnitsClass.Mage:
-                RearY = Mathf.FloorToInt(halfBoard + (slice * 2)) + 1;
+                RearY = Mathf.FloorToInt(halfBoard + (slice * 2));
                 FrontY = Mathf.FloorToInt(halfBoard + (slice * 3));
                 break;
 
             case UnitsClass.Healer:
             case UnitsClass.Buffer:
-                RearY = Mathf.FloorToInt(halfBoard + (slice * 3)) + 1;
+                RearY = Mathf.FloorToInt(halfBoard + (slice * 3));
                 FrontY = maxY;
                 break;
         }

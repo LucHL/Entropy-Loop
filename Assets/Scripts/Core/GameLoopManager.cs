@@ -166,12 +166,14 @@ public class GameLoopManager : MonoBehaviour
         foreach (GameObject e in entities) {
             e.GetComponentInChildren<Units>().isGameRunning = enabled;
         }
+        BugTracker.Info("Start Game: '"+isGameRunning+"'.");
     }
 
     private IEnumerator DesableEntityAfterDeath(GameObject entity)
     {
         yield return new WaitForSeconds(1f);
-        entity.SetActive(false);
+        if (isGameRunning)
+            entity.SetActive(false);
     }
 
 

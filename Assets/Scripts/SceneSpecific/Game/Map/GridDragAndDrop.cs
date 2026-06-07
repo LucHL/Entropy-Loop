@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GridDragAndDrop : MonoBehaviour
@@ -77,9 +78,10 @@ public class GridDragAndDrop : MonoBehaviour
             if (hit.collider.gameObject.tag.StartsWith("Tile")) {
                 String []list = hit.collider.gameObject.name.Split("_");
 
-                if (int.Parse(list[2]) < 4)
+                if (int.Parse(list[2]) < 4) {
                     selectedUnit.position = new Vector3(hit.collider.gameObject.transform.position.x, 2f, hit.collider.gameObject.transform.position.z);
-                else
+                    selectedUnit.GetComponent<Units>().SaveNewPosition();
+                } else
                     selectedUnit.position = new Vector3(originalPosition.x, 2f, originalPosition.z);
             }
         }

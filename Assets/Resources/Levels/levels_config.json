@@ -17,7 +17,7 @@
         "spawnAlgo": {
             "spawnStartegy": [1],
             "deck": [""],
-            "manaCost": [5]
+            "manaCost": [6]
         }
     },
     {
@@ -27,7 +27,7 @@
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [10]
+            "manaCost": [9]
         }
     },
     {
@@ -35,9 +35,9 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": [5],
+            "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [10]
+            "manaCost": [12]
         }
     },
     {
@@ -45,9 +45,9 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": [5, 3, 3],
+            "spawnStartegy": [3, 3, 3],
             "deck": [""],
-            "manaCost": [10, 15, 20]
+            "manaCost": [12, 15, 18]
         }
     },
     {
@@ -57,7 +57,7 @@
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [10]
+            "manaCost": [21]
         }
     },
     {
@@ -67,7 +67,7 @@
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [10]
+            "manaCost": [24]
         }
     }
 ]}
