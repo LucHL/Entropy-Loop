@@ -2657,7 +2657,7 @@ MonoBehaviour:
   nbrSubLevelTotal: 0
   nbrSubLevelRemaining: 0
   currentStrategy: 0
-  currentDeck: 
+  currentEnemyDeck: 
   currentManaCost: 0
   isPaused: 0
   maxLevelReach: 0
