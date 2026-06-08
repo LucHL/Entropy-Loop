@@ -2,13 +2,19 @@ using UnityEngine;
 
 public class Cavalier : Units
 {
+    public override UnitsClass unitsClass => UnitsClass.Dps;
+
     protected override void Start()
     {
         speed = 1f;
-        totalHealth = 100;
-        damagePerAttack = 10;
+        attackRate = 1f;
+        totalHealth = 6 * multiplierTotalHp;
+        damagePerAttack = 4;
+        defense = 3;
+
         manaCost = 4;
-        enemyTag = "Enemy";
+        team = UnitsTeam.Player;
+        entityType = EntityType.Basic;
         base.Start();
     }
 }

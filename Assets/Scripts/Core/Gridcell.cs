@@ -6,19 +6,44 @@ public class GridCell : MonoBehaviour
 {
     private GameObject spawnedUnit;
 
+    private Renderer cellRenderer;
+    private Color originalColor;
+    private bool isHighlighted = false;
+
+    void Start()
+    {
+        cellRenderer = GetComponent<Renderer>();
+        if (cellRenderer != null) {
+            originalColor = cellRenderer.material.color;
+        }
+    }
+
+    public void SetHighlight(bool shouldHighlight, Color color)
+    {
+        if (cellRenderer == null)
+            return;
+
+        if (color == Color.white)
+            color = originalColor;
+
+        if (shouldHighlight && !isHighlighted) {
+            cellRenderer.material.color = color;
+            isHighlighted = true;
+        }
+        else if (!shouldHighlight && isHighlighted) {
+            cellRenderer.material.color = originalColor;
+            isHighlighted = false;
+        }
+    }
+
     private void OnMouseDown()
     {
         if (IsPointerOverBlockingUI())
             return;
 
-        Debug.Log("GridCell OnMouseDown");
-
-        if (GameManager.Instance != null && GameManager.Instance.HasSelectedCard()) {
-            Debug.Log("GridCell clicked");
-
-
-            CardUI card = GameManager.Instance.selectedCard;
-            ManaManager mana = GameManager.Instance.manaManager;
+        if (GameLoopManager.instance != null && GameLoopManager.instance.HasSelectedCard()) {
+            CardUI card = GameLoopManager.instance.selectedCard;
+            ManaManager mana = GameLoopManager.instance.manaManager;
 
             int cost = card.cardData.manaCost;
 
@@ -26,14 +51,13 @@ public class GridCell : MonoBehaviour
                 return;
             }
 
-            SpawnUnit();
+            SpawnUnit(); // TODO gérer que la position soit pas dans le camp enemy
             mana.SpendMana(cost);
 
             HandSlot slot = card.GetComponent<HandSlot>();
-            Debug.Log(slot == null ? "HandSlot NULL" : "HandSlot OK");
 
             card.GetComponent<HandSlot>().ClearSlot();
-            GameManager.Instance.DeselectCard();
+            GameLoopManager.instance.DeselectCard();
         } else {
             FloatingTextManager.instance.Show("No card selected");
         }
@@ -64,7 +88,7 @@ public class GridCell : MonoBehaviour
     {
         if (spawnedUnit == null)
         {
-            GameObject unitPrefab = GameManager.Instance.GetSelectedUnitPrefab();
+            GameObject unitPrefab = GameLoopManager.instance.GetSelectedUnitPrefab();
             if (unitPrefab != null) {
                 //spawnedUnit = Instantiate(unitPrefab, position, Quaternion.identity);
                 unitPrefab.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
