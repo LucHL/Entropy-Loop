@@ -200,15 +200,6 @@ public class VoidMapGeneratorGPU : MonoBehaviour
 
         if (Application.isPlaying && EnemySpawnAlgo.instance != null)
             EnemySpawnAlgo.instance.SpawnEnemies(chessTile);
-
-        AutoPostProcess pp = UnityEngine.Object.FindFirstObjectByType<AutoPostProcess>();
-        if (pp == null)
-        {
-            GameObject ppGO = new GameObject("_PostProcess");
-            ppGO.transform.SetParent(transform);
-            pp = ppGO.AddComponent<AutoPostProcess>();
-        }
-        pp.Apply();
     }
 
     // ──────────────────────────────────────────────────────────────────
@@ -506,20 +497,18 @@ public class VoidMapGeneratorGPU : MonoBehaviour
 
         float cy = TerrainHeight(0f, 0f);
 
-        float boardWorldSize = Mathf.Ceil(chessboardSize / chessTile) * chessTile;
+        int   tiles     = 8;
+        float boardSize = tiles * chessTile;
+        float start     = -boardSize * 0.5f + chessTile * 0.5f;
+
         GameObject boardPad = GameObject.CreatePrimitive(PrimitiveType.Cube);
         boardPad.name = "BoardPad";
         boardPad.transform.SetParent(group.transform);
         boardPad.layer = gameObject.layer;
-        boardPad.transform.localScale    = new Vector3(boardWorldSize + 0.6f, 0.08f, boardWorldSize + 0.6f);
+        boardPad.transform.localScale    = new Vector3(boardSize + 0.6f, 0.08f, boardSize + 0.6f);
         boardPad.transform.localPosition = new Vector3(0f, cy + arenaRaise + 0.02f, 0f);
         boardPad.GetComponent<MeshRenderer>().sharedMaterial = matDirt;
         SafeRemoveCollider(boardPad.GetComponent<BoxCollider>());
-
-        int tiles = Mathf.Clamp(Mathf.RoundToInt(chessboardSize / chessTile), 4, 12);
-        if (tiles % 2 != 0) tiles += 1;
-        float boardSize = tiles * chessTile;
-        float start     = -boardSize * 0.5f + chessTile * 0.5f;
 
         Material[] stoneVariants = new Material[]
         {
@@ -554,7 +543,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         }
 
         AddPathJoints(group.transform, cy + arenaRaise, boardSize);
-        AddArenaOrganic(group.transform, cy + arenaRaise, boardWorldSize);
+        AddArenaOrganic(group.transform, cy + arenaRaise, boardSize);
 
         return group;
     }
