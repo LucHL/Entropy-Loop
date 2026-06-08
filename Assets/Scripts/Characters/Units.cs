@@ -134,7 +134,7 @@ public class Units : MonoBehaviour
 
         hp = totalHealth;
 
-        chessTileSize = VoidbornMapGeneratorHybrid.instance.chessTile;
+        chessTileSize = VoidMapGeneratorGPU.instance.chessTile;
 
         SaveNewPosition();
 
