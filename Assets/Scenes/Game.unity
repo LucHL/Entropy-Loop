@@ -1103,7 +1103,6 @@ MonoBehaviour:
   manaMax: 10
   currentMana: 0
   currentStrategy: 0
-  maxEntity: 3
 --- !u!1 &138056917
 GameObject:
   m_ObjectHideFlags: 0
@@ -5882,40 +5881,50 @@ MonoBehaviour:
   m_GameObject: {fileID: 555406327}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5eb56c8d2c1958742a89661b1afc9ce6, type: 3}
+  m_Script: {fileID: 11500000, guid: e8392ca3c3a74a84793c5cf294db4bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VoidbornMapGeneratorHybrid
   seed: 12345
   phase: 0
-  islandRadius: 60
-  islandEdgeFalloff: 8
-  islandMaxHeight: 6
-  islandResolution: 140
-  islandVisualResolution: 200
-  useGPUIslandVisual: 1
-  parkRadius: 12
-  chessboardSize: 8
-  chessTile: 1
-  arenaRaise: 0.6
+  islandRadius: 38
+  islandEdgeFalloff: 10
+  islandMaxHeight: 8
+  islandResolution: 256
+  islandVisualResolution: 400
+  useGPUIslandVisual: 0
+  largeNoiseScale: 0.022
+  mediumNoiseScale: 0.05
+  smallNoiseScale: 0.12
+  cliffStrength: 1.6
+  beachHeight: 1.2
+  beachBand: 5
+  arenaFlatZoneRadius: 2
+  surroundElevationStrength: 2
+  surroundRingOffset: 16
+  parkRadius: 4
+  chessboardSize: 3
+  chessTile: 0.6
+  arenaRaise: 0.06
   forestCount: 220
-  treeHeightRange: {x: 4, y: 7}
-  villageRadiusPhase1: 14
-  villageRadiusPhase2: 20
-  villageRadiusPhase3: 26
-  villageRadiusPhase4: 30
+  treeHeightRange: {x: 4, y: 8}
+  villageRadiusPhase1: 9
+  villageRadiusPhase2: 13
+  villageRadiusPhase3: 17
+  villageRadiusPhase4: 20
   housesPhase1: 10
   housesPhase2: 20
   housesPhase3: 35
   housesPhase4: 45
   roadWidth: 2.2
-  roadY: 0.02
-  lakeRadius: 6
+  roadY: 0.03
+  lakeRadius: 4
   lakeOffset: {x: 10, y: 6}
-  castleOuterRadius: 18
+  castleOuterRadius: 11
   castleWallHeight: 4.5
   castleTowers: 6
   towerRadius: 1.6
-  houseFootprintRange: {x: 2.4, y: 3.4}
+  houseWidthRange: {x: 2.8, y: 4}
+  houseDepthRange: {x: 2.4, y: 3.6}
   houseFloorHeightRange: {x: 2.4, y: 2.9}
   houseFloorsRange: {x: 1, y: 2}
   roofHeightFactor: 0.45
