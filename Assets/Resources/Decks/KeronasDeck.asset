@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: KeronasDeck
   m_EditorClassIdentifier: Assembly-CSharp::DeckData
   deckName: Keronas
+  commander: {fileID: 11400000, guid: 3d7d8ad50ee37f44d842004b47d61ec6, type: 2}
   cards:
   - {fileID: 11400000, guid: ac341ad8e5801ec4aae2bcd7c723811c, type: 2}
   - {fileID: 11400000, guid: 3d7d8ad50ee37f44d842004b47d61ec6, type: 2}

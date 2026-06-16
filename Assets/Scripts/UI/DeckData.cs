@@ -5,5 +5,6 @@ using System.Collections.Generic;
 public class DeckData : ScriptableObject
 {
     public string deckName;
+    public CardData commander;
     public List<CardData> cards;
 }
