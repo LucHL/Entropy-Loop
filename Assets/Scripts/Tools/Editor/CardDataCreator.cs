@@ -12,6 +12,7 @@ public class CardDataCreator : EditorWindow
     private float cardRarity = 0f;
     private int cardGoldCost = 100;
     private int cardManaCost = 0;
+    private bool isCommander = false;
 
     private string[] availableDecks = new string[0];
     private int selectedDeckIndex = -1;
@@ -23,7 +24,7 @@ public class CardDataCreator : EditorWindow
     public static void ShowWindow()
     {
         var win = GetWindow<CardDataCreator>("Card Creator");
-        win.minSize = new Vector2(400, 450);
+        win.minSize = new Vector2(400, 470);
         win.RefreshDeckList();
     }
 
@@ -31,17 +32,22 @@ public class CardDataCreator : EditorWindow
 
     private void RefreshDeckList()
     {
-        string decksRoot = "Assets/Prefabs/Decks";
+        string decksRoot = "Assets/Resources/Decks";
         if (!Directory.Exists(decksRoot))
         {
             availableDecks = new string[0];
             return;
         }
 
-        string[] dirs = Directory.GetDirectories(decksRoot);
+        string[] files = Directory.GetFiles(decksRoot, "*Deck.asset");
         List<string> names = new();
-        foreach (var dir in dirs)
-            names.Add(Path.GetFileName(dir));
+        foreach (var file in files)
+        {
+            string fileName = Path.GetFileNameWithoutExtension(file);
+            if (fileName.EndsWith("Deck"))
+                fileName = fileName.Substring(0, fileName.Length - 4);
+            names.Add(fileName);
+        }
         availableDecks = names.ToArray();
 
         if (selectedDeckIndex >= availableDecks.Length)
@@ -76,12 +82,12 @@ public class CardDataCreator : EditorWindow
             }
             else
             {
-                EditorGUILayout.HelpBox("Aucun deck trouvé dans Assets/Prefabs/Decks/", MessageType.Warning);
+                EditorGUILayout.HelpBox("Aucun deck trouvé dans Assets/Resources/Decks/", MessageType.Warning);
             }
         }
         else
         {
-            deckFolderName = EditorGUILayout.TextField(new GUIContent("Nom du Deck", "Créera un nouveau dossier dans Assets/Prefabs/Decks/"), deckFolderName);
+            deckFolderName = EditorGUILayout.TextField(new GUIContent("Nom du Deck", "Créera un nouveau deck dans Assets/Resources/Decks/"), deckFolderName);
         }
 
         GUILayout.Space(5);
@@ -93,6 +99,9 @@ public class CardDataCreator : EditorWindow
         cardRarity = EditorGUILayout.Slider("Rareté (0-10)", cardRarity, 0f, 10f);
         cardGoldCost = EditorGUILayout.IntField("Coût en Or", cardGoldCost);
         cardManaCost = EditorGUILayout.IntField("Coût en Mana", cardManaCost);
+
+        GUILayout.Space(5);
+        isCommander = EditorGUILayout.Toggle(new GUIContent("Commandant du deck", "Définit cette carte comme commandant du deck (remplace l'ancien si déjà défini)"), isCommander);
 
         EditorGUILayout.EndVertical();
 
@@ -124,6 +133,7 @@ public class CardDataCreator : EditorWindow
         cardRarity = 0f;
         cardGoldCost = 100;
         cardManaCost = 0;
+        isCommander = false;
         GUI.FocusControl(null);
     }
 
@@ -160,7 +170,9 @@ public class CardDataCreator : EditorWindow
 
     private void UpdateDeckData(CardData newCard)
     {
-        string deckPath = $"Assets/Prefabs/Decks/{deckFolderName}/{deckFolderName}Deck.asset";
+        string deckFolder = "Assets/Resources/Decks";
+        EnsureFolder(deckFolder);
+        string deckPath = $"{deckFolder}/{deckFolderName}Deck.asset";
 
         DeckData deckData = AssetDatabase.LoadAssetAtPath<DeckData>(deckPath);
 
@@ -170,20 +182,28 @@ public class CardDataCreator : EditorWindow
             deckData.deckName = deckFolderName;
             deckData.cards = new List<CardData>();
             AssetDatabase.CreateAsset(deckData, deckPath);
-            BugTracker.Info($"[CardTool] Nouveau DeckData '{deckFolderName}' créé.");
+            BugTracker.Info($"[CardTool] Nouveau DeckData '{deckFolderName}' créé dans Resources.");
+        }
+
+        // Définir le commandant si la case est cochée
+        if (isCommander)
+        {
+            deckData.commander = newCard;
+            BugTracker.Info($"[CardTool] '{newCard.cardName}' défini comme commandant de '{deckFolderName}'.");
         }
 
         if (!deckData.cards.Contains(newCard))
         {
             deckData.cards.Add(newCard);
-            EditorUtility.SetDirty(deckData);
-            AssetDatabase.SaveAssets();
             BugTracker.Info($"[CardTool] '{newCard.cardName}' ajoutée au deck '{deckFolderName}'.");
         }
         else
         {
-            BugTracker.Warning($"[CardTool] '{newCard.cardName}' est déjà dans le deck '{deckFolderName}'.");
+            BugTracker.Warning($"[CardTool] '{newCard.cardName}' déjà dans le deck '{deckFolderName}'.");
         }
+
+        EditorUtility.SetDirty(deckData);
+        AssetDatabase.SaveAssets();
     }
 
     private void SetPropertySafe(SerializedObject so, string propName, object value)
