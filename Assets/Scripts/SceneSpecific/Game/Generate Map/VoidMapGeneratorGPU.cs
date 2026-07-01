@@ -15,8 +15,8 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     public float islandRadius          = 38f;
     public float islandEdgeFalloff     = 10f;
     public float islandMaxHeight       = 8f;
-    public int   islandResolution      = 256;
-    public int   islandVisualResolution = 400;
+    public int   islandResolution      = 128;
+    public int   islandVisualResolution = 200;
     public bool  useGPUIslandVisual    = false;
 
     [Header("Planet Underside (ventre de l'île)")]
@@ -241,7 +241,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         root.transform.position = Vector3.zero;
 
         if (navSurface == null) navSurface = GetComponent<NavMeshSurface>();
-        if (navSurface != null && rebuildNavMeshAfterGenerate)
+        if (navSurface != null && rebuildNavMeshAfterGenerate && Application.isPlaying)
         {
             // Limiter le bake au volume de l'île uniquement : sans ça, les
             // nuages (y≈27) et les îles flottantes du vide agrandissent
@@ -1074,7 +1074,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             : parkRadius + 14f;
         if (outer > inner + 0.5f)
         {
-            int ringTrees = Mathf.RoundToInt((outer - inner) * 24f);
+            int ringTrees = Mathf.Min(Mathf.RoundToInt((outer - inner) * 24f), Mathf.Max(0, count - placed));
             for (int i = 0; i < ringTrees; i++)
             {
                 float ang = (float)rng.NextDouble() * Mathf.PI * 2f;
