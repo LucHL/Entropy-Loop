@@ -152,7 +152,82 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     void Start()
     {
         if (Application.isPlaying && generateOnPlay)
-            Generate();
+            StartCoroutine(GenerateAsync());
+    }
+
+    System.Collections.IEnumerator GenerateAsync()
+    {
+        rng = new System.Random(seed);
+        lastHousePositions.Clear();
+        lastRoadBranches.Clear();
+        if (autoClearBeforeGenerate) ClearChildren();
+        EnsureRoot();
+        BuildMaterials();
+        ComputeVoidBites();
+        yield return null;
+
+        var islandGroup = BuildIslandHybrid();
+        islandGroup.name = "Island";
+        yield return null;
+
+        var park = BuildParkAndArena();
+        park.name = "ParkAndArena";
+        yield return null;
+
+        if (phase >= 1)
+        {
+            var village = BuildVillage();
+            village.name = "Village";
+            yield return null;
+        }
+
+        int forestN = Mathf.Max(0, forestCount - phase * 30);
+        var forest = BuildForest(forestN);
+        forest.name = "Forest";
+        yield return null;
+
+        if (phase >= 2)
+        {
+            var lake = BuildLake();
+            lake.name = "Lake";
+            yield return null;
+        }
+        if (phase >= 3)
+        {
+            var castle = BuildCastle();
+            castle.name = "Castle";
+            yield return null;
+        }
+        if (phase >= 1)
+        {
+            var roads = BuildRoads();
+            roads.name = "Roads";
+            yield return null;
+        }
+
+        VoidMapPropsGPU props = GetComponent<VoidMapPropsGPU>();
+        if (props == null) props = gameObject.AddComponent<VoidMapPropsGPU>();
+        var propsGroup = props.GenerateProps(this, root, rng);
+        propsGroup.name = "Props";
+        yield return null;
+
+        root.transform.position = Vector3.zero;
+
+        if (navSurface == null) navSurface = GetComponent<NavMeshSurface>();
+        if (navSurface != null && rebuildNavMeshAfterGenerate)
+        {
+            navSurface.collectObjects = CollectObjects.Volume;
+            navSurface.center = Vector3.zero;
+            navSurface.size   = new Vector3(islandRadius * 2f + 4f,
+                                            islandMaxHeight * 2f + 8f,
+                                            islandRadius * 2f + 4f);
+            navSurface.BuildNavMesh();
+        }
+
+        if (EnemySpawnAlgo.instance != null)
+            EnemySpawnAlgo.instance.SpawnEnemies(chessTile);
+
+        ApplyVoidAtmosphere();
     }
 
     void OnValidate()
@@ -224,19 +299,6 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         if (props == null) props = gameObject.AddComponent<VoidMapPropsGPU>();
         Transform propsGroup = props.GenerateProps(this, root, rng);
         propsGroup.name = "Props";
-
-        // Batching statique des groupes immobiles : la forêt enrichie et le
-        // village représentent des milliers de primitives, le combine les
-        // fusionne en quelques gros batchs (gros gain de draw calls)
-        if (Application.isPlaying)
-        {
-            string[] staticGroups = { "Forest", "Village", "Roads", "Castle", "Lake" };
-            foreach (string gName in staticGroups)
-            {
-                Transform t = root.Find(gName);
-                if (t != null) StaticBatchingUtility.Combine(t.gameObject);
-            }
-        }
 
         root.transform.position = Vector3.zero;
 
@@ -395,10 +457,10 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     Texture2D GetVoidStarfield()
     {
         if (_voidStarTex != null) return _voidStarTex;
-        int size = 256;
+        int size = 40;
         Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, true);
         tex.wrapMode = TextureWrapMode.Repeat;
-        System.Random s = new System.Random(seed * 131 + 77);
+        System.Random s = new System.Random(seed * 13 + 2);
         Color[] px = new Color[size * size];
 
         // Fond violet profond (#1f132b) + nébuleuse lavande/bleue (#3b2665,
@@ -644,7 +706,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     void AddVoidGroundPatches(Transform parent)
     {
         if (phase < 2) return;
-        int attempts = 350 + phase * 130;
+        int attempts = 102 + phase * 13;
         for (int i = 0; i < attempts; i++)
         {
             float ang = (float)rng.NextDouble() * Mathf.PI * 2f;

@@ -208,11 +208,6 @@ public class VoidMapPropsGPU : MonoBehaviour
             BuildVoidDestruction(g, gDyn);
         }
 
-        // Les props immobiles sont combinés en gros batchs statiques
-        // pour réduire drastiquement les draw calls.
-        if (Application.isPlaying)
-            StaticBatchingUtility.Combine(g.gameObject);
-
         return g;
     }
 
