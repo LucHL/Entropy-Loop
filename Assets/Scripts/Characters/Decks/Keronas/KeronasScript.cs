@@ -2,6 +2,8 @@
 
 public class Keronas : Units
 {
+    public override UnitsClass unitsClass => UnitsClass.Dps;
+
     [Header("Specific to Keronas")]
     [SerializeField] GameObject particulCapacite;
     // [SerializeField] AudioClip CapaciteSound = null;
@@ -10,10 +12,12 @@ public class Keronas : Units
 
     protected override void Start()
     {
-        speed = 0.5f;
-        attackRate = 2f;
-        totalHealth = 150;
-        damagePerAttack = 25;
+        speed = 1f;
+        attackRate = 1.5f;
+        totalHealth = 8 * multiplierTotalHp;
+        damagePerAttack = 4;
+        defense = 4;
+
         manaCost = 5;
         team = UnitsTeam.Player;
         entityType = EntityType.Champion;
@@ -22,12 +26,9 @@ public class Keronas : Units
 
     protected override void Capacite()
     {
-        if (isCapaciteAlreadyUse)
-            return;
         if (hp > totalHealth / 2)
             return;
 
-        isCapaciteAlreadyUse = true;
         GameObject[] champions = GameObject.FindGameObjectsWithTag("Champion");
         foreach (GameObject e in champions) {
             if (!e.GetComponentInParent<Units>().isAlive)

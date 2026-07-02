@@ -2375,13 +2375,11 @@ MonoBehaviour:
   navMeshAgent: {fileID: 8981559609334556152}
   hpBarCanvas: {fileID: 5592034748584466071}
   hpSlider: {fileID: 5599958347934726297}
-  shieldSlider: {fileID: 8605314772249914355}
   modelPosition: {fileID: 5028670973977435553}
   damagePerAttack: 10
   manaCost: 3
   totalHealth: 100
   hp: 0
-  totalShield: 100
   shield: 0
   attackRate: 1
   attackRange: 1.5
@@ -2389,7 +2387,6 @@ MonoBehaviour:
   attackAnimDuration: 1
   entityType: 1
   rewardValue: 10
-  unitsClass: 
   isAlive: 1
   team: 1
   audioSource: {fileID: 7926323460743587458}
@@ -2465,8 +2462,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10.131174, y: 18.748783, z: 8.975735}
-  m_Center: {x: -0.12542725, y: 9.71152, z: 0.26562423}
+  m_Size: {x: 3.0114784, y: 18.748783, z: 3.6188412}
+  m_Center: {x: -0.112249106, y: 9.71152, z: -0.21076344}
 --- !u!1 &6272442638207350780
 GameObject:
   m_ObjectHideFlags: 0
@@ -2861,17 +2858,6 @@ Canvas:
 --- !u!114 &5599958347934726297 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 213888593383672922, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
-  m_PrefabInstance: {fileID: 5710827077692142787}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8605314772249914355 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4047846324142677808, guid: 67a97116e8e7bf91aa04fa56c18db0c7, type: 3}
   m_PrefabInstance: {fileID: 5710827077692142787}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

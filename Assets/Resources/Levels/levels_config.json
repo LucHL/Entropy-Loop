@@ -14,42 +14,60 @@
         "currentlevel": 2,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": [1],
+            "deck": [""],
+            "manaCost": [6]
+        }
     },
     {
         "currentlevel": 3,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [9]
+        }
     },
     {
         "currentlevel": 4,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [12]
+        }
     },
     {
         "currentlevel": 5,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": [3, 3, 3],
+            "deck": [""],
+            "manaCost": [12, 15, 18]
+        }
     },
     {
         "currentlevel": 6,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [21]
+        }
     },
     {
         "currentlevel": 7,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
-        "nbrSublevel": 0,
-        "isBoss": false
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24]
+        }
     }
 ]}

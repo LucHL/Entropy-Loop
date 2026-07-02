@@ -99,7 +99,7 @@ public class StoryManager : MonoBehaviour
 
     private void EndStory()
     {
-        BugTracker.Info("End of story for level '" + currentLevel.currentlevel + "'.");
+        BugTracker.Info("End of story for level " + currentLevel.currentlevel + ".");
 
         if (GameManager.instance.nextStory == currentLevel.chaptersAfterGame) {
             string[] name = currentLevel.chaptersAfterGame.Split("t"); // "Chapter1/chpt1-1" => "1-1"

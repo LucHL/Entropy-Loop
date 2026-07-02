@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6238a96c613d7fa43b0816324de0fb82, type: 3}
+  m_Name: KeronasDeck
+  m_EditorClassIdentifier: Assembly-CSharp::DeckData
+  deckName: Keronas
+  commander: {fileID: 11400000, guid: 3d7d8ad50ee37f44d842004b47d61ec6, type: 2}
+  cards:
+  - {fileID: 11400000, guid: ac341ad8e5801ec4aae2bcd7c723811c, type: 2}
+  - {fileID: 11400000, guid: 3d7d8ad50ee37f44d842004b47d61ec6, type: 2}
+  - {fileID: 11400000, guid: 89e620f8a079edf40acb0d754deb0caa, type: 2}
+  - {fileID: 11400000, guid: db1f706fb2249ff4097177ce349ce745, type: 2}

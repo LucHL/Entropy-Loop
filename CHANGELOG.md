@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 - log system with UI button
 - HP bar with different color for the player and enemy
 - new level & level is now handle with a json file
+- spawn algo for enemy, with differents trategy
+- use of json for the level generation
+- The level finish are in green
 
 ### Fixed
 - settings menu: sound now can be modified
@@ -17,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - gameLoop now handle only the game
 - position of entity when you Drag and Drop
 - change 3D model Cavalier to humainModel
+- entity dispawn when you restart a game
 
 
 ## [0.1.3-alpha] - 2026-05-27
@@ -40,3 +44,4 @@ All notable changes to this project will be documented in this file.
 - Menu with settings
 - Free camera
 - Level selector with one level playable
+- right click to remove entity from the board

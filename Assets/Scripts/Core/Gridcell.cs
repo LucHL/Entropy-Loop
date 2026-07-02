@@ -51,7 +51,7 @@ public class GridCell : MonoBehaviour
                 return;
             }
 
-            SpawnUnit();
+            SpawnUnit(); // TODO gérer que la position soit pas dans le camp enemy
             mana.SpendMana(cost);
 
             HandSlot slot = card.GetComponent<HandSlot>();

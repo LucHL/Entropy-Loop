@@ -41,10 +41,10 @@ public class ShopManager : MonoBehaviour
 
     void LoadCards()
     {
-        DeckData deck = GameLoopManager.instance.selectedDeck;
+        DeckData deck = GameModeManager.selectedDeck;
         if (deck == null)
         {
-            BugTracker.Error("[ShopManager] Aucun deck sélectionné dans le GameManager !");
+            BugTracker.Error("[ShopManager] Aucun deck sélectionné !");
             return;
         }
         allCards = new List<CardData>(deck.cards);
@@ -123,7 +123,7 @@ public class ShopManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-            ToggleShop();
+        // if (Input.GetKeyDown(KeyCode.S))
+        //     ToggleShop();
     }
 }
