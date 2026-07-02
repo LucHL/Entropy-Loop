@@ -40,7 +40,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     [Header("Park & Arena (center)")]
     public float parkRadius     = 4f;
     public float chessboardSize = 3f;
-    public float chessTile      = 0.6f;
+    public float chessTile      = 4.0f;
     public float arenaRaise     = 0.06f;
 
     [Header("Forest")]
@@ -145,6 +145,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
 
     void Awake()
     {
+        chessTile  = 1.0f;
         instance   = this;
         navSurface = GetComponent<NavMeshSurface>();
     }
@@ -1042,13 +1043,13 @@ public class VoidMapGeneratorGPU : MonoBehaviour
 
     void AddArenaOrganic(Transform parent, float y, float boardWorldSize)
     {
-        float innerR = boardWorldSize * 0.5f + 0.3f;
+        float innerR = boardWorldSize * 0.5f + 0.5f;
 
         int bushCount = 18;
         for (int i = 0; i < bushCount; i++)
         {
             float ang = (float)rng.NextDouble() * Mathf.PI * 2f;
-            float rad = Mathf.Lerp(innerR + 0.5f, parkRadius - 0.4f, (float)rng.NextDouble());
+            float rad = Mathf.Lerp(innerR, innerR + 2.0f, (float)rng.NextDouble());
             float x   = Mathf.Cos(ang) * rad;
             float z   = Mathf.Sin(ang) * rad;
             float gy  = TerrainHeight(x, z);
@@ -1067,7 +1068,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         for (int i = 0; i < rockCount; i++)
         {
             float ang = (float)rng.NextDouble() * Mathf.PI * 2f;
-            float rad = Mathf.Lerp(innerR + 0.3f, parkRadius - 0.3f, (float)rng.NextDouble());
+            float rad = Mathf.Lerp(innerR, innerR + 1.5f, (float)rng.NextDouble());
             float x   = Mathf.Cos(ang) * rad;
             float z   = Mathf.Sin(ang) * rad;
             float gy  = TerrainHeight(x, z);
@@ -1087,7 +1088,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         for (int i = 0; i < patchCount; i++)
         {
             float ang = (float)rng.NextDouble() * Mathf.PI * 2f;
-            float rad = Mathf.Lerp(innerR, parkRadius, (float)rng.NextDouble());
+            float rad = Mathf.Lerp(innerR, innerR + 2.5f, (float)rng.NextDouble());
             float x   = Mathf.Cos(ang) * rad;
             float z   = Mathf.Sin(ang) * rad;
             float gy  = TerrainHeight(x, z);
