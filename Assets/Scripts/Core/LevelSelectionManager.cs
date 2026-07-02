@@ -4,26 +4,13 @@ using UnityEngine.UI;
 public class LevelSelectManager : MonoBehaviour
 {
     public GameObject levelButtonPrefab;
-    public int levelCount = 50;
 
     private LevelData[] levels;
 
     void Start()
     {
-        LoadLevelsConfig();
+        levels = GameManager.instance.alllevelData;
         GenerateLevels();
-    }
-
-    void LoadLevelsConfig()
-    {
-        TextAsset jsonFile = Resources.Load<TextAsset>("Levels/levels_config");
-
-        if (jsonFile != null) {
-            LevelsWrapper wrapper = JsonUtility.FromJson<LevelsWrapper>(jsonFile.text);
-            levels = wrapper.levels;
-            GameManager.instance.alllevelData = levels;
-        } else
-            BugTracker.Critical("Failed to load levels configs from 'levels_config.json'.");
     }
 
     void GenerateLevels()

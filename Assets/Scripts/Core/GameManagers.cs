@@ -17,9 +17,11 @@ public class GameManager : MonoBehaviour
         if (instance == null) {
             instance = this;
             DontDestroyOnLoad(gameObject);
-        } else if (instance != this) {
+
+            LoadLevelsConfig();
+
+        } else if (instance != this)
             Destroy(gameObject);
-        }
     }
 
     // ---- PAUSE / RESUME ----
@@ -37,6 +39,17 @@ public class GameManager : MonoBehaviour
     }
 
     // ---- LEVELS ----
+
+    void LoadLevelsConfig()
+    {
+        TextAsset jsonFile = Resources.Load<TextAsset>("Levels/levels_config");
+
+        if (jsonFile != null) {
+            LevelsWrapper wrapper = JsonUtility.FromJson<LevelsWrapper>(jsonFile.text);
+            alllevelData = wrapper.levels;
+        } else
+            BugTracker.Critical("Failed to load levels configs from 'levels_config.json'.");
+    }
 
     public void SaveLevelConfig(LevelData levelData)
     {

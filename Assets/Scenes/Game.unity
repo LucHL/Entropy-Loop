@@ -5748,16 +5748,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VoidbornMapGeneratorHybrid
   seed: 12345
   phase: 0
-  islandRadius: 60
-  islandEdgeFalloff: 8
-  islandMaxHeight: 6
-  islandResolution: 140
-  islandVisualResolution: 200
-  useGPUIslandVisual: 1
-  parkRadius: 12
-  chessboardSize: 8
-  chessTile: 1
-  arenaRaise: 0.6
+  islandRadius: 38
+  islandEdgeFalloff: 10
+  islandMaxHeight: 8
+  islandResolution: 256
+  islandVisualResolution: 400
+  useGPUIslandVisual: 0
+  buildUnderside: 1
+  undersideDepth: 14
+  undersideResolution: 80
+  largeNoiseScale: 0.022
+  mediumNoiseScale: 0.05
+  smallNoiseScale: 0.12
+  cliffStrength: 1.6
+  beachHeight: 1.2
+  beachBand: 5
+  arenaFlatZoneRadius: 2
+  surroundElevationStrength: 2
+  surroundRingOffset: 16
+  parkRadius: 4
+  chessboardSize: 3
+  chessTile: 0.6
+  arenaRaise: 0.06
   forestCount: 220
   treeHeightRange: {x: 4, y: 7}
   villageRadiusPhase1: 14
@@ -5784,6 +5796,9 @@ MonoBehaviour:
   autoClearBeforeGenerate: 1
   rebuildNavMeshAfterGenerate: 1
   islandGPUShader: {fileID: 0}
+  lastHousePositions: []
+  lastRoadBranches: []
+  voidBites: []
 --- !u!114 &555406329
 MonoBehaviour:
   m_ObjectHideFlags: 0
