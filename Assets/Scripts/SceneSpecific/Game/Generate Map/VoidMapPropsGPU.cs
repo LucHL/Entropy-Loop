@@ -668,7 +668,7 @@ public class VoidMapPropsGPU : MonoBehaviour
     {
         if (benchCount <= 0) return;
         Transform g = Group("Benches", parent);
-        float rad = gen.parkRadius - 0.7f;
+        float rad = 8f * gen.chessTile * 0.5f + 2.0f;
         for (int i = 0; i < benchCount; i++)
         {
             float ang = i * (Mathf.PI * 2f / benchCount) + (R01() - 0.5f) * 0.35f;
@@ -1298,7 +1298,7 @@ public class VoidMapPropsGPU : MonoBehaviour
     {
         Transform g = Group("ArenaDecor", parent);
         float cy = gen.TerrainHeight(0f, 0f);
-        float boardWorld = Mathf.Ceil(gen.chessboardSize / gen.chessTile) * gen.chessTile;
+        float boardWorld = 8f * gen.chessTile;
         float half = boardWorld * 0.5f + 0.7f;
 
         // Braseros aux 4 coins du plateau
@@ -1328,7 +1328,7 @@ public class VoidMapPropsGPU : MonoBehaviour
         for (int i = 0; i < banners; i++)
         {
             float ang = i * (Mathf.PI * 2f / banners) + 0.26f;
-            float rad = gen.parkRadius + 0.6f;
+            float rad = boardWorld * 0.5f + 1.8f;
             Vector3 pos = new Vector3(Mathf.Cos(ang) * rad, 0f, Mathf.Sin(ang) * rad);
             if (NearHouse(pos, 1.9f)) continue;   // pas de bannière collée à une maison
             float gy  = gen.TerrainHeight(pos.x, pos.z);
@@ -1352,7 +1352,7 @@ public class VoidMapPropsGPU : MonoBehaviour
 
         // Cordon de poteaux reliés autour de l'arène
         int posts = 20;
-        float ropeR = gen.parkRadius + 0.1f;
+        float ropeR = boardWorld * 0.5f + 0.5f;
         Vector3 prev = Vector3.zero;
         for (int i = 0; i <= posts; i++)
         {
