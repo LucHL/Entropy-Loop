@@ -25,6 +25,10 @@ public class LevelButtonUI : MonoBehaviour
             return;
         }
 
-        LoadingScene.Instance.LoadGame();
+        bool tuto = false;
+        if (levelData.currentlevel == 1)
+            tuto = true;
+
+        LoadingScene.Instance.LoadGame(tuto);
     }
 }

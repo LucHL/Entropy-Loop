@@ -1,7 +1,17 @@
 {
     "levels": [
-    {
+        {
         "currentlevel": 1,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "spawnAlgo": {
+            "spawnStartegy": [0],
+            "deck": [""],
+            "manaCost": [9]
+        }
+    },
+    {
+        "currentlevel": 2,
         "chaptersBeforeGame": "Chapter1/chpt1-1",
         "chaptersAfterGame": "Chapter1/chpt1-2",
         "spawnAlgo": {
@@ -11,7 +21,7 @@
         }
     },
     {
-        "currentlevel": 2,
+        "currentlevel": 3,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
@@ -21,7 +31,7 @@
         }
     },
     {
-        "currentlevel": 3,
+        "currentlevel": 4,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
@@ -31,7 +41,7 @@
         }
     },
     {
-        "currentlevel": 4,
+        "currentlevel": 5,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
@@ -41,7 +51,7 @@
         }
     },
     {
-        "currentlevel": 5,
+        "currentlevel": 6,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
@@ -51,7 +61,7 @@
         }
     },
     {
-        "currentlevel": 6,
+        "currentlevel": 7,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
@@ -61,7 +71,7 @@
         }
     },
     {
-        "currentlevel": 7,
+        "currentlevel": 8,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
