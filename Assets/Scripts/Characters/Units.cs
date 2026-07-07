@@ -138,6 +138,7 @@ public class Units : MonoBehaviour
 
         SaveNewPosition();
 
+        team = GetComponentInChildren<EntityTeam>().GetTeam();
         GetComponentInChildren<ChangeHealthBarColor>().ChangeColor(team);
         if (team == UnitsTeam.Enemy)
             enemyTag = "Champion";
@@ -145,6 +146,7 @@ public class Units : MonoBehaviour
             enemyTag = "Enemy";
         
         unitsRigidbody.isKinematic = false;
+
 
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
     }

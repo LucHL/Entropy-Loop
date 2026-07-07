@@ -3,12 +3,19 @@ using System.Collections.Generic;
 
 public class DeckSelectionManager : MonoBehaviour
 {
+    public static DeckSelectionManager instance;
+
     [Header("UI")]
     public GameObject selectionPanel;
     public Transform decksContainer;
     public GameObject deckPreviewPrefab;
 
     private List<DeckData> availableDecks = new();
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -20,7 +27,7 @@ public class DeckSelectionManager : MonoBehaviour
     {
         DeckData[] loaded = Resources.LoadAll<DeckData>("Decks");
         availableDecks = new List<DeckData>(loaded);
-        BugTracker.Info($"[DeckSelection] {availableDecks.Count} decks chargés.");
+        BugTracker.Info($"[DeckSelection] {availableDecks.Count} decks load.");
     }
 
     public void OpenSelection()
@@ -40,8 +47,7 @@ public class DeckSelectionManager : MonoBehaviour
         foreach (Transform child in decksContainer)
             Destroy(child.gameObject);
 
-        foreach (DeckData deck in availableDecks)
-        {
+        foreach (DeckData deck in availableDecks) {
             GameObject obj = Instantiate(deckPreviewPrefab, decksContainer);
             DeckPreview preview = obj.GetComponent<DeckPreview>();
             preview.Setup(deck, this);
@@ -51,7 +57,7 @@ public class DeckSelectionManager : MonoBehaviour
     public void SelectDeck(DeckData deck)
     {
         GameModeManager.selectedDeck = deck;
-        BugTracker.Info($"[DeckSelection] Deck '{deck.deckName}' sélectionné.");
+        BugTracker.Info($"[DeckSelection] Deck '{deck.deckName}' selected.");
         CloseSelection();
     }
 }

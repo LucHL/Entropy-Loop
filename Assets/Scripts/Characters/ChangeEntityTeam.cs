@@ -17,4 +17,16 @@ public class EntityTeam : MonoBehaviour
         else
             gameObject.tag = "Champion";
     }
+
+    public UnitsTeam GetTeam()
+    {
+        UnitsTeam unitsTeam;
+
+        if (gameObject.tag == "Enemy")
+            unitsTeam = UnitsTeam.Enemy;
+        else
+            unitsTeam = UnitsTeam.Player;
+
+        return unitsTeam;
+    }
 }

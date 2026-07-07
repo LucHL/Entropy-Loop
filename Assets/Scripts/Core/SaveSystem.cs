@@ -7,6 +7,7 @@ public class SaveData
     public int currentLevel;
     public int maxLevelReach;
     public int maxLevelFinish;
+    public DeckData selectedDeck;
 }
 
 public static class SaveSystem
@@ -21,11 +22,13 @@ public static class SaveSystem
         saveData.currentLevel = GameManager.instance.currentLevelData.currentlevel;
         saveData.maxLevelReach = GameManager.instance.maxLevelReach;
         saveData.maxLevelFinish = GameManager.instance.maxLevelFinish;
+        saveData.selectedDeck = GameModeManager.selectedDeck;
 
         if (reset) {
             saveData.currentLevel = 1;
             saveData.maxLevelReach = 0;
             saveData.maxLevelFinish = 0;
+            saveData.selectedDeck = null;
             BugTracker.Info($"[SaveSystem] Game has been reset.");
         }
 
@@ -53,6 +56,7 @@ public static class SaveSystem
         GameManager.instance.currentLevelData.currentlevel = saveData.currentLevel;
         GameManager.instance.maxLevelReach = saveData.maxLevelReach;
         GameManager.instance.maxLevelFinish = saveData.maxLevelFinish;
+        // GameModeManager.selectedDeck = saveData.selectedDeck;
 
         BugTracker.Info("[SaveSystem] Game successfully load.");
     }

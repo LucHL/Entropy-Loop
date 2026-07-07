@@ -18,8 +18,6 @@ public class GameLoopManager : MonoBehaviour
     public CardUI selectedCard;
     public ManaManager manaManager;
     [SerializeField] GameObject settings;
-    public DeckData selectedDeck;
-
 
     public bool isGameRunning = false;
     private List<GameObject> playerUnits = new();
@@ -33,6 +31,12 @@ public class GameLoopManager : MonoBehaviour
     void Start()
     {
         LevelInformationFadeTextManager.instance.DisplayTextWithFade(GameManager.instance.currentLevelData.currentlevel.ToString(), "Facile");
+
+        if (GameModeManager.selectedDeck == null) {
+            DeckSelectionManager.instance.OpenSelection();
+            DeckManager.instance.SetDeck();
+        } else
+            DeckSelectionManager.instance.CloseSelection();
     }
 
     void Update()
@@ -91,7 +95,7 @@ public class GameLoopManager : MonoBehaviour
         }
     }
 
-    private void EndGame(bool isPlayerVictorious)
+    public void EndGame(bool isPlayerVictorious)
     {
         isGameRunning = false;
 
