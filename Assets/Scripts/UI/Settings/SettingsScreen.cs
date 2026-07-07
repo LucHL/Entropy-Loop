@@ -93,4 +93,9 @@ public class SettingsScript : MonoBehaviour
     {
         BugTracker.ResetBugTrackerFile();
     }
+
+    public void ResetSaveFile()
+    {
+        SaveSystem.ResetFile();
+    }
 }

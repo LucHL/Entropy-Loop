@@ -48,8 +48,8 @@ public static class BugTracker
     {
         string path = Path.Combine(Application.persistentDataPath, "Logs");
         if (!Directory.Exists(path))
-            Directory.Delete(path);
-        
+            File.Delete(path);
+
         Initialize();
     }
 

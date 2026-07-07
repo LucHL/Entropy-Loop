@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 public class GameLoopManager : MonoBehaviour
@@ -155,8 +157,11 @@ public class GameLoopManager : MonoBehaviour
         ManaManager.instance.AddMana(3);
     }
 
-    public void StartOrStopCombat(bool enabled = true)
+    public void StartOrStopCombat(bool enabled)
     {
+        if (!playerUnits.Any() || isGameRunning)
+            enabled = !enabled;
+
         isGameRunning = enabled;
 
         GameObject[] entities = GameObject.FindGameObjectsWithTag("Entities");

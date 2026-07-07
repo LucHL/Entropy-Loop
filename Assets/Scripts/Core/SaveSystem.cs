@@ -13,7 +13,7 @@ public static class SaveSystem
 {
     private static string saveFilePath;
 
-    public static void Save()
+    public static void Save(bool reset = false)
     {
         saveFilePath = Path.Combine(Application.persistentDataPath, "GameData.json");
         SaveData saveData = new();
@@ -22,8 +22,18 @@ public static class SaveSystem
         saveData.maxLevelReach = GameManager.instance.maxLevelReach;
         saveData.maxLevelFinish = GameManager.instance.maxLevelFinish;
 
+        if (reset) {
+            saveData.currentLevel = 1;
+            saveData.maxLevelReach = 0;
+            saveData.maxLevelFinish = 0;
+            BugTracker.Info($"[SaveSystem] Game has been reset.");
+        }
+
         string json = JsonUtility.ToJson(saveData, true);
         File.WriteAllText(saveFilePath, json);
+
+        if (reset)
+            Load();
 
         BugTracker.Info($"[SaveSystem] Game saved ! File: {saveFilePath}");
     }
@@ -45,5 +55,13 @@ public static class SaveSystem
         GameManager.instance.maxLevelFinish = saveData.maxLevelFinish;
 
         BugTracker.Info("[SaveSystem] Game successfully load.");
+    }
+
+    public static void ResetFile()
+    {
+        saveFilePath = Path.Combine(Application.persistentDataPath, "GameData.json");
+        File.Delete(saveFilePath);
+
+        Save(true);
     }
 }

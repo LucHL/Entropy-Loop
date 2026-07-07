@@ -93,7 +93,10 @@ public class GameManager : MonoBehaviour
         // next level
         int index = Array.IndexOf(alllevelData, currentLevelData);
 
-        maxLevelFinish = currentLevelData.currentlevel;
+        if (currentLevelData.currentlevel > maxLevelFinish) {
+            maxLevelFinish = currentLevelData.currentlevel;
+            maxLevelReach = currentLevelData.currentlevel + 1;
+        }
 
         index+= 1;
         if (index >= alllevelData.Length) {
