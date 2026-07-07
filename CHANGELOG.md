@@ -9,9 +9,12 @@ All notable changes to this project will be documented in this file.
 - number of card remaining in the deck
 - add color for the next level
 - if the player hasn't selected a deck when starting a level, a window will force the player to choose one.
+- update README
 
 ### Fixed
 - Each click on the deck remove a card even if the handslot is full
+- Game freeze when you start a fight without any player units
+- attackRange now depend on the chess tile size
 
 
 ## [0.1.4-alpha] - 2026-06-07

@@ -147,6 +147,7 @@ public class Units : MonoBehaviour
         
         unitsRigidbody.isKinematic = false;
 
+        attackRange *= VoidMapGeneratorGPU.instance.chessTile;
 
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
     }
