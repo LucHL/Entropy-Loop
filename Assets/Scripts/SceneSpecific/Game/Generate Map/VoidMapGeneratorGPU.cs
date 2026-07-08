@@ -156,6 +156,18 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             StartCoroutine(GenerateAsync());
     }
 
+    public void SetSeed(int newSeed)
+    {
+        seed = newSeed;
+        StartCoroutine(GenerateAsync());
+    }
+
+    public void SetPhase(int newPhase)
+    {
+        phase = newPhase;
+        StartCoroutine(GenerateAsync());
+    }
+
     System.Collections.IEnumerator GenerateAsync()
     {
         rng = new System.Random(seed);
@@ -1276,6 +1288,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         tree.layer = gameObject.layer;
         tree.transform.position = new Vector3(pos.x, groundY, pos.z);
         tree.transform.rotation = Quaternion.Euler(0f, (float)rng.NextDouble() * 360f, 0f);
+        tree.AddComponent<TreeOccluder>();
 
         // La corruption consume la faune : plus on est près d'une morsure (ou
         // tard dans les phases), plus l'arbre a de chances d'être remplacé par
