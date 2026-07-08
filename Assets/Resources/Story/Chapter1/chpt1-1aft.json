@@ -5,48 +5,48 @@
         "charLeftImg": "",
         "charRightImg": "",
         "speakerName": "Keronas",
-        "text": "Keronas entre dans la jungle. Silence pesant. La végétation est décolorée, tordue, immobile."
+        "text": "Keronas s'arrête. La zone est stabilisée autour de lui. Le sol est encore noir mais plus rien ne bouge."
     },
     {
         "backgroundName": "bg_city",
         "charLeftImg": "keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
-        "text": "Ce n'est plus Verdentia…"
+        "text": "C'est fini… pour aujourd'hui."
     },
     {
         "backgroundName": "bg_city",
         "charLeftImg": "keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
-        "text": "J'ai traversé cette jungle il y a trois ans. Elle était bruyante. Étouffante. Vivante. Maintenant… rien. Pas un oiseau. Pas un insecte. Même le vent semble avoir renoncé."
+        "text": "J'ai tenu. Mes pouvoirs ont tenu. Mais je sens ce qu'ils m'ont coûté. Chaque soin. Chaque bouclier. Comme si quelque chose prélevait sa part en retour."
     },
-        {
+    {
         "backgroundName": "bg_city",
         "charLeftImg": "keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
-        "text": "L'Ordre m'a dit 'enquêter'. Comme si enquêter suffisait face à ça."
+        "text": "L'Ordre appelle ça une victoire. Une zone stabilisée. Une menace repoussée."
     },
-        {
+    {
         "backgroundName": "bg_city",
         "charLeftImg": "keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
-        "text": "Mes pouvoirs murmurent depuis que j'ai franchi la lisière. Quelque chose ici a besoin d'être protégé… ou ce qui reste de quelque chose."
+        "text": "Ils n'ont pas vu ce que j'ai vu. Cette reine… ce n'était pas le Void. Pas exactement. Quelque chose a profité du vide qu'il a laissé. Quelque chose qui a ses propres règles."
     },
-        {
+    {
         "backgroundName": "bg_city",
         "charLeftImg": "keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
-        "text": "Ou peut-être que c'est moi qui ai besoin de l'être."
+        "text": "On a gagné cette bataille. Mais Verdentia est encore debout — si on peut encore appeler ça debout. Et ce qui règne ici n'a pas disparu. Il a reculé."
     },
-        {
+    {
         "backgroundName": "bg_city",
         "charLeftImg": "keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
-        "text": "Capitaine Keronas. Mission de reconnaissance — Verdentia, secteur central. Si quelqu'un lit ces mots un jour… la jungle n'est plus là."
+        "text": "La guerre dans cette jungle ne fait que commencer."
     }
 ]}
