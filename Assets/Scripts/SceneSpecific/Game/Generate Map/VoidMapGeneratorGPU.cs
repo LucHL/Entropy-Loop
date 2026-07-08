@@ -150,12 +150,6 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         navSurface = GetComponent<NavMeshSurface>();
     }
 
-    void Start()
-    {
-        if (Application.isPlaying && generateOnPlay)
-            StartCoroutine(GenerateAsync());
-    }
-
     public void SetSeed(int newSeed)
     {
         seed = newSeed;

@@ -50,8 +50,10 @@ public class DeckSelectionManager : MonoBehaviour
     {
         GameModeManager.selectedDeck = deck;
 
-        if (DeckManager.instance != null)
+        if (DeckManager.instance != null) {
             DeckManager.instance.SetDeck();
+            ShopManager.instance.LoadCards();
+        }
 
         BugTracker.Info($"[DeckSelection] Deck '{deck.deckName}' selected.");
         CloseSelection();

@@ -13,10 +13,6 @@ public class ShopManager : MonoBehaviour
     public TextMeshProUGUI moneyText;
     public Button closeButton;
 
-    void Awake()
-    {
-        instance = this;
-    }
     [Header("Shop Slots")]
     public GameObject shopSlotPrefab;
     public Transform cardsContainer;
@@ -31,6 +27,11 @@ public class ShopManager : MonoBehaviour
     private List<CardData> allCards = new();
     private List<GameObject> currentSlots = new();
 
+    void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
         shopPopup.SetActive(false);
@@ -39,7 +40,7 @@ public class ShopManager : MonoBehaviour
         LoadCards();
     }
 
-    void LoadCards()
+    public void LoadCards()
     {
         DeckData deck = GameModeManager.selectedDeck;
         if (deck == null)

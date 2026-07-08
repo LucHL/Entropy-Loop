@@ -16,6 +16,7 @@ public enum Strategy {
 public class EnemySpawnAlgo : MonoBehaviour
 {
     public static EnemySpawnAlgo instance;
+
     public int manaMax = 10;
     public int currentMana;
     public Strategy currentStrategy;
@@ -31,7 +32,7 @@ public class EnemySpawnAlgo : MonoBehaviour
 
     public void SpawnEnemies(float tileSize)
     {
-        BugTracker.Info("[Enemy Spawn Algo] Start algo spawn enemy.");
+        BugTracker.Info("[EnemySpawnAlgo] Start algo spawn enemy.");
         List<GameObject> allEntities = new();
 
         allEntities.Add(Resources.Load<GameObject>("CrocodilePrefab"));
@@ -46,8 +47,8 @@ public class EnemySpawnAlgo : MonoBehaviour
         int safetyExit = 0;
         currentMana = manaMax;
 
-        BugTracker.Info("[Enemy Spawn Algo] current algo strategy: '"+currentStrategy+"'.");
-        BugTracker.Info("[Enemy Spawn Algo] max mana: "+manaMax+".");
+        BugTracker.Info("[EnemySpawnAlgo] current algo strategy: '"+currentStrategy+"'.");
+        BugTracker.Info("[EnemySpawnAlgo] max mana: "+manaMax+".");
 
         List<GameObject> filtered = FilteredByStrategy(allEntities, currentStrategy);
         List<GameObject> affordableUnits = new();
@@ -60,7 +61,7 @@ public class EnemySpawnAlgo : MonoBehaviour
                 currentMana -= entity.GetComponent<Units>().manaCost;
                 affordableUnits.Add(entity);
                 nbrEntities++;
-                BugTracker.Info("[Enemy Spawn Algo] Entity '"+entity.name+"' add to the spawn list.");
+                BugTracker.Info("[EnemySpawnAlgo] Entity '"+entity.name+"' add to the spawn list.");
             }
         }
         IntiateEntity(affordableUnits);
@@ -69,7 +70,7 @@ public class EnemySpawnAlgo : MonoBehaviour
     private void IntiateEntity(List<GameObject> entities)
     {
         if (entities.IsUnityNull()) {
-            BugTracker.Error("[Enemy Spawn Algo] List of entities is null, failed to spawn entities.");
+            BugTracker.Error("[EnemySpawnAlgo] List of entities is null, failed to spawn entities.");
             return;
         }
 
@@ -78,7 +79,7 @@ public class EnemySpawnAlgo : MonoBehaviour
 
             if (vector2 == new Vector2(-1f, -1f)) {
                 BugTracker.Error("'" + e.name + "' vector2 is -1f, failed to instantiate units.");
-                return;
+                continue;
             }
 
             GameObject entityInstance = Instantiate(e, new Vector3(vector2.x, 2f, vector2.y), Quaternion.identity);
@@ -97,6 +98,7 @@ public class EnemySpawnAlgo : MonoBehaviour
         int maxY = int.MinValue;
 
         foreach (GameObject t in tiles) {
+            Debug.Log(t.name);
             string[] parts = t.name.Split('_');
             int x = int.Parse(parts[1]);
             int y = int.Parse(parts[2]);

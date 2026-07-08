@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,8 @@ public class GameLoopManager : MonoBehaviour
 
     void Start()
     {
+        VoidMapGeneratorGPU.instance.SetSeed(VoidMapGeneratorGPU.instance.seed);
+
         LevelInformationFadeTextManager.instance.DisplayTextWithFade(
             GameManager.instance.currentLevelData.currentlevel.ToString(),
             GameManager.instance.currentLevelData.spawnAlgo.difficulty
