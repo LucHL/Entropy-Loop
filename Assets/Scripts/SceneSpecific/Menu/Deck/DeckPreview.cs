@@ -23,11 +23,9 @@ public class DeckPreview : MonoBehaviour
         if (deckNameText != null)
             deckNameText.text = deck.deckName;
 
-        // Commander
         if (commanderImage != null && deck.commander != null)
             commanderImage.sprite = deck.commander.cardImage;
 
-        // 2 cartes aléatoires différentes
         SetRandomCards();
 
         selectButton.onClick.AddListener(() => manager.SelectDeck(data));

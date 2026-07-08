@@ -37,6 +37,7 @@ public class StoryManager : MonoBehaviour
     {
         currentLevel = GameManager.instance.currentLevelData;
         currentChapter = "Story/" + GameManager.instance.nextStory;
+        Debug.Log(currentChapter);
 
         TextAsset jsonFile = Resources.Load<TextAsset>(currentChapter);
 

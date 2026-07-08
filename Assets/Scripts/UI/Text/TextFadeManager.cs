@@ -10,7 +10,7 @@ public class LevelInformationFadeTextManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI currentLevel;
     [SerializeField] TextMeshProUGUI difficulty;
 
-    private float delayBeforeFade = 1f;
+    private float delayBeforeFade = 2f;
     private float fadeDuration = 0.25f;
 
     void Awake()

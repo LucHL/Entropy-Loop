@@ -1,23 +1,25 @@
 {
     "levels": [
-    {
+        {
         "currentlevel": 1,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
             "spawnStartegy": [0],
             "deck": [""],
-            "manaCost": [3]
+            "manaCost": [9],
+            "difficulty": "easy"
         }
     },
     {
         "currentlevel": 2,
-        "chaptersBeforeGame": "",
-        "chaptersAfterGame": "",
+        "chaptersBeforeGame": "Chapter1/chpt1-1",
+        "chaptersAfterGame": "Chapter1/chpt1-2",
         "spawnAlgo": {
-            "spawnStartegy": [1],
+            "spawnStartegy": [0],
             "deck": [""],
-            "manaCost": [6]
+            "manaCost": [3],
+            "difficulty": "easy"
         }
     },
     {
@@ -25,9 +27,10 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": [3],
+            "spawnStartegy": [1],
             "deck": [""],
-            "manaCost": [9]
+            "manaCost": [6],
+            "difficulty": "easy"
         }
     },
     {
@@ -37,7 +40,8 @@
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [12]
+            "manaCost": [9],
+            "difficulty": "medium"
         }
     },
     {
@@ -45,9 +49,10 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": [3, 3, 3],
+            "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [12, 15, 18]
+            "manaCost": [12],
+            "difficulty": "medium"
         }
     },
     {
@@ -55,9 +60,10 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": [3],
+            "spawnStartegy": [3, 3, 3],
             "deck": [""],
-            "manaCost": [21]
+            "manaCost": [12, 15, 18],
+            "difficulty": "hard"
         }
     },
     {
@@ -67,7 +73,19 @@
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [24]
+            "manaCost": [21],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 8,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
         }
     }
 ]}
