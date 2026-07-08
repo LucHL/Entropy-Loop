@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 - add color for the next level
 - if the player hasn't selected a deck when starting a level, a window will force the player to choose one.
 - update README
+- to unlock decks, the player must complete levels
+- story: chapter 1-1
 
 ### Fixed
 - Each click on the deck remove a card even if the handslot is full
