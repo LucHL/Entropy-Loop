@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Each click on the deck remove a card even if the handslot is full
 - Game freeze when you start a fight without any player units
 - attackRange now depend on the chess tile size
+- tutorial is now the level 1
 
 
 ## [0.1.4-alpha] - 2026-06-07
