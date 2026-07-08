@@ -7,7 +7,8 @@
         "spawnAlgo": {
             "spawnStartegy": [0],
             "deck": [""],
-            "manaCost": [9]
+            "manaCost": [9],
+            "difficulty": "easy"
         }
     },
     {
@@ -17,7 +18,8 @@
         "spawnAlgo": {
             "spawnStartegy": [0],
             "deck": [""],
-            "manaCost": [3]
+            "manaCost": [3],
+            "difficulty": "easy"
         }
     },
     {
@@ -27,7 +29,8 @@
         "spawnAlgo": {
             "spawnStartegy": [1],
             "deck": [""],
-            "manaCost": [6]
+            "manaCost": [6],
+            "difficulty": "easy"
         }
     },
     {
@@ -37,7 +40,8 @@
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [9]
+            "manaCost": [9],
+            "difficulty": "medium"
         }
     },
     {
@@ -47,7 +51,8 @@
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [12]
+            "manaCost": [12],
+            "difficulty": "medium"
         }
     },
     {
@@ -57,7 +62,8 @@
         "spawnAlgo": {
             "spawnStartegy": [3, 3, 3],
             "deck": [""],
-            "manaCost": [12, 15, 18]
+            "manaCost": [12, 15, 18],
+            "difficulty": "hard"
         }
     },
     {
@@ -67,7 +73,8 @@
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [21]
+            "manaCost": [21],
+            "difficulty": "hard"
         }
     },
     {
@@ -77,7 +84,8 @@
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [24]
+            "manaCost": [24],
+            "difficulty": "hard"
         }
     }
 ]}

@@ -30,12 +30,14 @@ public class GameLoopManager : MonoBehaviour
 
     void Start()
     {
-        LevelInformationFadeTextManager.instance.DisplayTextWithFade(GameManager.instance.currentLevelData.currentlevel.ToString(), "Facile");
+        LevelInformationFadeTextManager.instance.DisplayTextWithFade(
+            GameManager.instance.currentLevelData.currentlevel.ToString(),
+            GameManager.instance.currentLevelData.spawnAlgo.difficulty
+        );
 
-        if (GameModeManager.selectedDeck == null) {
+        if (GameModeManager.selectedDeck == null)
             DeckSelectionManager.instance.OpenSelection();
-            DeckManager.instance.SetDeck();
-        } else
+        else
             DeckSelectionManager.instance.CloseSelection();
     }
 

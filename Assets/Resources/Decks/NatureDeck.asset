@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6238a96c613d7fa43b0816324de0fb82, type: 3}
-  m_Name: Nature
+  m_Name: NatureDeck
   m_EditorClassIdentifier: Assembly-CSharp::DeckData
   deckName: Nature
   commander: {fileID: 11400000, guid: 89885bbea845189deb29beee015942b2, type: 2}

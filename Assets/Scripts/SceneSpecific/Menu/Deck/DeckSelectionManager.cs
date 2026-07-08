@@ -6,7 +6,6 @@ public class DeckSelectionManager : MonoBehaviour
     public static DeckSelectionManager instance;
 
     [Header("UI")]
-    public GameObject selectionPanel;
     public Transform decksContainer;
     public GameObject deckPreviewPrefab;
 
@@ -15,12 +14,6 @@ public class DeckSelectionManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-    }
-
-    void Start()
-    {
-        if (selectionPanel != null)
-            selectionPanel.SetActive(false);
     }
 
     void LoadDecks()
@@ -33,13 +26,12 @@ public class DeckSelectionManager : MonoBehaviour
     public void OpenSelection()
     {
         LoadDecks();
-        selectionPanel.SetActive(true);
         RefreshDecks();
     }
 
     public void CloseSelection()
     {
-        selectionPanel.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     void RefreshDecks()
@@ -57,6 +49,10 @@ public class DeckSelectionManager : MonoBehaviour
     public void SelectDeck(DeckData deck)
     {
         GameModeManager.selectedDeck = deck;
+
+        if (DeckManager.instance != null)
+            DeckManager.instance.SetDeck();
+
         BugTracker.Info($"[DeckSelection] Deck '{deck.deckName}' selected.");
         CloseSelection();
     }

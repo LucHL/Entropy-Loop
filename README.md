@@ -4,7 +4,7 @@ Welcome to Entropy Loop, a tactical strategy and card game! Play in an infinite 
 
 ## Minimal System Requirements
 
-- **OS :** Windows 10 / 11
+- **OS :** Windows 10/11
 - **Processor :** Intel Core i3 or more
 - **Memory :** 4GB RAM
 - **Graphics :** Intel HD Graphics or equivalent
