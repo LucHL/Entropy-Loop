@@ -105,7 +105,6 @@ public class StoryManager : MonoBehaviour
         if (!string.IsNullOrEmpty(spriteName)) {
             Sprite loadedSprite = Resources.Load<Sprite>("Sprites/Story/" + spriteName);
             if (loadedSprite != null) {
-                Debug.Log("Sprites/Story/" + spriteName);
                 targetImage.gameObject.SetActive(true);
                 targetImage.sprite = loadedSprite;
             }

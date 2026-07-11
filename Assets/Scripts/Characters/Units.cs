@@ -232,7 +232,7 @@ public class Units : MonoBehaviour
                 targetUnitsComponent = target.GetComponent<Units>();
         }
 
-        Debug.Log($"{name} | HasCapacity={EntityHasCapacity} | Capacity={capacityPoints}/{capacityTriggerMax}");
+        // Debug.Log($"{name} | HasCapacity={EntityHasCapacity} | Capacity={capacityPoints}/{capacityTriggerMax}");
 
         if (EntityHasCapacity && capacityPoints >= capacityTriggerMax) {
             capacityPoints = 0;

@@ -1,49 +1,49 @@
 {
     "dialogues": [
     {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "",
         "charRightImg": "",
         "speakerName": "Narrateur",
         "text": "Keronas entre dans la jungle. Silence pesant. La végétation est décolorée, tordue, immobile."
     },
     {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "Keronas/Keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
         "text": "Ce n'est plus Verdentia…"
     },
     {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "Keronas/Keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
         "text": "J'ai traversé cette jungle il y a trois ans. Elle était bruyante. Étouffante. Vivante. Maintenant… rien. Pas un oiseau. Pas un insecte. Même le vent semble avoir renoncé."
     },
         {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "Keronas/Keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
         "text": "L'Ordre m'a dit 'enquêter'. Comme si enquêter suffisait face à ça."
     },
         {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "Keronas/Keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
         "text": "Mes pouvoirs murmurent depuis que j'ai franchi la lisière. Quelque chose ici a besoin d'être protégé… ou ce qui reste de quelque chose."
     },
         {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "Keronas/Keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",
         "text": "Ou peut-être que c'est moi qui ai besoin de l'être."
     },
         {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "Keronas/Keronas_idle",
         "charRightImg": "",
         "speakerName": "Keronas",

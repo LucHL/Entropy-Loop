@@ -1,49 +1,49 @@
 {
     "dialogues": [
     {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "",
         "charRightImg": "Keronas/Keronas_idle",
         "speakerName": "Keronas",
         "text": "Keronas s'arrête. La zone est stabilisée autour de lui. Le sol est encore noir mais plus rien ne bouge."
     },
     {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "keronas_idle",
         "charRightImg": "Keronas/Keronas_idle",
         "speakerName": "Keronas",
         "text": "C'est fini… pour aujourd'hui."
     },
     {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "keronas_idle",
         "charRightImg": "Keronas/Keronas_idle",
         "speakerName": "Keronas",
         "text": "J'ai tenu. Mes pouvoirs ont tenu. Mais je sens ce qu'ils m'ont coûté. Chaque soin. Chaque bouclier. Comme si quelque chose prélevait sa part en retour."
     },
     {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "keronas_idle",
         "charRightImg": "Keronas/Keronas_idle",
         "speakerName": "Keronas",
         "text": "L'Ordre appelle ça une victoire. Une zone stabilisée. Une menace repoussée."
     },
     {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "keronas_idle",
         "charRightImg": "Keronas/Keronas_idle",
         "speakerName": "Keronas",
         "text": "Ils n'ont pas vu ce que j'ai vu. Cette reine… ce n'était pas le Void. Pas exactement. Quelque chose a profité du vide qu'il a laissé. Quelque chose qui a ses propres règles."
     },
     {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "keronas_idle",
         "charRightImg": "Keronas/Keronas_idle",
         "speakerName": "Keronas",
         "text": "On a gagné cette bataille. Mais Verdentia est encore debout — si on peut encore appeler ça debout. Et ce qui règne ici n'a pas disparu. Il a reculé."
     },
     {
-        "backgroundName": "Background/village",
+        "backgroundName": "Background/forest",
         "charLeftImg": "keronas_idle",
         "charRightImg": "Keronas/Keronas_idle",
         "speakerName": "Keronas",
