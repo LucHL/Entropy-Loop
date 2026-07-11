@@ -3,24 +3,26 @@ using UnityEngine.UI;
 
 public class LevelSelectManager : MonoBehaviour
 {
-    public GameObject levelButtonPrefab;
+    [SerializeField] GameObject levelButtonPrefab;
+    [SerializeField] Transform parentsPosition;
 
     private LevelData[] levels;
 
     void Start()
     {
-        levels = GameManager.instance.alllevelData;
         GenerateLevels();
     }
 
     void GenerateLevels()
     {
+        levels = GameManager.instance.alllevelData;
+
         for (int i = 1; i <= levels.Length; i++) {
-            GameObject btn = Instantiate(levelButtonPrefab, transform);
+            GameObject btn = Instantiate(levelButtonPrefab, parentsPosition);
 
             RectTransform rt = btn.GetComponent<RectTransform>();
 
-            rt.anchoredPosition = new Vector2((i - 1) * 200f - 600, 0f); // TODO delete -600
+            rt.anchoredPosition = new Vector2((i - 1) * 200f, 0f);
 
             LevelButtonUI ui = btn.GetComponent<LevelButtonUI>();
 
@@ -29,5 +31,11 @@ public class LevelSelectManager : MonoBehaviour
             Button button = btn.GetComponent<Button>();
             button.onClick.AddListener(ui.OnClick);
         }
+    }
+
+    public void UpdateLevels()
+    {
+        levels = GameManager.instance.alllevelData;
+        GenerateLevels();
     }
 }

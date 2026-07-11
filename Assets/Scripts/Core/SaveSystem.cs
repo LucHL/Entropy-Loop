@@ -56,7 +56,7 @@ public static class SaveSystem
         GameManager.instance.currentLevelData.currentlevel = saveData.currentLevel;
         GameManager.instance.maxLevelReach = saveData.maxLevelReach;
         GameManager.instance.maxLevelFinish = saveData.maxLevelFinish;
-        // GameModeManager.selectedDeck = saveData.selectedDeck;
+        GameModeManager.selectedDeck = saveData.selectedDeck;
 
         BugTracker.Info("[SaveSystem] Game successfully load.");
     }

@@ -17,6 +17,13 @@ public class DeckPreview : MonoBehaviour
 
     public void Setup(DeckData deck, DeckSelectionManager mgr)
     {
+        TextMeshProUGUI text = GetComponentInChildren<TextMeshProUGUI>();
+        if (deck.unlockLevel > GameManager.instance.maxLevelFinish) {
+            text.text = "unlock level " + deck.unlockLevel.ToString();
+            selectButton.interactable = false;
+        } else
+            text.gameObject.SetActive(false);
+
         data = deck;
         manager = mgr;
 

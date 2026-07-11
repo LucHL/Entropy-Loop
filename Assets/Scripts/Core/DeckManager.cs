@@ -9,6 +9,8 @@ public class DeckManager : MonoBehaviour
     public List<CardData> deck;
     public HandSlot[] handSlots;
 
+    private int tutorialDeck = 0;
+
     void Awake()
     {
         instance = this;
@@ -30,11 +32,28 @@ public class DeckManager : MonoBehaviour
 
     public void DrawCard()
     {
-        if (deck.Count > 0) {
-            if (handSlots.All(slot => !slot.IsEmpty())) {
-                FloatingTextManager.instance.Show("Hand is full");
+        if (GameModeManager.isTutorial) {
+            if (CheckIfHandIsFull())
                 return;
+
+            CardData drawnCard = deck[tutorialDeck];
+            tutorialDeck++;
+
+            foreach (HandSlot slot in handSlots) {
+                if (slot.IsEmpty()) {
+                    slot.SetCard(drawnCard);
+                    UpdateNbrCardInDeck();
+                    return;
+                }
             }
+
+            UpdateNbrCardInDeck();
+            return;
+        }
+
+        if (deck.Count > 0) {
+            if (CheckIfHandIsFull())
+                return;
             
             CardData drawnCard = deck[Random.Range(0, deck.Count)];
             deck.Remove(drawnCard);
@@ -58,5 +77,13 @@ public class DeckManager : MonoBehaviour
     {
         GameModeManager.nbrCardInDeck = deck.Count + handSlots.Count();
         NumberOfCardRemaining.instance.UpdateNumber(deck.Count);
+    }
+
+    bool CheckIfHandIsFull() {
+        if (handSlots.All(slot => !slot.IsEmpty())) {
+            FloatingTextManager.instance.Show("Hand is full");
+            return true;
+        }
+        return false;
     }
 }
