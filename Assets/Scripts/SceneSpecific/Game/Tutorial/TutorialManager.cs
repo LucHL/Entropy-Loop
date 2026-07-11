@@ -39,15 +39,14 @@ public class TutorialManager : MonoBehaviour
             tutorialSteps[currentStep].SetActive(false);
             isTutorial = false;
 
-            BugTracker.Info("Tutorial finish.");
-            Debug.Log("fin du tuto.");
+            BugTracker.Info("[Tutorial] Tutorial finish.");
             return;
         }
 
         tutorialSteps[currentStep].SetActive(false);
         currentStep++;
         tutorialSteps[currentStep].SetActive(true);
-        BugTracker.Info("Tutorial next Step '" + tutorialSteps[currentStep].name + "'.");
+        BugTracker.Info("[Tutorial] Tutorial next Step '" + tutorialSteps[currentStep].name + "'.");
     }
 
     public void StepBack()
@@ -58,7 +57,7 @@ public class TutorialManager : MonoBehaviour
         tutorialSteps[currentStep].SetActive(false);
         currentStep--;
         tutorialSteps[currentStep].SetActive(true);
-        BugTracker.Info("Tutorial Step back to '" + tutorialSteps[currentStep].name + "'.");
+        BugTracker.Info("[Tutorial] Tutorial Step back to '" + tutorialSteps[currentStep].name + "'.");
     }
 
     public void SetIsTutorial(bool tuto)
@@ -68,8 +67,6 @@ public class TutorialManager : MonoBehaviour
 
     public void ButtonNextAfterANumberOfClick(int numberOfClickMax)
     {
-        Debug.Log("max:"+numberOfClickMax);
-        Debug.Log(btnIncrementation);
         if (btnIncrementation >= numberOfClickMax) {
             btnIncrementation = 1;
             NextStep();
