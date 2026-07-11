@@ -98,7 +98,6 @@ public class EnemySpawnAlgo : MonoBehaviour
         int maxY = int.MinValue;
 
         foreach (GameObject t in tiles) {
-            Debug.Log(t.name);
             string[] parts = t.name.Split('_');
             int x = int.Parse(parts[1]);
             int y = int.Parse(parts[2]);
