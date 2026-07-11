@@ -68,6 +68,8 @@ public class TutorialManager : MonoBehaviour
 
     public void ButtonNextAfterANumberOfClick(int numberOfClickMax)
     {
+        Debug.Log("max:"+numberOfClickMax);
+        Debug.Log(btnIncrementation);
         if (btnIncrementation >= numberOfClickMax) {
             btnIncrementation = 1;
             NextStep();
