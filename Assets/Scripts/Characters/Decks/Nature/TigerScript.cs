@@ -14,6 +14,7 @@ public class Tiger : Units
 
         manaCost = 6;
         entityType = EntityType.Basic;
+        //EntityHasCapacity = true;
         base.Start();
     }
 }
