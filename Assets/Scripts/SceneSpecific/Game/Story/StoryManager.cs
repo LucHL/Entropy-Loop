@@ -42,7 +42,6 @@ public class StoryManager : MonoBehaviour
     {
         currentLevel = GameManager.instance.currentLevelData;
         currentChapter = "Story/" + GameManager.instance.nextStory;
-        Debug.Log(currentChapter);
 
         TextAsset jsonFile = Resources.Load<TextAsset>(currentChapter);
 
@@ -104,8 +103,9 @@ public class StoryManager : MonoBehaviour
     void UpdateCharacterSprite(string spriteName, Image targetImage)
     {
         if (!string.IsNullOrEmpty(spriteName)) {
-            Sprite loadedSprite = Resources.Load<Sprite>("Sprites/" + spriteName);
+            Sprite loadedSprite = Resources.Load<Sprite>("Sprites/Story/" + spriteName);
             if (loadedSprite != null) {
+                Debug.Log("Sprites/Story/" + spriteName);
                 targetImage.gameObject.SetActive(true);
                 targetImage.sprite = loadedSprite;
             }
