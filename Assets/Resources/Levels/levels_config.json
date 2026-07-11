@@ -1,0 +1,91 @@
+{
+    "levels": [
+    {
+        "currentlevel": 1,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "spawnAlgo": {
+            "spawnStartegy": [0],
+            "deck": [""],
+            "manaCost": [9],
+            "difficulty": "easy"
+        }
+    },
+    {
+        "currentlevel": 2,
+        "chaptersBeforeGame": "Chapter1/chpt1-1",
+        "chaptersAfterGame": "Chapter1/chpt1-1aft",
+        "spawnAlgo": {
+            "spawnStartegy": [0],
+            "deck": [""],
+            "manaCost": [3],
+            "difficulty": "easy"
+        }
+    },
+    {
+        "currentlevel": 3,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "spawnAlgo": {
+            "spawnStartegy": [1],
+            "deck": [""],
+            "manaCost": [6],
+            "difficulty": "easy"
+        }
+    },
+    {
+        "currentlevel": 4,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [9],
+            "difficulty": "medium"
+        }
+    },
+    {
+        "currentlevel": 5,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [12],
+            "difficulty": "medium"
+        }
+    },
+    {
+        "currentlevel": 6,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "spawnAlgo": {
+            "spawnStartegy": [3, 3, 3],
+            "deck": [""],
+            "manaCost": [12, 15, 18],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 7,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [21],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 8,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    }
+]}
