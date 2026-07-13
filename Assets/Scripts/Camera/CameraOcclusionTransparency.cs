@@ -2,19 +2,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Attache ce script à la gameplay camera.
-// Les arbres entre la caméra et le joueur passent en transparent automatiquement.
+// Les arbres qui passent devant l'arène deviennent transparents automatiquement.
 public class CameraOcclusionTransparency : MonoBehaviour
 {
-    [Header("Références")]
-    public Transform target;           // Le Transform du joueur
-    public float targetHeightOffset = 1.5f; // Point visé sur le joueur (tête)
+    public static CameraOcclusionTransparency instance;
+
+    [Header("Arène")]
+    public Transform arenaCenter;      // Centre de l'arène — assigner dans l'Inspector
+    public float     arenaRadius = 5f; // Rayon de l'arène (couvre toute la grille)
 
     [Header("Transparence")]
     [Range(0f, 1f)] public float fadeAlpha = 0.2f;
-    public float fadeSpeed = 8f;       // Vitesse du fondu
+    public float fadeSpeed = 8f;
 
     [Header("Détection")]
-    public float detectionRadius = 2f; // Rayon autour de la ligne cam→joueur
+    public float detectionRadius = 2f; // Rayon autour de chaque arbre
 
     // ── État interne ──────────────────────────────────────────────────
     private class OccluderState
@@ -26,28 +28,61 @@ public class CameraOcclusionTransparency : MonoBehaviour
         public bool        shouldFade;
     }
 
-    private readonly List<OccluderState>   states     = new();
-    private readonly List<TreeOccluder>    lastTrees  = new();
+    private readonly List<OccluderState> states    = new();
+    private readonly List<TreeOccluder>  lastTrees = new();
+
+    void Awake() => instance = this;
+
+    // ── API publique ───────────────────────────────────────────────────────
+
+    public void SetArenaCenter(Transform center)  => arenaCenter = center;
+    public void SetArenaRadius(float radius)      => arenaRadius = radius;
+    public void SetFadeAlpha(float alpha)         => fadeAlpha   = alpha;
+
+    // 5 points : centre + 4 coins de l'arène
+    Vector3[] GetArenaPoints()
+    {
+        Vector3 c = (arenaCenter != null ? arenaCenter.position : Vector3.zero) + Vector3.up * 0.5f;
+        float   r = arenaRadius;
+        return new[]
+        {
+            c,
+            c + new Vector3( r, 0,  r),
+            c + new Vector3(-r, 0,  r),
+            c + new Vector3( r, 0, -r),
+            c + new Vector3(-r, 0, -r),
+        };
+    }
 
     void LateUpdate()
     {
         RefreshTreeList();
 
-        if (target == null) return;
+        if (arenaCenter == null) return;
 
-        Vector3 camPos    = transform.position;
-        Vector3 playerPos = target.position + Vector3.up * targetHeightOffset;
+        Vector3   camPos      = transform.position;
+        Vector3[] arenaPoints = GetArenaPoints();
 
-        // ── Marquer quels arbres occludent ──────────────────────────
+        // ── Marquer quels arbres occludent l'arène ──────────────────
         foreach (var state in states)
-            state.shouldFade = IsOccluding(state.renderer.bounds.center, camPos, playerPos);
+        {
+            state.shouldFade = false;
+            foreach (var point in arenaPoints)
+            {
+                if (IsOccluding(state.renderer.bounds.center, camPos, point))
+                {
+                    state.shouldFade = true;
+                    break;
+                }
+            }
+        }
 
         // ── Appliquer le fondu ───────────────────────────────────────
         float dt = Time.deltaTime * fadeSpeed;
         foreach (var state in states)
         {
-            float target = state.shouldFade ? fadeAlpha : 1f;
-            state.currentAlpha = Mathf.MoveTowards(state.currentAlpha, target, dt);
+            float t = state.shouldFade ? fadeAlpha : 1f;
+            state.currentAlpha = Mathf.MoveTowards(state.currentAlpha, t, dt);
             ApplyAlpha(state);
         }
     }
