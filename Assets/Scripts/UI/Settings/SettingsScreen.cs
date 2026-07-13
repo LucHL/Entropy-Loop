@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using System.Collections.Generic;
 
 public class SettingsScript : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class SettingsScript : MonoBehaviour
 
     [Header("GRAPHIC")]
     [SerializeField] TMP_Dropdown graphicsDropdown;
+    [SerializeField] TMP_Dropdown resolutionDropdown;
 
     [Header("AUDIO")]
     [SerializeField] Slider MasterVolume;
@@ -23,6 +25,9 @@ public class SettingsScript : MonoBehaviour
 
     [Header("SYSTEM")]
     [SerializeField] TextMeshProUGUI logFilePath;
+
+    private Resolution[] resolutions;
+    private const string RESOLUTION_KEY = "resolution_index";
 
     void Awake()
     {
@@ -47,6 +52,8 @@ public class SettingsScript : MonoBehaviour
             if (fontScaleSlider != null)
                 fontScaleSlider.value = AccessibilityManager.Instance.FontScale;
         }
+
+        SetupResolutionDropdown();
     }
 
     /* AUDIO */
@@ -76,13 +83,54 @@ public class SettingsScript : MonoBehaviour
     {
     }
 
+    void SetupResolutionDropdown()
+    {
+        if (resolutionDropdown == null) return;
+
+        resolutions = Screen.resolutions;
+        resolutionDropdown.ClearOptions();
+
+        List<string> options = new List<string>();
+        int currentIndex = 0;
+
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            int hz = Mathf.RoundToInt((float)resolutions[i].refreshRateRatio.value);
+            string option = $"{resolutions[i].width} x {resolutions[i].height} @ {hz}Hz";
+            options.Add(option);
+
+            if (resolutions[i].width == Screen.currentResolution.width &&
+                resolutions[i].height == Screen.currentResolution.height)
+                currentIndex = i;
+        }
+
+        resolutionDropdown.AddOptions(options);
+
+        int savedIndex = PlayerPrefs.GetInt(RESOLUTION_KEY, currentIndex);
+        savedIndex = Mathf.Clamp(savedIndex, 0, resolutions.Length - 1);
+        resolutionDropdown.value = savedIndex;
+        resolutionDropdown.RefreshShownValue();
+    }
+
+    public void ChangeResolution()
+    {
+        if (resolutions == null || resolutionDropdown == null) return;
+
+        Resolution res = resolutions[resolutionDropdown.value];
+        Screen.SetResolution(res.width, res.height, Screen.fullScreenMode);
+
+        PlayerPrefs.SetInt(RESOLUTION_KEY, resolutionDropdown.value);
+        PlayerPrefs.Save();
+
+        BugTracker.Info($"[Settings] Résolution changée : {res.width}x{res.height}.");
+    }
+
     /* ACCESSIBILITY */
     public void ChangeColorBlindMode()
     {
         if (AccessibilityManager.Instance != null)
             AccessibilityManager.Instance.SetColorBlindMode((ColorBlindFilter.Mode)colorBlindDropdown.value);
     }
-
     public void ChangeFontScale()
     {
         BugTracker.Info($"[Settings] ChangeFontScale appelé : {fontScaleSlider.value}");
@@ -102,7 +150,6 @@ public class SettingsScript : MonoBehaviour
     {
         BugTracker.ResetBugTrackerFile();
     }
-
     public void ResetSaveFile()
     {
         SaveSystem.ResetFile();
