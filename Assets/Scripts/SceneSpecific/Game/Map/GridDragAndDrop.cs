@@ -81,10 +81,15 @@ public class GridDragAndDrop : MonoBehaviour
                 if (int.Parse(list[2]) < 4) {
                     selectedUnit.position = new Vector3(hit.collider.gameObject.transform.position.x, 2f, hit.collider.gameObject.transform.position.z);
                     selectedUnit.GetComponent<Units>().SaveNewPosition();
+                    selectedRigidbody.isKinematic = false;
+                    selectedBoxCollider.enabled = true;
+                    selectedUnit = null;
+                    return;
                 } else
                     selectedUnit.position = new Vector3(originalPosition.x, 2f, originalPosition.z);
             }
         }
+        selectedUnit.position = new Vector3(originalPosition.x, 2f, originalPosition.z);
         selectedRigidbody.isKinematic = false;
         selectedBoxCollider.enabled = true;
         selectedUnit = null;

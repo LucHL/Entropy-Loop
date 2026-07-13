@@ -14,13 +14,13 @@ public class ColorBlindFilter : MonoBehaviour
         if (shader != null)
             material = new Material(shader);
         else
-            BugTracker.Error("[ColorBlind] Shader 'Hidden/ColorBlindFilter' introuvable !");
+            BugTracker.Error("[ColorBlind] Shader 'Hidden/ColorBlindFilter' not found !");
     }
 
     public void SetMode(Mode mode)
     {
         currentMode = mode;
-        BugTracker.Info($"[ColorBlind] Mode changé : {mode}.");
+        BugTracker.Info($"[ColorBlind] Change mode : {mode}.");
     }
 
     void OnRenderImage(RenderTexture src, RenderTexture dest)

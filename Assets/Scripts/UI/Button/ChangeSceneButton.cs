@@ -16,10 +16,10 @@ public class ChangeSceneButton : MonoBehaviour
     private void ChangeScene()
     {
         if (sceneName == "Game") {
-            BugTracker.Info("[Change Scene] loading next level.");
+            BugTracker.Info("[ChangeScene] loading next level.");
             GameManager.instance.SetNextLevel();
         } else {
-            BugTracker.Info("[Change Scene] Moving to 'Menu'.");
+            BugTracker.Info("[ChangeScene] Moving to 'Menu'.");
             LoadingScene.Instance.ChangeScene(sceneName);
         }
     }

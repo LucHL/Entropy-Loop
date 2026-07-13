@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.6-alpha] - 2026-
+### Added
+- Accessibility: Color blind mode
+- Accessibility: Change text size
+
+### Fixed
+- lock level until the player finish the one before
+- drag and drop on the map, other than the tile or red tile
+- when a level end, the next level couldn't load the chapter
+
+
 ## [0.1.5-alpha] - 2026-07-11
 ### Added
 - Player can now choose his deck
