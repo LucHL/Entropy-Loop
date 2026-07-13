@@ -14,6 +14,9 @@ public class LevelButtonUI : MonoBehaviour
 
         if (levelData.currentlevel <= GameManager.instance.maxLevelFinish)
             levelText.color = new Color32(81, 255, 0, 255);
+
+        if (levelData.currentlevel == GameManager.instance.maxLevelReach)
+            levelText.color = new Color32(159, 76, 221, 255);
     }
 
     public void OnClick()
@@ -25,6 +28,10 @@ public class LevelButtonUI : MonoBehaviour
             return;
         }
 
-        LoadingScene.Instance.LoadGame();
+        bool tuto = false;
+        if (levelData.currentlevel == 1)
+            tuto = true;
+
+        LoadingScene.Instance.LoadGame(tuto);
     }
 }

@@ -2,13 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.4-alpha] - 2026-06-
+## [0.1.5-alpha] - 2026-07-11
+### Added
+- Player can now choose his deck
+- save player data and remove then in settings window
+- number of card remaining in the deck
+- add color for the next level
+- if the player hasn't selected a deck when starting a level, a window will force the player to choose one.
+- update README
+- to unlock decks, the player must complete levels
+- story: chapter 1-1 & image for Keronas & background
+
+### Fixed
+- Each click on the deck remove a card even if the handslot is full
+- Game freeze when you start a fight without any player units
+- attackRange now depend on the chess tile size
+- tutorial is now the level 1
+- when an entity fails to spawn, we continue the spawn iteration instead of stopping it
+- the card in the deck in the tutorial level is now define and not randomn
+- capacity, passif and effect are now the same as the card
+
+
+## [0.1.4-alpha] - 2026-06-07
 ### Added
 - story system with json file
 - log system with UI button
 - HP bar with different color for the player and enemy
 - new level & level is now handle with a json file
-- spawn algo for enemy, with differents trategy
+- spawn algo for enemy, with different strategy
 - use of json for the level generation
 - The level finish are in green
 

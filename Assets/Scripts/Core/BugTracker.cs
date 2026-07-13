@@ -46,10 +46,9 @@ public static class BugTracker
 
     public static void ResetBugTrackerFile()
     {
-        string path = Path.Combine(Application.persistentDataPath, "Logs");
-        if (!Directory.Exists(path))
-            Directory.Delete(path);
-        
+        if (!Directory.Exists(logPath))
+            File.Delete(logPath);
+
         Initialize();
     }
 

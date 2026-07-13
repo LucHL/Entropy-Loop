@@ -51,7 +51,7 @@ public class GridCell : MonoBehaviour
                 return;
             }
 
-            SpawnUnit(); // TODO gérer que la position soit pas dans le camp enemy
+            SpawnUnit();
             mana.SpendMana(cost);
 
             HandSlot slot = card.GetComponent<HandSlot>();
@@ -96,7 +96,7 @@ public class GridCell : MonoBehaviour
                 // unitPrefab.GetComponent<NavMeshAgent>().enabled = false;
 
                 spawnedUnit = Instantiate(unitPrefab, Vector3.Scale(transform.position, new(1f, 1f, 1f)), Quaternion.identity);
-                // spawnedUnit.GetComponentInChildren<Units>().enabled = false;
+                spawnedUnit.GetComponentInChildren<EntityTeam>().ChangeTeam(UnitsTeam.Player);
 
                 GameLoopManager.instance.RegisterUnit(spawnedUnit, true);
 

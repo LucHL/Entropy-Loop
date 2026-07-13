@@ -69,6 +69,9 @@ public class Units : MonoBehaviour
     protected int rewardValue = 10; // Reward System
     protected bool EntityHasCapacity = false;
 
+    protected int protectedHits = 0;
+    protected float passifTimer = 0f;
+
     public virtual UnitsClass unitsClass => UnitsClass.Dps;
 
 
@@ -138,6 +141,7 @@ public class Units : MonoBehaviour
 
         SaveNewPosition();
 
+        team = GetComponentInChildren<EntityTeam>().GetTeam();
         GetComponentInChildren<ChangeHealthBarColor>().ChangeColor(team);
         if (team == UnitsTeam.Enemy)
             enemyTag = "Champion";
@@ -146,7 +150,11 @@ public class Units : MonoBehaviour
         
         unitsRigidbody.isKinematic = false;
 
+        attackRange *= VoidMapGeneratorGPU.instance.chessTile;
+
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
+
+        capacityPoints = 0f;
     }
 
     public void ResetUnit()
@@ -195,6 +203,8 @@ public class Units : MonoBehaviour
     {
         if (!isGameRunning)
             return;
+        
+        Passif();
 
         attackTimer -= Time.deltaTime;
 
@@ -222,11 +232,13 @@ public class Units : MonoBehaviour
                 targetUnitsComponent = target.GetComponent<Units>();
         }
 
+        // Debug.Log($"{name} | HasCapacity={EntityHasCapacity} | Capacity={capacityPoints}/{capacityTriggerMax}");
+
         if (EntityHasCapacity && capacityPoints >= capacityTriggerMax) {
             capacityPoints = 0;
 
             BugTracker.Info("'"+name+"' capacity points is full, Capacity() activation.");
-            GameLogManager.Instance.AddLog("'"+name.Split("(")[0] +"' activated Capacity");
+            //GameLogManager.Instance.AddLog("'"+name.Split("(")[0] +"' activated Capacity");
 
             Capacite();
         }
@@ -327,9 +339,17 @@ public class Units : MonoBehaviour
     /// INFO: If the damage is negative, the unit will be healed
     /// </summary>
     /// <param name="damage">If the damage is negative, the unit will be healed</param>
-    public void TakeDamage(float damage) {
+    public void TakeDamage(float damage, bool tDMG = false) {
         if (hpSlider == null)
             BugTracker.Error("'" + gameObject.name + "' has a hpSlider null !");
+        // if true DMG ?
+        if (protectedHits > 0 && damage > 0)
+        {
+            protectedHits--;
+            DamagePopupManager.instance.Init(transform, 0);
+            BugTracker.Info("'" + name + "' blocked a hit. Remaining: " + protectedHits);
+            return;
+        }
 
         float reduction = defense * 0.05f;
         reduction = Mathf.Clamp(reduction, 0f, 1f);
@@ -339,7 +359,6 @@ public class Units : MonoBehaviour
         DamagePopupManager.instance.Init(transform, damage);
 
         GainCapacityPoints(reduction * 10 / 2);
-
         hp -= damage;
         hpSlider.value = hp / totalHealth;
 
@@ -347,12 +366,29 @@ public class Units : MonoBehaviour
             Die();
     }
 
+    // TrueDmg is a term used when dmg have effect to go through DEF, reduction dmg buff or redirection dmg effect.
+    // TrueDmg apply dmg directly on target attacked unit HP.
+    public void TakeTrueDMG(float damage)
+    {
+        if (hpSlider == null)
+            BugTracker.Error("'" + gameObject.name + "' has a hpSlider null !");
+        
+        DamagePopupManager.instance.Init(transform, damage);
+
+        hp -= damage;
+        hpSlider.value = hp / totalHealth;
+
+        if (hp <= 0)
+            Die();
+
+    }
+
     public virtual void Attack()
     {
         if (target == null)
             return;
 
-        GainCapacityPoints(damagePerAttack);
+        GainCapacityPoints(damagePerAttack * 3); //rework forumla for the amount of point earned
 
         target.GetComponent<Units>().TakeDamage(damagePerAttack);
         PlaySound(attackSound);
@@ -420,7 +456,10 @@ public class Units : MonoBehaviour
 
     private void GainCapacityPoints(float pts)
     {
-        capacityPoints += pts;
+        if (capacityPoints < 100)
+        {
+            capacityPoints += pts;
+        }
     }
 
     public void SaveNewPosition()

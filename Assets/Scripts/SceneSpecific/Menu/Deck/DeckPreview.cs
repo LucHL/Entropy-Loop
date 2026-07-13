@@ -17,17 +17,22 @@ public class DeckPreview : MonoBehaviour
 
     public void Setup(DeckData deck, DeckSelectionManager mgr)
     {
+        TextMeshProUGUI text = GetComponentInChildren<TextMeshProUGUI>();
+        if (deck.unlockLevel > GameManager.instance.maxLevelFinish) {
+            text.text = "unlock level " + deck.unlockLevel.ToString();
+            selectButton.interactable = false;
+        } else
+            text.gameObject.SetActive(false);
+
         data = deck;
         manager = mgr;
 
         if (deckNameText != null)
             deckNameText.text = deck.deckName;
 
-        // Commander
         if (commanderImage != null && deck.commander != null)
             commanderImage.sprite = deck.commander.cardImage;
 
-        // 2 cartes aléatoires différentes
         SetRandomCards();
 
         selectButton.onClick.AddListener(() => manager.SelectDeck(data));

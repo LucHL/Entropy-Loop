@@ -42,6 +42,7 @@ public class ShopCard : MonoBehaviour
         {
             deckManager?.deck.Add(data);
             EventSystem.current.SetSelectedGameObject(null);
+            NumberOfCardRemaining.instance.UpdateNumber(NumberOfCardRemaining.instance._remaining + 1);
             BugTracker.Info($"[ShopCard] '{data.cardName}' achetée. Deck: {deckManager?.deck.Count} cartes.");
         }
         else

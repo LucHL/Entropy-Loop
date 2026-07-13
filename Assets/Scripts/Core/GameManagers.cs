@@ -37,6 +37,9 @@ public class GameManager : MonoBehaviour
         if (instance == null) {
             instance = this;
             DontDestroyOnLoad(gameObject);
+
+            LoadLevelsConfig();
+
         } else if (instance != this)
             Destroy(gameObject);
     }
@@ -56,6 +59,19 @@ public class GameManager : MonoBehaviour
     }
 
     // ---- LEVELS ----
+
+    void LoadLevelsConfig()
+    {
+        TextAsset jsonFile = Resources.Load<TextAsset>("Levels/levels_config");
+
+        if (jsonFile != null) {
+            LevelsWrapper wrapper = JsonUtility.FromJson<LevelsWrapper>(jsonFile.text);
+            alllevelData = wrapper.levels;
+        } else
+            BugTracker.Critical("Failed to load levels configs from 'levels_config.json'.");
+
+        SaveSystem.Load();
+    }
 
     public void SaveLevelConfig(LevelData levelData)
     {
@@ -77,7 +93,10 @@ public class GameManager : MonoBehaviour
         // next level
         int index = Array.IndexOf(alllevelData, currentLevelData);
 
-        maxLevelFinish = currentLevelData.currentlevel;
+        if (currentLevelData.currentlevel > maxLevelFinish) {
+            maxLevelFinish = currentLevelData.currentlevel;
+            maxLevelReach = currentLevelData.currentlevel + 1;
+        }
 
         index+= 1;
         if (index >= alllevelData.Length) {
@@ -89,6 +108,9 @@ public class GameManager : MonoBehaviour
 
         BugTracker.Info("Loading level: " + currentLevelData.currentlevel + ".");
         SetStrategy();
+
+        SaveSystem.Save();
+
         LoadingScene.Instance.ChangeScene("Game");
     }
 

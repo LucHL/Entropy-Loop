@@ -6,6 +6,7 @@ public class SpawnAlgoData
     public Strategy[] spawnStartegy;
     public string[] deck;
     public int[] manaCost;
+    public string difficulty;
 }
 
 [Serializable]
