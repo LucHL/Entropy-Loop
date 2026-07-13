@@ -159,7 +159,6 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     public void SetPhase(int newPhase)
     {
         phase = newPhase;
-        StartCoroutine(GenerateAsync());
     }
 
     System.Collections.IEnumerator GenerateAsync()

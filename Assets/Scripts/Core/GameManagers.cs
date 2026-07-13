@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     public void SaveLevelConfig(LevelData levelData)
     {
-        BugTracker.Info("Save current level data, current level: " + levelData.currentlevel + ".");
+        BugTracker.Info("[GameManager] Save current level data, current level: " + levelData.currentlevel + ".");
         currentLevelData = levelData;
         SetStrategy();
 
@@ -100,16 +100,21 @@ public class GameManager : MonoBehaviour
 
         index+= 1;
         if (index >= alllevelData.Length) {
-            BugTracker.Info("No level available, end of the game.");
+            BugTracker.Info("[GameManager] No level available, end of the game.");
             LoadingScene.Instance.ChangeScene("Menu");
             return;
         }
         currentLevelData = alllevelData[index];
 
-        BugTracker.Info("Loading level: " + currentLevelData.currentlevel + ".");
+        BugTracker.Info("[GameManager] Loading level: " + currentLevelData.currentlevel + ".");
         SetStrategy();
 
         SaveSystem.Save();
+
+        if (currentLevelData.chaptersBeforeGame != "") {
+            LoadingScene.Instance.LoadStory();
+            return;
+        }
 
         LoadingScene.Instance.ChangeScene("Game");
     }
@@ -125,8 +130,8 @@ public class GameManager : MonoBehaviour
         nbrSubLevelTotal = spawnAlgoData.spawnStartegy.Length - 1;
 
         nbrSubLevelRemaining = nbrSubLevelTotal;
-        BugTracker.Info("Number total of sub levels: " + nbrSubLevelTotal + ".");
-        BugTracker.Info("Number remaining of sub levels: " + nbrSubLevelRemaining + ".");
+        BugTracker.Info("[GameManager] Number total of sub levels: " + nbrSubLevelTotal + ".");
+        BugTracker.Info("[GameManager] Number remaining of sub levels: " + nbrSubLevelRemaining + ".");
     }
 
     private void SetNextStrategy()
@@ -137,6 +142,6 @@ public class GameManager : MonoBehaviour
         currentEnemyDeck = spawnAlgoData.deck[nbrSubLevelTotal - nbrSubLevelRemaining];
         currentManaCost = spawnAlgoData.manaCost[nbrSubLevelTotal - nbrSubLevelRemaining];
 
-        BugTracker.Info("Loading next sub levels, remaining: " + (nbrSubLevelRemaining - 1) + ".");
+        BugTracker.Info("[GameManager] Loading next sub levels, remaining: " + (nbrSubLevelRemaining - 1) + ".");
     }
 }

@@ -73,6 +73,15 @@ public class DeckManager : MonoBehaviour
         }
     }
 
+    public void AddCardInDeck(CardData newCard)
+    {
+        if (!newCard)
+            return;
+
+        deck.Add(newCard);
+        UpdateNbrCardInDeck();
+    }
+
     void UpdateNbrCardInDeck()
     {
         GameModeManager.nbrCardInDeck = deck.Count + handSlots.Count();
