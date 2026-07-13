@@ -22,7 +22,6 @@ public class AccessibilityManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         LoadSettings();
-        Debug.Log("[Accessibility] AccessibilityManager initialisé !");
     }
 
     void OnEnable()
@@ -44,7 +43,7 @@ public class AccessibilityManager : MonoBehaviour
     {
         ColorBlindMode = (ColorBlindFilter.Mode)PlayerPrefs.GetInt(COLORBLIND_KEY, 0);
         FontScale = PlayerPrefs.GetFloat(FONTSCALE_KEY, 1f);
-        BugTracker.Info($"[Accessibility] Réglages chargés : daltonisme={ColorBlindMode}, police={FontScale}.");
+        BugTracker.Info($"[Accessibility] Rï¿½glages chargï¿½s : daltonisme={ColorBlindMode}, police={FontScale}.");
     }
 
     public void SetColorBlindMode(ColorBlindFilter.Mode mode)
@@ -70,6 +69,6 @@ public class AccessibilityManager : MonoBehaviour
         if (filter != null)
             filter.SetMode(ColorBlindMode);
         else
-            BugTracker.Warning("[Accessibility] Aucun ColorBlindFilter trouvé sur la caméra principale.");
+            BugTracker.Warning("[Accessibility] Aucun ColorBlindFilter trouvï¿½ sur la camï¿½ra principale.");
     }
 }

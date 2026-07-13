@@ -21,8 +21,8 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-            ToggleCamera();
+        // if (Input.GetKeyDown(KeyCode.C))
+        //     ToggleCamera();
     }
 
     // ── API publique ───────────────────────────────────────────────────────

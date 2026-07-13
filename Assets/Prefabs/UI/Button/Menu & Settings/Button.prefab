@@ -147,7 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2d868b623b0cac3ac839c3d2b0ffbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 7758087871126081271}
   sprite:
   - {fileID: 577619177, guid: 99511cdaf8a92891dae8b6692a7aa074, type: 3}
   - {fileID: -383324517, guid: 99511cdaf8a92891dae8b6692a7aa074, type: 3}
@@ -178,6 +177,7 @@ GameObject:
   - component: {fileID: 3997485754133542671}
   - component: {fileID: 6144754673407040343}
   - component: {fileID: 1582407549590160074}
+  - component: {fileID: 3404473807181686927}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -270,6 +270,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -303,3 +304,15 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3404473807181686927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6237343811580286564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06fdf43338cdd104182836f01f9a98a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScalableText

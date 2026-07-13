@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -51,7 +52,9 @@ public class GridCell : MonoBehaviour
                 return;
             }
 
-            SpawnUnit();
+            if (!SpawnUnit())
+                return;
+
             mana.SpendMana(cost);
 
             HandSlot slot = card.GetComponent<HandSlot>();
@@ -84,12 +87,20 @@ public class GridCell : MonoBehaviour
         return false;
     }
 
-    private void SpawnUnit()
+    private bool SpawnUnit()
     {
-        if (spawnedUnit == null)
-        {
+        if (spawnedUnit == null) {
             GameObject unitPrefab = GameLoopManager.instance.GetSelectedUnitPrefab();
+
             if (unitPrefab != null) {
+
+                if (gameObject.tag.StartsWith("Tile")) {
+                    String []list = gameObject.name.Split("_");
+
+                    if (int.Parse(list[2]) >= 4)
+                        return false;
+                }
+
                 //spawnedUnit = Instantiate(unitPrefab, position, Quaternion.identity);
                 unitPrefab.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
@@ -101,9 +112,13 @@ public class GridCell : MonoBehaviour
                 GameLoopManager.instance.RegisterUnit(spawnedUnit, true);
 
                 BugTracker.Info("Unit '"+unitPrefab.name+"' spawned.");
+                return true;
             } else {
                 BugTracker.Error("Missing model (Gidcell.cs/SpawnUnit).");
+                return false;
             }
         }
+
+        return false;
     }
 }

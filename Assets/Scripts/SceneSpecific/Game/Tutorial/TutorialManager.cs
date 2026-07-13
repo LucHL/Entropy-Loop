@@ -38,6 +38,7 @@ public class TutorialManager : MonoBehaviour
         if (tutorialSteps.Count == currentStep + 1) {
             tutorialSteps[currentStep].SetActive(false);
             isTutorial = false;
+            GameModeManager.isTutorial = false;
 
             BugTracker.Info("[Tutorial] Tutorial finish.");
             return;

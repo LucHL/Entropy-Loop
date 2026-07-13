@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class LevelButtonUI : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class LevelButtonUI : MonoBehaviour
 
         if (levelData.currentlevel == GameManager.instance.maxLevelReach)
             levelText.color = new Color32(159, 76, 221, 255);
+
+        if (levelData.currentlevel > GameManager.instance.maxLevelFinish + 1)
+            GetComponent<Button>().interactable = false;
     }
 
     public void OnClick()
