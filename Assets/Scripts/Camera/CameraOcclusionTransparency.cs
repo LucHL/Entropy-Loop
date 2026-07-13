@@ -9,14 +9,14 @@ public class CameraOcclusionTransparency : MonoBehaviour
 
     [Header("Arène")]
     public Transform arenaCenter;      // Centre de l'arène — assigner dans l'Inspector
-    public float     arenaRadius = 5f; // Rayon de l'arène (couvre toute la grille)
+    public float     arenaRadius = 2f; // Rayon de l'arène (couvre toute la grille)
 
     [Header("Transparence")]
     [Range(0f, 1f)] public float fadeAlpha = 0.2f;
     public float fadeSpeed = 8f;
 
     [Header("Détection")]
-    public float detectionRadius = 2f; // Rayon autour de chaque arbre
+    public float detectionRadius = 4.8f; // Rayon autour de chaque arbre
 
     // ── État interne ──────────────────────────────────────────────────
     private class OccluderState

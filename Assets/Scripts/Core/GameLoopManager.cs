@@ -33,7 +33,16 @@ public class GameLoopManager : MonoBehaviour
 
     void Start()
     {
-        VoidMapGeneratorGPU.instance.SetSeed(VoidMapGeneratorGPU.instance.seed);
+        // if (GameManager.instance.currentLevelData.currentlevel < 3)
+        //     VoidMapGeneratorGPU.instance.SetPhase(0);
+        // if (GameManager.instance.currentLevelData.currentlevel == 3)
+        //     VoidMapGeneratorGPU.instance.SetPhase(1);
+        // if (GameManager.instance.currentLevelData.currentlevel == 4)
+        //     VoidMapGeneratorGPU.instance.SetPhase(2);
+        // if (GameManager.instance.currentLevelData.currentlevel == 5)
+        //     VoidMapGeneratorGPU.instance.SetPhase(3);
+        VoidMapGeneratorGPU.instance.SetSeed(VoidMapGeneratorGPU.instance.seed + GameManager.instance.currentLevelData.currentlevel);
+
 
         LevelInformationFadeTextManager.instance.DisplayTextWithFade(
             GameManager.instance.currentLevelData.currentlevel.ToString(),
