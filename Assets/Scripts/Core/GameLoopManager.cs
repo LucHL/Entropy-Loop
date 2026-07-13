@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
@@ -22,6 +23,7 @@ public class GameLoopManager : MonoBehaviour
 
     public bool isGameRunning = false;
     private List<GameObject> playerUnits = new();
+    private List<CardData> playerCardData = new();
     private List<GameObject> enemyUnits = new();
 
     void Awake()
@@ -65,8 +67,10 @@ public class GameLoopManager : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit)) {
                 GameObject clickedObject = hit.collider.gameObject;
 
-                if (clickedObject.GetComponentInChildren<EntityTeam>() != null && clickedObject.GetComponentInChildren<EntityTeam>().CompareTag("Champion"))
+                if (clickedObject.GetComponentInChildren<EntityTeam>() != null
+                && clickedObject.GetComponentInChildren<EntityTeam>().CompareTag("Champion")) {
                     RemoveUnit(clickedObject);
+                }
             }
         }
     }
@@ -77,18 +81,30 @@ public class GameLoopManager : MonoBehaviour
             playerUnits.Add(unit);
         else
             enemyUnits.Add(unit);
-        
+
         BugTracker.Info("New entity add in the list: '" + unit.name + "'.");
     }
 
     private void RemoveUnit(GameObject unit)
     {
+        CardData card = null;
+        foreach (CardData cardData in playerCardData) {
+            if (cardData != null && cardData.unitPrefab != null) {
+                if (unit.name.StartsWith(cardData.unitPrefab.name)) {
+                    card = cardData;
+                    break;
+                }
+            }
+        }
+
         if (playerUnits.Contains(unit)) {
             playerUnits.Remove(unit);
             ManaManager.instance.AddMana(unit.GetComponent<Units>().manaCost);
             Destroy(unit);
 
             BugTracker.Info("'" + unit.name + "' has been remove from the playerUnits list.");
+            DeckManager.instance.AddCardInDeck(card);
+            playerCardData.Remove(card);
             return;
         }
         if (enemyUnits.Contains(unit)) {
@@ -96,6 +112,7 @@ public class GameLoopManager : MonoBehaviour
             Destroy(unit);
 
             BugTracker.Info("'" + unit.name + "' has been remove from the enemyUnits list.");
+            playerCardData.Remove(card);
             return;
         }
     }
@@ -216,6 +233,8 @@ public class GameLoopManager : MonoBehaviour
 
     public GameObject GetSelectedUnitPrefab()
     {
+        playerCardData.Add(selectedCard.cardData);
+
         return selectedCard != null ? selectedCard.cardData.unitPrefab : null;
     }
 }
