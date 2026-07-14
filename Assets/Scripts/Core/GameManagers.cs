@@ -112,6 +112,7 @@ public class GameManager : MonoBehaviour
         SaveSystem.Save();
 
         if (currentLevelData.chaptersBeforeGame != "") {
+            nextStory = currentLevelData.chaptersBeforeGame;
             LoadingScene.Instance.LoadStory();
             return;
         }

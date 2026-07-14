@@ -2,7 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.6-alpha] - 2026-
+## [0.1.7-alpha] - 2026-07-14
+### Added
+
+### Fixed
+- the level 2 story didn't load
+- load shader colorblind for build
+- change camera transparency for build
+
+
+## [0.1.6-alpha] - 2026-07-14
 ### Added
 - Accessibility: Color blind mode
 - Accessibility: Change text size
