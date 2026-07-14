@@ -2,8 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.7-alpha] - 2026-07-14
-### Added
+## HOTFIX [0.1.7-alpha] - 2026-07-14
 
 ### Fixed
 - the level 2 story didn't load
