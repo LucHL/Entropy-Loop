@@ -7,7 +7,7 @@
         "spawnAlgo": {
             "spawnStartegy": [0],
             "deck": [""],
-            "manaCost": [9],
+            "manaCost": [3],
             "difficulty": "easy"
         }
     },
@@ -60,9 +60,9 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "spawnAlgo": {
-            "spawnStartegy": [3, 3, 3],
+            "spawnStartegy": [3],
             "deck": [""],
-            "manaCost": [12, 15, 18],
+            "manaCost": [12],
             "difficulty": "hard"
         }
     },
