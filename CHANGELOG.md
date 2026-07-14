@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 - drag and drop on the map, other than the tile or red tile
 - when a level end, the next level couldn't load the chapter
 - tree in front of the camera is now blur
+- activate map generation with GPU
+- settings: change window size & graphic quality
 
 
 ## [0.1.5-alpha] - 2026-07-11
