@@ -21325,7 +21325,7 @@ MonoBehaviour:
   islandMaxHeight: 8
   islandResolution: 128
   islandVisualResolution: 200
-  useGPUIslandVisual: 0
+  useGPUIslandVisual: 1
   buildUnderside: 1
   undersideDepth: 14
   undersideResolution: 80
