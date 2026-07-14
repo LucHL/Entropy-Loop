@@ -22,7 +22,7 @@ public class LevelSelectManager : MonoBehaviour
 
             RectTransform rt = btn.GetComponent<RectTransform>();
 
-            rt.anchoredPosition = new Vector2((i - 1) * 200f, 0f);
+            rt.anchoredPosition = new Vector2((i - 1) * 200f + 200, 0f);
 
             LevelButtonUI ui = btn.GetComponent<LevelButtonUI>();
 

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Attache ce script à la gameplay camera.
-// Les arbres qui passent devant l'arène deviennent transparents automatiquement.
 public class CameraOcclusionTransparency : MonoBehaviour
 {
     public static CameraOcclusionTransparency instance;
@@ -141,32 +139,50 @@ public class CameraOcclusionTransparency : MonoBehaviour
         for (int i = 0; i < originals.Length; i++)
         {
             faded[i] = new Material(originals[i]);
-            SetTransparentMode(faded[i]);
+            
+            Shader transparentShader = Shader.Find("Legacy Shaders/Transparent/Diffuse");
+            if (transparentShader == null) transparentShader = Shader.Find("Sprites/Default");
+            
+            if (transparentShader != null)
+            {
+                faded[i].shader = transparentShader;
+            }
         }
         return faded;
     }
 
-    void SetTransparentMode(Material m)
-    {
-        // URP
-        if (m.HasProperty("_Surface"))
-        {
-            m.SetFloat("_Surface", 1f);
-            m.SetFloat("_AlphaClip", 0f);
-            m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-        }
-        // Built-in Standard
-        if (m.HasProperty("_Mode"))
-            m.SetFloat("_Mode", 3f);
+    // Material[] CreateFadedMaterials(Material[] originals)
+    // {
+    //     Material[] faded = new Material[originals.Length];
+    //     for (int i = 0; i < originals.Length; i++)
+    //     {
+    //         faded[i] = new Material(originals[i]);
+    //         SetTransparentMode(faded[i]);
+    //     }
+    //     return faded;
+    // }
 
-        m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        m.SetInt("_ZWrite", 0);
-        m.DisableKeyword("_ALPHATEST_ON");
-        m.EnableKeyword("_ALPHABLEND_ON");
-        m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        m.renderQueue = 3000;
-    }
+    // void SetTransparentMode(Material m)
+    // {
+    //     // URP
+    //     if (m.HasProperty("_Surface"))
+    //     {
+    //         m.SetFloat("_Surface", 1f);
+    //         m.SetFloat("_AlphaClip", 0f);
+    //         m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+    //     }
+    //     // Built-in Standard
+    //     if (m.HasProperty("_Mode"))
+    //         m.SetFloat("_Mode", 3f);
+
+    //     m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+    //     m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+    //     m.SetInt("_ZWrite", 0);
+    //     m.DisableKeyword("_ALPHATEST_ON");
+    //     m.EnableKeyword("_ALPHABLEND_ON");
+    //     m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+    //     m.renderQueue = 3000;
+    // }
 
     void ApplyAlpha(OccluderState state)
     {
