@@ -1415,30 +1415,30 @@ public class VoidMapPropsGPU : MonoBehaviour
         Transform g = Group("Clouds", parent);
         for (int i = 0; i < cloudCount; i++)
         {
-            float ang = R01() * Mathf.PI * 2f;
+            float ang = R01() * Mathf.PI * 5f;
             float rad = R01() * (gen.islandRadius + 12f);
-            float y   = Mathf.Lerp(16f, 27f, R01());
+            float y = Mathf.Lerp(23f, 29f, R01());
             Transform cloud = Pivot("Cloud", g,
                 new Vector3(Mathf.Cos(ang) * rad, y, Mathf.Sin(ang) * rad), R01() * 360f);
 
-            int   puffs = 3 + (int)(R01() * 3f);
+            int   puffs = 4 + (int)(R01() * 5f);
             float baseS = Mathf.Lerp(2.2f, 4.2f, R01());
             for (int p = 0; p < puffs; p++)
             {
                 float s = baseS * Mathf.Lerp(0.45f, 1f, R01());
-                PrimLocal(PrimitiveType.Cube, "CloudPuff", cloud,
-                          new Vector3((p - puffs * 0.5f) * baseS * 0.42f + (R01() - 0.5f) * 0.8f,
-                                      (R01() - 0.5f) * 0.7f,
-                                      (R01() - 0.5f) * 1.4f),
-                          new Vector3(s, s * 0.30f, s * 0.62f),
-                          Quaternion.identity, matCloud);
+                PrimLocal(PrimitiveType.Sphere, "CloudPuff", cloud,
+          new Vector3((p - puffs * 0.5f) * baseS * 0.42f + (R01() - 0.5f) * 0.8f,
+                      (R01() - 0.5f) * 0.7f,
+                      (R01() - 0.5f) * 1.4f),
+          new Vector3(s, s * 0.30f, s * 0.62f),
+          Quaternion.identity, matCloud);
             }
 
             VoidPropFloat fl = cloud.gameObject.AddComponent<VoidPropFloat>();
             fl.bobAmplitude   = 0.5f;
             fl.bobSpeed       = 0.12f;
             fl.driftDir       = new Vector3(Mathf.Cos(ang + 1.6f), 0f, Mathf.Sin(ang + 1.6f));
-            fl.driftAmplitude = Mathf.Lerp(4f, 9f, R01());
+            fl.driftAmplitude = Mathf.Lerp(2f, 4f, R01());
             fl.driftSpeed     = 0.05f;
         }
     }
