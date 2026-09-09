@@ -6260,6 +6260,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialClickCatcher
   targetButton: {fileID: 484946708}
+  isLeftClick: 0
+  isRightClick: 1
 --- !u!114 &557525058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6303,19 +6305,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 557525059}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1038263173}
-        m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
-        m_MethodName: NextStep
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &557525059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9341,6 +9331,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialClickCatcher
   targetButton: {fileID: 949528816}
+  isLeftClick: 1
+  isRightClick: 1
 --- !u!114 &851736266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22911,6 +22903,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialClickCatcher
   targetButton: {fileID: 1625698874}
+  isLeftClick: 1
+  isRightClick: 1
 --- !u!114 &2052798755
 MonoBehaviour:
   m_ObjectHideFlags: 0
