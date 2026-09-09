@@ -22,7 +22,7 @@ public class GameLoopManager : MonoBehaviour
     [SerializeField] GameObject settings;
 
     public bool isGameRunning = false;
-    private List<GameObject> playerUnits = new();
+    public List<GameObject> playerUnits = new();
     private List<CardData> playerCardData = new();
     private List<GameObject> enemyUnits = new();
 

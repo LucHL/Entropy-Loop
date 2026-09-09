@@ -18642,6 +18642,7 @@ MonoBehaviour:
   manaManager: {fileID: 2123759539}
   settings: {fileID: 1722673971}
   isGameRunning: 0
+  playerUnits: []
 --- !u!4 &1623300422
 Transform:
   m_ObjectHideFlags: 0
