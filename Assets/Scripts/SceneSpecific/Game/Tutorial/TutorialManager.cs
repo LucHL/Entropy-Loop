@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Purchasing;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -44,6 +45,11 @@ public class TutorialManager : MonoBehaviour
             return;
         }
 
+        if (CheckEntitySpawn()) {
+            FloatingTextManager.instance.Show("Aucune créature le terrain !");
+            return;
+        }
+
         tutorialSteps[currentStep].SetActive(false);
         currentStep++;
         tutorialSteps[currentStep].SetActive(true);
@@ -75,5 +81,18 @@ public class TutorialManager : MonoBehaviour
         }
 
         btnIncrementation += 1;
+    }
+
+    public bool CheckEntitySpawn()
+    {
+        if (currentStep != 8) // poser une carte sur le board
+            return false;
+
+        int isPlayerChampionSpawn = GameLoopManager.instance.playerUnits.Count();
+
+        if (isPlayerChampionSpawn > 0)
+            return false;
+
+        return true;
     }
 }
