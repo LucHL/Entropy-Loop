@@ -8125,7 +8125,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Voici votre barre de Mana qui vous permet de poser des unit\xE9s pour
-    affronter vos ennemies"
+    affronter vos ennemis"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11099,8 +11099,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Voici votre commandant. SI vous faire clique droit dessus vous pourrez
-    voir plus d'information.
+  m_text: Voici votre commandant. Si vous faites clic droit dessus vous pourrez voir
+    plus d'information.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11251,7 +11251,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Vous avez ici l'explication des capacit\xE9s de votre cr\xE9ature et ses
-    statistique (D\xE9gat, PV, Vitesse d'attaque et d\xE9fense)."
+    statistiques (D\xE9gat, PV, Vitesse d'attaque et d\xE9fense)."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -16038,8 +16038,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Vous pouvez maintenant s\xE9lectionner un carte et cliquer sur une case.
-    Clique droit vous permet de r\xE9cupp\xE9rer la cr\xE9ature que vous avez pos\xE9."
+  m_text: "Vous pouvez maintenant s\xE9lectionner une carte et cliquer sur une case.
+    Un clic droit vous permet de r\xE9cup\xE9rer la cr\xE9ature que vous avez pos\xE9."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17449,7 +17449,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Vous pouvez voir en rouge la barre de PV des ennemies que vous allez affronter.
+  m_text: Vous pouvez voir en rouge la barre de PV des ennemis que vous allez affronter.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
