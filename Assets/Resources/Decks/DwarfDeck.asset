@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: DwarfDeck
   m_EditorClassIdentifier: Assembly-CSharp::DeckData
   deckName: Nature
-  commander: {fileID: 11400000, guid: 03a386616b984df55ada4834f89e8c9a, type: 2}
+  commander: {fileID: 11400000, guid: 5e578eafb6ac8386ca1cce486d964942, type: 2}
   cards:
-  - {fileID: 11400000, guid: 03a386616b984df55ada4834f89e8c9a, type: 2}
-  - {fileID: 11400000, guid: 79c5d35350f277905b2a7aa664339eac, type: 2}
-  - {fileID: 11400000, guid: eeef6be012806e6708ef9dd5a065ba8b, type: 2}
-  - {fileID: 11400000, guid: 466a3214eec4daa19a9834aa967e72ec, type: 2}
+  - {fileID: 11400000, guid: 5e578eafb6ac8386ca1cce486d964942, type: 2}
+  - {fileID: 11400000, guid: 0870cae1086570173affc08965ce90dd, type: 2}
+  - {fileID: 11400000, guid: e09cfa48db8d7b0d49e296e76b28eda7, type: 2}
+  - {fileID: 11400000, guid: 0128a646654f35b9b88d82aefdd1710a, type: 2}
   unlockLevel: 50
