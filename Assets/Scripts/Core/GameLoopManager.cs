@@ -194,7 +194,7 @@ public class GameLoopManager : MonoBehaviour
 
     public void StartOrStopCombat(bool enabled)
     {
-        if (!playerUnits.Any() || isGameRunning)
+        if (!playerUnits.Any())
             enabled = !enabled;
 
         isGameRunning = enabled;
