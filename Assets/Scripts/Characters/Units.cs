@@ -106,6 +106,8 @@ public class Units : MonoBehaviour
     protected float capacityTriggerMax = 100f;
     protected float capacityPoints = 0f;
 
+    private MeshSlicer slicer;
+
 
     // hp * 5
     // 4 def = 40%
@@ -118,6 +120,7 @@ public class Units : MonoBehaviour
     {
         BugTracker.Info("New entity '" + gameObject.name + "' created.");
 
+        slicer = FindFirstObjectByType<MeshSlicer>();
         animator = GetComponentInChildren<Animator>();
         unitsRigidbody = GetComponent<Rigidbody>();
         currentAnimationState = AnimationState.Idle;
@@ -409,6 +412,8 @@ public class Units : MonoBehaviour
         isAlive = false;
         SetAnimationState(AnimationState.Dead);
         gameObject.layer = 6;
+
+        slicer.CutObject(gameObject, transform.position, transform.up);
 
         if (deathSound != null) {
             audioSource.PlayOneShot(deathSound);

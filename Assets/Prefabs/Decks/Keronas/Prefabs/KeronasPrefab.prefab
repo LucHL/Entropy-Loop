@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 6895135250863905532}
   - component: {fileID: 8594983097568216535}
   - component: {fileID: 8740454669791095734}
+  - component: {fileID: 6951651472919443141}
   m_Layer: 6
   m_Name: KeronasPrefab
   m_TagString: Entities
@@ -104,14 +105,11 @@ MonoBehaviour:
   manaCost: 3
   totalHealth: 100
   hp: 0
-  shield: 10
+  defense: 10
   attackRate: 1
   attackRange: 1.5
   speed: 1
   attackAnimDuration: 1
-  entityType: 1
-  rewardValue: 10
-  unitsClass: 
   isAlive: 1
   team: 0
   audioSource: {fileID: 7527798960168742340}
@@ -190,6 +188,14 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10.131174, y: 19.075188, z: 8.975735}
   m_Center: {x: -0.12542725, y: 9.548328, z: 0.26562393}
+--- !u!33 &6951651472919443141
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6774719691583486067}
+  m_Mesh: {fileID: 0}
 --- !u!1001 &2554002440254765936
 PrefabInstance:
   m_ObjectHideFlags: 0
