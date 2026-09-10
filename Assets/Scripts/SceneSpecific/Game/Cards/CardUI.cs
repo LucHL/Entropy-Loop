@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 public class CardUI : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] Image cardSelected;
+    [SerializeField] private Image cardSelected;
+    [SerializeField] private GameObject cardBackground;
     public CardData cardData;  
     public Image cardImage;
 
@@ -20,6 +22,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         if (Input.GetMouseButtonDown(0) && cardSelected != null && cardSelected.isActiveAndEnabled && !GameModeManager.isTutorial) {
             cardSelected.gameObject.SetActive(false);
+            cardBackground.SetActive(false);
         }
     }
 
@@ -27,6 +30,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Right) {
             if (cardSelected != null) {
+                cardBackground.SetActive(true);
                 cardSelected.gameObject.SetActive(true);
                 cardSelected.sprite = cardData.cardImage;
             } else

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Keronas_Card
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Keronas
-  cardImage: {fileID: 21300000, guid: a7acb9270b372fa43914e47e30aa6272, type: 3}
+  cardImage: {fileID: 21300000, guid: 2348c6c3603d4d9acae1c961c12abec4, type: 3}
   unitColor: {r: 0, g: 0, b: 0, a: 0}
   unitPrefab: {fileID: 6774719691583486067, guid: d63f1758b4988dcf3b9ed3acfd9f5e71, type: 3}
   manaCost: 5

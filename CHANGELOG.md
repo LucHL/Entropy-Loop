@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## HOTFIX [0.1.8] - 2026-09-09
+
+### Fixed
+- tuto: zoom card
+- tuto: player has to place entity before start game
+
+
 ## HOTFIX [0.1.7-alpha] - 2026-07-14
 
 ### Fixed

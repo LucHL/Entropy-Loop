@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Lancer_Card
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Lancer
-  cardImage: {fileID: 21300000, guid: 420c091c8c7f9e84f91db8184ca8773c, type: 3}
+  cardImage: {fileID: 21300000, guid: 7a2fef41ddf5dbb18bb422de28fe8ccf, type: 3}
   unitColor: {r: 0, g: 0, b: 0, a: 0}
   unitPrefab: {fileID: 6774719691583486067, guid: 54fd19ee61a3641668d09b5b0fa48bec, type: 3}
   manaCost: 3

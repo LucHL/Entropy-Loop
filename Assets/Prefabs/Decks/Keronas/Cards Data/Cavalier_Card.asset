@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Cavalier_Card
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Cavalier
-  cardImage: {fileID: 21300000, guid: 97d91348f7e8c1d44b0588261262fe76, type: 3}
+  cardImage: {fileID: 21300000, guid: 236399f34cd53cf8fb7da49e0f312bac, type: 3}
   unitColor: {r: 0, g: 0, b: 0, a: 0}
   unitPrefab: {fileID: 6774719691583486067, guid: 686142abb42bb198b9286759fd4f58ad, type: 3}
   manaCost: 3
