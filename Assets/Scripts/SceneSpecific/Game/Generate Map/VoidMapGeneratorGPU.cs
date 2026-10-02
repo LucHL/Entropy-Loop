@@ -11,6 +11,11 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     public int seed = 12345;
     [Range(0, 5)] public int phase = 0;
 
+    [Header("Low-poly / direction artistique")]
+    public bool useLowPolySurface = true;
+    [Range(0f, 1f)] public float facetVariation = 0.07f;
+    public float PhaseCorruption => Mathf.Clamp01(phase / 5f);
+
     [Header("Island")]
     public float islandRadius          = 38f;
     public float islandEdgeFalloff     = 10f;
@@ -134,6 +139,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     private System.Random  rng;
     private Transform      root;
     private NavMeshSurface navSurface;
+    private Coroutine generationCoroutine;
 
     // Données partagées avec le générateur de props (VoidMapPropsGPU)
     [HideInInspector] public List<Vector3> lastHousePositions = new List<Vector3>();
@@ -159,13 +165,36 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     public void SetSeed(int newSeed)
     {
         seed = newSeed;
-        StartCoroutine(GenerateAsync());
+        CancelGeneration();
+        if (Application.isPlaying && isActiveAndEnabled)
+            generationCoroutine = StartCoroutine(GenerateAsync());
+        else
+            Generate();
     }
 
     public void SetPhase(int newPhase)
     {
         phase = newPhase;
         StartCoroutine(GenerateAsync());
+        phase = Mathf.Clamp(newPhase, 0, 5);
+        // Do not mix two phases if the level changes during asynchronous generation.
+        if (generationCoroutine != null)
+        {
+            CancelGeneration();
+            generationCoroutine = StartCoroutine(GenerateAsync());
+        }
+    }
+
+    void CancelGeneration()
+    {
+        if (generationCoroutine == null) return;
+        StopCoroutine(generationCoroutine);
+        generationCoroutine = null;
+    }
+
+    void OnDisable()
+    {
+        CancelGeneration();
     }
 
     System.Collections.IEnumerator GenerateAsync()
@@ -222,6 +251,8 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         if (props == null) props = gameObject.AddComponent<VoidMapPropsGPU>();
         var propsGroup = props.GenerateProps(this, root, rng);
         propsGroup.name = "Props";
+        var artSurface = root.GetComponentInChildren<VoidMapLowPolySurface>();
+        if (artSurface != null) artSurface.FacetDecor(root);
         yield return null;
 
         root.transform.position = Vector3.zero;
@@ -241,10 +272,12 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             EnemySpawnAlgo.instance.SpawnEnemies(chessTile);
 
         ApplyVoidAtmosphere();
+        generationCoroutine = null;
     }
 
     void OnValidate()
     {
+        phase               = Mathf.Clamp(phase, 0, 5);
         islandRadius        = Mathf.Max(10f,   islandRadius);
         islandEdgeFalloff   = Mathf.Max(1f,    islandEdgeFalloff);
         islandMaxHeight     = Mathf.Max(1f,    islandMaxHeight);
@@ -266,6 +299,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     [ContextMenu("Generate Now")]
     public void Generate()
     {
+        CancelGeneration();
         rng = new System.Random(seed);
         lastHousePositions.Clear();
         lastRoadBranches.Clear();
@@ -312,6 +346,8 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         if (props == null) props = gameObject.AddComponent<VoidMapPropsGPU>();
         Transform propsGroup = props.GenerateProps(this, root, rng);
         propsGroup.name = "Props";
+        var artSurface = root.GetComponentInChildren<VoidMapLowPolySurface>();
+        if (artSurface != null) artSurface.FacetDecor(root);
 
         root.transform.position = Vector3.zero;
 
@@ -361,14 +397,23 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     void ClearChildren()
     {
         Transform existing = transform.Find("_GEN");
+        root = null;
         if (existing == null) return;
-        if (Application.isPlaying) Destroy(existing.gameObject);
+        if (Application.isPlaying)
+        {
+            // Destroy is deferred. Prevent EnsureRoot from reusing the doomed map,
+            // and exclude its renderers/colliders from the next NavMesh bake now.
+            existing.name = "_GEN_Retired";
+            existing.gameObject.SetActive(false);
+            Destroy(existing.gameObject);
+        }
         else DestroyImmediate(existing.gameObject);
     }
 
     void SafeRemoveCollider(Component c)
     {
         if (c == null) return;
+        if (c is Collider collider) collider.enabled = false;
         if (Application.isPlaying) Destroy(c);
         else DestroyImmediate(c);
     }
@@ -440,7 +485,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
 
         // Corruption globale : tout le décor sombre vers le violet profond du
         // néant (#1f132b) à mesure que la phase avance (fini le pastel/bleu)
-        float corr = phase < 2 ? 0f : Mathf.Pow((phase - 1) / 4f, 1.7f);
+        float corr = PhaseCorruption;
         if (corr > 0f)
         {
             Color voidC = new Color(0.12f, 0.07f, 0.17f);
@@ -588,7 +633,9 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         if (r <= flatZone) return 0f;
 
         float edgeStart = islandRadius - islandEdgeFalloff;
-        float edgeMask  = 1f - Mathf.SmoothStep(edgeStart, islandRadius, r);
+        // Mathf.SmoothStep takes (from, to, normalizedT), not GLSL smoothstep edges.
+        float edgeMask = 1f - Mathf.SmoothStep(0f, 1f,
+            Mathf.InverseLerp(edgeStart, islandRadius, r));
         float t = Mathf.Clamp01((r - flatZone) / Mathf.Max(0.1f, edgeStart - flatZone));
         float rise = t * t * islandMaxHeight;
 
@@ -660,9 +707,17 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         if (buildUnderside)
             BuildIslandUnderside(group.transform);
 
-        BuildIslandColorOverlay(group.transform);
+        bool faceted = useLowPolySurface &&
+            VoidMapLowPolySurface.Create(this, group.transform, colliderMesh);
+        if (faceted)
+        {
+            mr.enabled = false;
+            // Vertex colors replace hundreds of flat tint cubes.
+            AddScatterRocks(group.transform);
+        }
+        else BuildIslandColorOverlay(group.transform);
 
-        if (useGPUIslandVisual && islandGPUShader != null)
+        if (!faceted && useGPUIslandVisual && islandGPUShader != null)
         {
             GameObject islandVisualGO = new GameObject("Island_GPU");
             islandVisualGO.transform.SetParent(group.transform);
@@ -679,6 +734,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             matGPU.SetFloat("_IslandSeed",        seed);
             mrVis.sharedMaterial = matGPU;
         }
+        if (!faceted && (!useGPUIslandVisual || islandGPUShader == null)) mr.enabled = true;
         return group;
     }
 
@@ -1189,23 +1245,24 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     void ComputeVoidBites()
     {
         voidBites.Clear();
-        if (phase < 2) return;
-        // Morsures volontairement modérées : le trou noir aspire l'atmosphère et
-        // des morceaux, mais l'île doit rester largement intacte (pas de planète
-        // en miettes). Cratères peu nombreux et peu profonds.
-        int   count = phase == 2 ? 1 : phase == 3 ? 2 : phase == 4 ? 3 : 4;
-        float rMin  = phase == 2 ? 2.5f : 3.5f;
-        float rMax  = phase == 2 ? 4f : phase == 3 ? 5f : 6f;
-        float depth = phase == 2 ? 2f : phase == 3 ? 3.5f : phase == 4 ? 5f : 6.5f;
-        System.Random brng = new System.Random(seed * 7919 + phase * 131);
+        int p = Mathf.Clamp(phase, 0, 5);
+        if (p < 2) return;
+        int count = p == 2 ? 2 : p == 3 ? 3 : p == 4 ? 5 : 7;
+        // Same origins between phases: existing wounds grow instead of teleporting.
+        System.Random brng = new System.Random(unchecked(seed * 7919 + 131));
+        float safeRadius = parkRadius + 3.5f;
+        if (islandRadius <= safeRadius + 4f) return;
         for (int i = 0; i < count; i++)
         {
             float ang = (float)brng.NextDouble() * Mathf.PI * 2f;
-            float rad = islandRadius - Mathf.Lerp(2f, islandEdgeFalloff + 6f, (float)brng.NextDouble());
-            voidBites.Add(new Vector4(
-                Mathf.Cos(ang) * rad, Mathf.Sin(ang) * rad,
-                Mathf.Lerp(rMin, rMax, (float)brng.NextDouble()),
-                depth * Mathf.Lerp(0.7f, 1.3f, (float)brng.NextDouble())));
+            float rad = Mathf.Lerp(safeRadius + 3f, islandRadius - 1.5f,
+                0.60f + 0.40f * (float)brng.NextDouble());
+            float maxRadius = Mathf.Max(0.5f, rad - safeRadius);
+            float size = Mathf.Min(maxRadius, Mathf.Lerp(3f, 7.5f, (p - 2) / 3f)
+                * Mathf.Lerp(0.75f, 1.1f, (float)brng.NextDouble()));
+            float depth = Mathf.Lerp(3f, 12f, (p - 2) / 3f)
+                * Mathf.Lerp(0.85f, 1.15f, (float)brng.NextDouble());
+            voidBites.Add(new Vector4(Mathf.Cos(ang) * rad, Mathf.Sin(ang) * rad, size, depth));
         }
     }
 
@@ -1226,52 +1283,73 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     // l'arène centrale reste relativement épargnée le plus longtemps possible
     public float CorruptionAt(Vector3 pos)
     {
-        if (phase < 2) return 0f;
-        // Montée volontairement lente : faible en phase 2, modérée en phase 3,
-        // forte en phase 4, chaos total seulement en phase 5
-        // (0.25→0.09, 0.50→0.31, 0.75→0.61, 1.0→1.0)
-        float baseC = Mathf.Pow((phase - 1) / 4f, 1.7f);
-        float r = new Vector2(pos.x, pos.z).magnitude;
-        float edge = Mathf.InverseLerp(parkRadius + 2f, islandRadius - 2f, r);
-        float c = baseC * Mathf.Lerp(0.35f, 1.0f, edge);
-        // L'essentiel de la corruption se concentre autour des morsures du vide
+        float progress = PhaseCorruption;
+        if (progress <= 0f) return 0f;
+        float radius = new Vector2(pos.x, pos.z).magnitude;
+        float safeRadius = parkRadius + 2.5f;
+        if (radius <= safeRadius) return 0f;
+        float edge = Mathf.InverseLerp(safeRadius, islandRadius, radius);
+        // Stable seed offset, not a phase-dependent reroll. Broad patches, no visual snow.
+        float offset = (seed & 65535) * 0.031f;
+        float noise = Mathf.PerlinNoise(pos.x * 0.07f + offset, pos.z * 0.07f - offset);
+        float invasion = progress * 1.45f + edge * 0.34f + (noise - 0.5f) * 0.26f - 0.38f;
+        float c = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(invasion));
         for (int i = 0; i < voidBites.Count; i++)
         {
             float dx = pos.x - voidBites[i].x;
             float dz = pos.z - voidBites[i].y;
-            float d  = Mathf.Sqrt(dx * dx + dz * dz) - voidBites[i].z;
-            if (d < 7f) c += (1f - Mathf.Max(0f, d) / 7f) * 0.55f;
+            float distance = Mathf.Sqrt(dx * dx + dz * dz) - voidBites[i].z;
+            float halo = 1f - Mathf.Clamp01(Mathf.Max(0f, distance) / 6f);
+            c = Mathf.Max(c, halo * Mathf.Lerp(0.65f, 1f, progress));
         }
-        return Mathf.Clamp01(c);
+        // Clear gameplay core, continuous transition outside it.
+        return Mathf.Clamp01(c) * Mathf.SmoothStep(0f, 1f,
+            Mathf.InverseLerp(safeRadius, safeRadius + 3f, radius));
     }
 
     // Brouillard et lumière virent au violet sombre à mesure que la
     // planète se désagrège (phase 2 → 5)
+    private Material generatedSky;
+    private Material previousSky;
+
+    void OnDestroy()
+    {
+        CancelGeneration();
+        if (instance == this) instance = null;
+        if (generatedSky == null) return;
+        if (RenderSettings.skybox == generatedSky) RenderSettings.skybox = previousSky;
+        if (Application.isPlaying) Destroy(generatedSky); else DestroyImmediate(generatedSky);
+    }
+
     void ApplyVoidAtmosphere()
     {
-        if (phase < 2) return;
-        float t = Mathf.InverseLerp(2f, 5f, phase);
+        float t = PhaseCorruption;
         RenderSettings.fog        = true;
         RenderSettings.fogMode    = FogMode.ExponentialSquared;
-        RenderSettings.fogColor   = Color.Lerp(new Color(0.22f, 0.16f, 0.30f), new Color(0.05f, 0.03f, 0.09f), t);
-        RenderSettings.fogDensity = Mathf.Lerp(0.012f, 0.030f, t);
+        RenderSettings.fogColor   = Color.Lerp(new Color(0.53f, 0.64f, 0.65f), new Color(0.13f, 0.08f, 0.20f), t);
+        RenderSettings.fogDensity = Mathf.Lerp(0.003f, 0.012f, t);
         RenderSettings.ambientMode         = UnityEngine.Rendering.AmbientMode.Trilight;
-        RenderSettings.ambientSkyColor     = Color.Lerp(new Color(0.20f, 0.16f, 0.30f), new Color(0.10f, 0.06f, 0.18f), t);
-        RenderSettings.ambientEquatorColor = Color.Lerp(new Color(0.14f, 0.11f, 0.20f), new Color(0.07f, 0.04f, 0.12f), t);
-        RenderSettings.ambientGroundColor  = Color.Lerp(new Color(0.05f, 0.04f, 0.07f), new Color(0.03f, 0.02f, 0.05f), t);
+        RenderSettings.ambientSkyColor     = Color.Lerp(new Color(0.64f, 0.71f, 0.78f), new Color(0.31f, 0.22f, 0.44f), t);
+        RenderSettings.ambientEquatorColor = Color.Lerp(new Color(0.40f, 0.44f, 0.43f), new Color(0.20f, 0.14f, 0.28f), t);
+        RenderSettings.ambientGroundColor  = Color.Lerp(new Color(0.18f, 0.17f, 0.19f), new Color(0.10f, 0.07f, 0.14f), t);
 
         // Le ciel clair tue l'angoisse : on le remplace par un ciel du néant
         // (violet quasi noir, sans soleil) de plus en plus sombre avec la phase
         Shader skyProc = Shader.Find("Skybox/Procedural");
         if (skyProc != null)
         {
-            Material sky = new Material(skyProc);
+            if (generatedSky == null)
+            {
+                previousSky = RenderSettings.skybox;
+                generatedSky = new Material(skyProc);
+            }
+            Material sky = generatedSky;
             sky.SetFloat("_SunSize", 0f);
             sky.SetFloat("_SunSizeConvergence", 1f);
             sky.SetFloat("_AtmosphereThickness", 0.35f);
-            sky.SetColor("_SkyTint",     Color.Lerp(new Color(0.12f, 0.09f, 0.20f), new Color(0.05f, 0.03f, 0.10f), t));
+            sky.SetColor("_SkyTint",     Color.Lerp(new Color(0.50f, 0.62f, 0.74f), new Color(0.12f, 0.07f, 0.22f), t));
             sky.SetColor("_GroundColor", new Color(0.02f, 0.02f, 0.04f));
-            sky.SetFloat("_Exposure",    Mathf.Lerp(0.45f, 0.15f, t));
+            sky.SetFloat("_Exposure",    Mathf.Lerp(1.0f, 0.45f, t));
             RenderSettings.skybox = sky;
         }
         DynamicGI.UpdateEnvironment();
