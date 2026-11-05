@@ -9,6 +9,15 @@ public class LevelButtonUI : MonoBehaviour
 
     private LevelData levelData;
     private Action<LevelData> onClickCallback;
+    private Button thisButton;
+
+    void Awake()
+    {
+        thisButton = GetComponent<Button>();
+        if (thisButton != null) {
+            thisButton.onClick.AddListener(OnClick);
+        }
+    }
 
     public void Init(LevelData data, Action<LevelData> callback)
     {
@@ -30,18 +39,5 @@ public class LevelButtonUI : MonoBehaviour
     public void OnClick()
     {
         onClickCallback?.Invoke(levelData);
-
-        // GameManager.instance.SaveLevelConfig(levelData);
-
-        // if (levelData.chaptersBeforeGame != "") {
-        //     LoadingScene.Instance.LoadStory();
-        //     return;
-        // }
-
-        // bool tuto = false;
-        // if (levelData.currentlevel == 1)
-        //     tuto = true;
-
-        // LoadingScene.Instance.LoadGame(tuto);
     }
 }

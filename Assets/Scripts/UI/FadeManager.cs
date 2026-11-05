@@ -14,7 +14,7 @@ public class FadeManager : MonoBehaviour
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
     }
 
     public void FadeOut(CanvasGroup canvasGroup, float duration, Action onComplete = null)

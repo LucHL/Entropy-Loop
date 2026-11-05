@@ -11,22 +11,27 @@ public class SpawnAlgoData
 }
 
 [Serializable]
+public class PanelDetailLevel
+{
+    [Header("Detail Panel")]
+    public string levelTitle;
+    [TextArea(2, 5)]
+    public string levelDescription;
+    public int totalPhases;
+    [TextArea(1, 3)]
+    public string subDescription;
+}
+
+[Serializable]
 public class LevelData
 {
-    [Header("Classic data")]
+    [Header("Current Level data")]
     public int currentlevel;
     public string chaptersBeforeGame;
     public string chaptersAfterGame;
 
-    [Header("Detail Panel")]
-    public string levelTitle;
-    [TextArea(2, 5)] 
-    public string levelDescription;
-    public string corruptionType;
-    public string currentPhase;
-    public int totalPhases = 5;
-    [TextArea(1, 3)] 
-    public string subDescription;
+    [Header("Panel Detail")]
+    public PanelDetailLevel panelDetail;
 
     [Header("Spawn Algo")]
     public SpawnAlgoData spawnAlgo;

@@ -1393,6 +1393,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 8492721299574824067, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
+      propertyPath: difficulty
+      value: 
+      objectReference: {fileID: 1132116397}
+    - target: {fileID: 8577610937235359941, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15.231445
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1117622930435387602, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
     m_RemovedGameObjects: []
@@ -1419,6 +1427,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06fdf43338cdd104182836f01f9a98a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScalableText
+--- !u!114 &1132116396 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8492721299574824067, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
+  m_PrefabInstance: {fileID: 1132116393}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c96eb8753c1552e3fa4b782dc9b50836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDetailPanelUI
+--- !u!114 &1132116397 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7949941462994346637, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
+  m_PrefabInstance: {fileID: 1132116393}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1183212600 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4989120951078362007, guid: ac55d64f494d266a5b210bbef01a928a, type: 3}
@@ -1510,6 +1540,8 @@ MonoBehaviour:
   levelButtonPrefab: {fileID: 8121789240027763555, guid: 24570727f483c5a0e8358d2cded43ffc, type: 3}
   linePrefab: {fileID: 8111538148230862529, guid: ea1f4000dd9de883f888c3a7bbb59063, type: 3}
   parentsPosition: {fileID: 959580403}
+  detailPanel: {fileID: 1132116396}
+  CurrentMaxLevelReachText: {fileID: 1865034102}
   horizontalSpacing: 200
   verticalAmplitude: 200
   frequency: 2
@@ -2644,7 +2676,7 @@ MonoBehaviour:
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
   m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
+  m_InputActionsPerSecond: 15
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
 --- !u!114 &1543495133
@@ -3525,6 +3557,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1660334429}
   m_CullTransparentMesh: 1
+--- !u!114 &1865034102 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2009366968688571210, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
+  m_PrefabInstance: {fileID: 1132116393}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1870637648
 GameObject:
   m_ObjectHideFlags: 0
@@ -4285,6 +4328,11 @@ MonoBehaviour:
     currentlevel: 0
     chaptersBeforeGame: 
     chaptersAfterGame: 
+    panelDetail:
+      levelTitle: 
+      levelDescription: 
+      totalPhases: 0
+      subDescription: 
     spawnAlgo:
       spawnStartegy: 
       deck: []

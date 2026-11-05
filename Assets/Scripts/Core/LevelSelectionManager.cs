@@ -9,6 +9,7 @@ public class LevelSelectManager : MonoBehaviour
     [SerializeField] GameObject linePrefab;
     [SerializeField] Transform parentsPosition;
     [SerializeField] LevelDetailPanelUI detailPanel;
+    [SerializeField] TextMeshProUGUI CurrentMaxLevelReachText;
 
     [Header("Configs Zigzag")]
     [SerializeField] float horizontalSpacing = 180f;
@@ -31,6 +32,9 @@ public class LevelSelectManager : MonoBehaviour
         foreach (Transform child in parentsPosition) {
             Destroy(child.gameObject);
         }
+
+        if (CurrentMaxLevelReachText != null)
+            CurrentMaxLevelReachText.text = "Niveau " + GameManager.instance.maxLevelFinish + " / 20";
 
         levels = GameManager.instance.alllevelData;
 
@@ -61,11 +65,6 @@ public class LevelSelectManager : MonoBehaviour
                         detailPanel.ShowPanel(selectedLevelData);
                     }
                 });
-            }
-
-            Button button = btn.GetComponent<Button>();
-            if (button != null && ui != null) {
-                button.onClick.AddListener(ui.OnClick);
             }
 
             if (i > 0 && linePrefab != null) {
