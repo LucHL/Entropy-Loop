@@ -64,7 +64,7 @@ public class LevelDetailPanelUI : MonoBehaviour
         if (difficulty != null)
             difficulty.text = "Difficulté " + FirstLetterToUpper(data.spawnAlgo.difficulty);
 
-        for (int i = 1; i <= 6; i++) {
+        for (int i = 1; i <= 5; i++) {
             if (i <= data.panelDetail.totalPhases)
                 phaseBar[i - 1].color = colorBarFill;
             else
