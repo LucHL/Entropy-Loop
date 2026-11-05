@@ -1,0 +1,37 @@
+{
+    "merchantName": "Corvus",
+    "merchantTitle": "Glaneur d'Échos",
+    "portrait": "pnj/Corvus",
+    "greetings": [
+        "Tiens, un Éclipsé. Je sens le Void qui te ronge d'ici… Approche, j'ai de quoi t'aider à tenir encore un peu.",
+        "Bienvenue, Capitaine. Tout ce qu'il y a sur ma charrette, je l'ai arraché à une brèche avant l'Effacement.",
+        "Encore debout ? Bien. L'Ordre lit les signes du Void… moi, je lis dans les bourses.",
+        "Les Trous de Verre brillent fort ces temps-ci. Mauvais présage pour le monde, excellent pour le commerce.",
+        "Ah, te revoilà. Pose tes troupes, je me charge de compléter ton armée.",
+        "L'Ordre donne aux Éclipsés le nom d'une constellation. La mienne s'est éteinte dans le Silence. Je suis le dernier à savoir où elle brillait.",
+        "Tu sens les fissures, toi aussi ? Ce picotement derrière les yeux… On ne s'y habitue jamais. On apprend juste à vivre avec.",
+        "Le Void ne te hait pas, Capitaine. C'est ça le pire. Il te videra avec la même indifférence qu'une jungle entière.",
+        "J'ai connu Verdentia avant le poison. Les arbres chantaient. Aujourd'hui, même l'écho de leur chant a été effacé.",
+        "Fermer une brèche, c'est gagner une ère entière. Sur une vie d'homme, crois-moi, ça vaut bien le prix de quelques cartes.",
+        "On dit que tout ce qui rôde dans les zones corrompues n'appartient pas au Void. Que certaines choses prospèrent dans son ombre… Pourquoi tu me regardes comme ça ?",
+        "L'Ordre me juge trop proche de l'Effondrement. Ils ont peut-être raison. Mais un Effondré ne prendrait pas la peine de marchander, non ?",
+        "Un conseil gratuit, c'est rare, profites-en : place tes unités avant que le Void ne choisisse pour toi."
+    ],
+    "purchase": [
+        "Bon choix. Celui-là a vu une brèche s'ouvrir… et il est encore là pour s'en souvenir.",
+        "Marché conclu. Ce que le Void n'a pas effacé, c'est à toi de le garder en vie.",
+        "Prends soin de cet écho. Sans moi, il n'en serait resté ni ruine, ni nom, ni légende.",
+        "Ton armée grossit. Le Void, lui, ne prend jamais de pause.",
+        "Paye, recrute, survis. Dans cet ordre."
+    ],
+    "cantAfford": [
+        "Ta bourse est aussi vide qu'une Mer Morte du ciel, Capitaine.",
+        "Le Void prend tout sans payer. Moi, je ne suis pas le Void.",
+        "Reviens quand tu auras de quoi payer. Les créatures des brèches laissent toujours un peu d'or derrière elles.",
+        "Je fais crédit aux vivants… mais rien ne me dit que tu le resteras."
+    ],
+    "soldOut": [
+        "Tu as tout pris. Il ne me reste que mon nom… et même lui, le ciel l'a oublié.",
+        "Charrette vide, bourse pleine. Une bonne journée, malgré la fin du monde."
+    ]
+}
