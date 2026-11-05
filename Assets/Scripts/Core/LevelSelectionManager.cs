@@ -8,6 +8,7 @@ public class LevelSelectManager : MonoBehaviour
     [SerializeField] GameObject levelButtonPrefab;
     [SerializeField] GameObject linePrefab;
     [SerializeField] Transform parentsPosition;
+    [SerializeField] LevelDetailPanelUI detailPanel;
 
     [Header("Configs Zigzag")]
     [SerializeField] float horizontalSpacing = 180f;
@@ -55,7 +56,11 @@ public class LevelSelectManager : MonoBehaviour
 
             LevelButtonUI ui = btn.GetComponent<LevelButtonUI>();
             if (ui != null) {
-                ui.Init(levels[i]);
+                ui.Init(levels[i], (selectedLevelData) => {
+                    if (detailPanel != null) {
+                        detailPanel.ShowPanel(selectedLevelData);
+                    }
+                });
             }
 
             Button button = btn.GetComponent<Button>();

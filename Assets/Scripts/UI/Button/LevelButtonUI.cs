@@ -1,16 +1,20 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class LevelButtonUI : MonoBehaviour
 {
     public TextMeshProUGUI levelText;
 
     private LevelData levelData;
+    private Action<LevelData> onClickCallback;
 
-    public void Init(LevelData data)
+    public void Init(LevelData data, Action<LevelData> callback)
     {
         levelData = data;
+        onClickCallback = callback;
+
         levelText.text = "Level " + levelData.currentlevel.ToString();
 
         if (levelData.currentlevel <= GameManager.instance.maxLevelFinish)
@@ -25,17 +29,19 @@ public class LevelButtonUI : MonoBehaviour
 
     public void OnClick()
     {
-        GameManager.instance.SaveLevelConfig(levelData);
+        onClickCallback?.Invoke(levelData);
 
-        if (levelData.chaptersBeforeGame != "") {
-            LoadingScene.Instance.LoadStory();
-            return;
-        }
+        // GameManager.instance.SaveLevelConfig(levelData);
 
-        bool tuto = false;
-        if (levelData.currentlevel == 1)
-            tuto = true;
+        // if (levelData.chaptersBeforeGame != "") {
+        //     LoadingScene.Instance.LoadStory();
+        //     return;
+        // }
 
-        LoadingScene.Instance.LoadGame(tuto);
+        // bool tuto = false;
+        // if (levelData.currentlevel == 1)
+        //     tuto = true;
+
+        // LoadingScene.Instance.LoadGame(tuto);
     }
 }
