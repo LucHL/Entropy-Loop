@@ -12,42 +12,63 @@ public class ShopCard : MonoBehaviour
     public GameObject goldIcon;
     public TextMeshProUGUI soldText;
 
-    private CardData data;
+    [Header("Style")]
+    public Color affordableColor = Color.white;
+    public Color tooExpensiveColor = new(0.9f, 0.3f, 0.3f);
+
+    public CardData Data { get; private set; }
+    public bool IsSold { get; private set; }
+
     private ShopManager shopManager;
-    private DeckManager deckManager;
 
     public void Setup(CardData cardData, ShopManager manager)
     {
-        data = cardData;
+        Data = cardData;
         shopManager = manager;
-        deckManager = FindFirstObjectByType<DeckManager>();
 
-        if (cardImage != null && data.cardImage != null)
-            cardImage.sprite = data.cardImage;
+        if (cardImage != null && Data.cardImage != null) {
+            cardImage.sprite = Data.cardImage;
+            cardImage.preserveAspect = true; // évite d'étirer la carte dans sa case
+        }
 
         if (priceText != null)
-            priceText.text = data.goldCost.ToString();
+            priceText.text = Data.goldCost.ToString();
 
         if (soldText != null)
             soldText.gameObject.SetActive(false);
 
-        buyButton.onClick.AddListener(BuyCard);
+        buyButton.onClick.AddListener(OnBuyClicked);
 
-        BugTracker.Info($"[ShopCard] Carte '{data.cardName}' initialisée. Prix: {data.goldCost}.");
+        BugTracker.Info($"[ShopCard] Carte '{Data.cardName}' initialisée. Prix: {Data.goldCost}.");
     }
 
-    void BuyCard()
+    void OnBuyClicked()
     {
-        if (shopManager.TrySpendGold(data.goldCost))
-        {
-            deckManager?.deck.Add(data);
-            EventSystem.current.SetSelectedGameObject(null);
-            NumberOfCardRemaining.instance.UpdateNumber(NumberOfCardRemaining.instance._remaining + 1);
-            BugTracker.Info($"[ShopCard] '{data.cardName}' achetée. Deck: {deckManager?.deck.Count} cartes.");
-        }
-        else
-        {
-            BugTracker.Warning($"[ShopCard] Achat échoué pour '{data.cardName}'. Prix: {data.goldCost}.");
-        }
+        EventSystem.current.SetSelectedGameObject(null);
+        shopManager.BuyCard(this);
+    }
+
+    public void RefreshAffordable(int gold)
+    {
+        if (priceText != null && !IsSold)
+            priceText.color = gold >= Data.goldCost ? affordableColor : tooExpensiveColor;
+    }
+
+    public void MarkSold()
+    {
+        IsSold = true;
+        buyButton.interactable = false;
+
+        if (cardImage != null)
+            cardImage.color = new Color(0.4f, 0.4f, 0.4f);
+
+        if (priceText != null)
+            priceText.gameObject.SetActive(false);
+
+        if (goldIcon != null)
+            goldIcon.SetActive(false);
+
+        if (soldText != null)
+            soldText.gameObject.SetActive(true);
     }
 }

@@ -9,23 +9,29 @@ public class ShopManager : MonoBehaviour
     public static ShopManager instance;
 
     [Header("UI")]
-    public GameObject shopPopup;
+    public SlidingPanel shopPanel;
     public TextMeshProUGUI moneyText;
-    public Button closeButton;
+    public Button leaveButton;
+    public Button openButton;
+    public MerchantDialogue merchant;
+    // cachés quand le shop est ouvert (manabar, bouton du shop...)
+    public GameObject[] hiddenWhileOpen;
 
     [Header("Shop Slots")]
     public GameObject shopSlotPrefab;
     public Transform cardsContainer;
-
-    [Header("Deck")]
-    public DeckData currentDeck;
 
     [Header("Économie")]
     public int slotCount = 4;
 
     private int playerGold = 200;
     private List<CardData> allCards = new();
-    private List<GameObject> currentSlots = new();
+    private List<ShopCard> currentSlots = new();
+
+    public bool IsOpen => shopPanel.IsOpen;
+
+    // Le shop n'est disponible que pendant la phase de pose des unités
+    bool IsPlacementPhase => GameLoopManager.instance == null || !GameLoopManager.instance.isGameRunning;
 
     void Awake()
     {
@@ -34,10 +40,21 @@ public class ShopManager : MonoBehaviour
 
     void Start()
     {
-        shopPopup.SetActive(false);
+        shopPanel.SnapClosed();
         UpdateMoneyUI();
-        closeButton.onClick.AddListener(ToggleShop);
+        leaveButton.onClick.AddListener(CloseShop);
         LoadCards();
+    }
+
+    void Update()
+    {
+        bool canShop = IsPlacementPhase;
+
+        if (openButton != null)
+            openButton.interactable = canShop;
+
+        if (!canShop && IsOpen)
+            CloseShop();
     }
 
     public void LoadCards()
@@ -50,20 +67,51 @@ public class ShopManager : MonoBehaviour
         }
         allCards = new List<CardData>(deck.cards);
         BugTracker.Info($"[ShopManager] {allCards.Count} cartes chargées depuis '{deck.deckName}'.");
+
+        GenerateOffers();
     }
 
     public void ToggleShop()
     {
-        bool isActive = shopPopup.activeSelf;
-        if (!isActive)
-            RefreshShop();
+        if (IsOpen)
+            CloseShop();
         else
-            ClearSlots();
-        shopPopup.SetActive(!isActive);
-        BugTracker.Info($"[ShopManager] Shop {(isActive ? "fermé" : "ouvert")}.");
+            OpenShop();
     }
 
-    void RefreshShop()
+    public void OpenShop()
+    {
+        if (!IsPlacementPhase)
+        {
+            FloatingTextManager.instance.Show("Le marchand ne vend rien pendant le combat");
+            return;
+        }
+
+        if (currentSlots.Count == 0)
+            GenerateOffers();
+
+        SetHiddenObjectsActive(false);
+        shopPanel.Open();
+        MerchantSay(AllSold() ? MerchantDialogue.Mood.SoldOut : MerchantDialogue.Mood.Greeting);
+        BugTracker.Info("[ShopManager] Shop ouvert.");
+    }
+
+    public void CloseShop()
+    {
+        shopPanel.Close();
+        SetHiddenObjectsActive(true);
+        BugTracker.Info("[ShopManager] Shop fermé.");
+    }
+
+    void SetHiddenObjectsActive(bool active)
+    {
+        foreach (GameObject obj in hiddenWhileOpen)
+            if (obj != null)
+                obj.SetActive(active);
+    }
+
+    // Tirage des offres : une seule fois par phase de pose (pas de reroll en fermant/rouvrant)
+    void GenerateOffers()
     {
         ClearSlots();
 
@@ -82,13 +130,38 @@ public class ShopManager : MonoBehaviour
             CardData picked = pool[idx];
             pool.RemoveAt(idx);
 
-            GameObject slot = Instantiate(shopSlotPrefab, cardsContainer);
-            ShopCard shopCard = slot.GetComponent<ShopCard>();
+            ShopCard shopCard = Instantiate(shopSlotPrefab, cardsContainer).GetComponent<ShopCard>();
             shopCard.Setup(picked, this);
-            currentSlots.Add(slot);
+            shopCard.RefreshAffordable(playerGold);
+            currentSlots.Add(shopCard);
         }
 
-        BugTracker.Info($"[ShopManager] {count} cartes affichées dans le shop.");
+        BugTracker.Info($"[ShopManager] {count} cartes proposées dans le shop.");
+    }
+
+    public void BuyCard(ShopCard slot)
+    {
+        if (!TrySpendGold(slot.Data.goldCost))
+        {
+            MerchantSay(MerchantDialogue.Mood.CantAfford);
+            return;
+        }
+
+        DeckManager.instance.AddCardInDeck(slot.Data);
+        slot.MarkSold();
+        MerchantSay(AllSold() ? MerchantDialogue.Mood.SoldOut : MerchantDialogue.Mood.Purchase);
+        BugTracker.Info($"[ShopManager] '{slot.Data.cardName}' achetée. Deck: {DeckManager.instance.deck.Count} cartes.");
+    }
+
+    void MerchantSay(MerchantDialogue.Mood mood)
+    {
+        if (merchant != null)
+            merchant.Say(mood);
+    }
+
+    bool AllSold()
+    {
+        return currentSlots.Count > 0 && currentSlots.TrueForAll(slot => slot.IsSold);
     }
 
     public void AddGold(int amount)
@@ -100,7 +173,7 @@ public class ShopManager : MonoBehaviour
     void ClearSlots()
     {
         foreach (var slot in currentSlots)
-            Destroy(slot);
+            Destroy(slot.gameObject);
         currentSlots.Clear();
     }
 
@@ -120,11 +193,8 @@ public class ShopManager : MonoBehaviour
     void UpdateMoneyUI()
     {
         moneyText.text = playerGold.ToString();
-    }
 
-    void Update()
-    {
-        // if (Input.GetKeyDown(KeyCode.S))
-        //     ToggleShop();
+        foreach (ShopCard slot in currentSlots)
+            slot.RefreshAffordable(playerGold);
     }
 }
