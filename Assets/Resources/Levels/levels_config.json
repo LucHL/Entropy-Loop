@@ -4,6 +4,11 @@
         "currentlevel": 1,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Tuto",
+            "levelDescription": "Tutoriel pour décrouvir le fonctionnement du gameplay.",
+            "totalPhases": 1
+        },
         "spawnAlgo": {
             "spawnStartegy": [0],
             "deck": [""],
@@ -15,6 +20,11 @@
         "currentlevel": 2,
         "chaptersBeforeGame": "Chapter1/chpt1-1",
         "chaptersAfterGame": "Chapter1/chpt1-1aft",
+        "panelDetail": {
+            "levelTitle": "Chapitre 1",
+            "levelDescription": "Description 1",
+            "totalPhases": 1
+        },
         "spawnAlgo": {
             "spawnStartegy": [0],
             "deck": [""],
@@ -26,6 +36,11 @@
         "currentlevel": 3,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Chapitre 2",
+            "levelDescription": "Description 2",
+            "totalPhases": 1
+        },
         "spawnAlgo": {
             "spawnStartegy": [1],
             "deck": [""],
@@ -37,6 +52,11 @@
         "currentlevel": 4,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Chapitre 3",
+            "levelDescription": "Description 3",
+            "totalPhases": 1
+        },
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
@@ -48,9 +68,14 @@
         "currentlevel": 5,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Chapitre 4",
+            "levelDescription": "Description 4",
+            "totalPhases": 2
+        },
         "spawnAlgo": {
-            "spawnStartegy": [3],
-            "deck": [""],
+            "spawnStartegy": [3, 3],
+            "deck": ["", ""],
             "manaCost": [12],
             "difficulty": "medium"
         }
@@ -59,6 +84,11 @@
         "currentlevel": 6,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Chapitre 5",
+            "levelDescription": "Description 5",
+            "totalPhases": 1
+        },
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
@@ -70,6 +100,11 @@
         "currentlevel": 7,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Chapitre 6",
+            "levelDescription": "Description 6",
+            "totalPhases": 1
+        },
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
@@ -81,6 +116,11 @@
         "currentlevel": 8,
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Chapitre 7",
+            "levelDescription": "Description 7",
+            "totalPhases": 1
+        },
         "spawnAlgo": {
             "spawnStartegy": [3],
             "deck": [""],
