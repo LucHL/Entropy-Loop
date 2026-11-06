@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0041025657d27e9439e2c06967dae7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DataPersistenceManager
-  fileName: data.json
+  fileName: GameData.json
   useEncryption: 0
 --- !u!114 &7143006
 MonoBehaviour:

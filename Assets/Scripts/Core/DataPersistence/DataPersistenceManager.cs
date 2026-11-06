@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class DataPersistenceManager : MonoBehaviour
 {
     [Header("File Storage Config")]
-    [SerializeField] private string fileName = "data.json";
+    [SerializeField] private string fileName = "GameData.json";
     [SerializeField] private bool useEncryption = true;
 
     private GameData gameData;
@@ -85,10 +85,22 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void ResetSaveFile()
     {
+        BugTracker.Info("[DataPersistenceManager] Resetting save file...");
+
         dataHandler.Delete();
+
         NewGame();
-        SaveGame();
-        BugTracker.Info("[DataPersistenceManager] Save file has been reset.");
+
+        if (dataPersistenceObjects != null) {
+            foreach (IDataPersistence dataPersistence in dataPersistenceObjects) {
+                if (dataPersistence != null)
+                    dataPersistence.LoadData(gameData);
+            }
+        }
+
+        dataHandler.Save(gameData);
+
+        BugTracker.Info("[DataPersistenceManager] Save file has been fully reset.");
     }
 
     List<IDataPersistence> FindAllDataPersistenceInScene()
