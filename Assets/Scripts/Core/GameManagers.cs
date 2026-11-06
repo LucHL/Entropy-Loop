@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IDataPersistence
 {
     public static GameManager instance;
 
@@ -44,6 +44,29 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    // ---- Save / Load ----
+
+    public void LoadData(GameData data)
+    {
+        this.maxLevelReach = data.maxLevelReach;
+        this.maxLevelFinish = data.maxLevelFinish;
+        this.currentLevelData = alllevelData[data.maxLevelReach];
+
+        BugTracker.Info("[GameManager] Data loaded into GameManager.");
+    }
+
+    public void SaveData(GameData data)
+    {
+        if (currentLevelData != null)
+            data.currentLevel = currentLevelData.currentlevel;
+
+        data.maxLevelReach = this.maxLevelReach;
+        data.maxLevelFinish = this.maxLevelFinish;
+        data.selectedDeck = GameModeManager.selectedDeck;
+
+        BugTracker.Info("[GameManager] Data saved from GameManager.");
+    }
+
     // ---- PAUSE / RESUME ----
 
     public void PauseGame()
@@ -69,8 +92,6 @@ public class GameManager : MonoBehaviour
             alllevelData = wrapper.levels;
         } else
             BugTracker.Critical("Failed to load levels configs from 'levels_config.json'.");
-
-        SaveSystem.Load();
     }
 
     public void SaveLevelConfig(LevelData levelData)
@@ -80,6 +101,8 @@ public class GameManager : MonoBehaviour
         SetStrategy();
 
         nextStory = levelData.chaptersBeforeGame;
+
+        DataPersistenceManager.instance.SaveGame();
     }
 
     public void SetNextLevel()
@@ -109,7 +132,7 @@ public class GameManager : MonoBehaviour
         BugTracker.Info("[GameManager] Loading level: " + currentLevelData.currentlevel + ".");
         SetStrategy();
 
-        SaveSystem.Save();
+        DataPersistenceManager.instance.SaveGame();
 
         if (currentLevelData.chaptersBeforeGame != "") {
             nextStory = currentLevelData.chaptersBeforeGame;

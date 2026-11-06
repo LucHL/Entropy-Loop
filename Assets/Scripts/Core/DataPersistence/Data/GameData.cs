@@ -1,0 +1,18 @@
+using UnityEngine;
+
+[System.Serializable]
+public class GameData
+{
+    public int currentLevel;
+    public int maxLevelReach;
+    public int maxLevelFinish;
+    public DeckData selectedDeck;
+
+    public GameData()
+    {
+        currentLevel = 1;
+        maxLevelReach = 0;
+        maxLevelFinish = 0;
+        selectedDeck = null;
+    }
+}

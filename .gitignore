@@ -76,6 +76,7 @@ crashlytics-build.properties
 # our
 .env
 *.slnx
+Entropy-Loop.slnx
 bugtracker.log
 /_Recovery
 ProfilerCaptures/
