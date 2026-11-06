@@ -1,11 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Diagnostics;
-using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 public class GameLoopManager : MonoBehaviour
@@ -33,19 +30,29 @@ public class GameLoopManager : MonoBehaviour
 
     void Start()
     {
-        // if (GameManager.instance.currentLevelData.currentlevel < 3)
+        // int totalLevel = GameManager.instance.alllevelData.Count();
+        int currentLevel = GameManager.instance.currentLevelData.currentlevel;
+
+        // int phaseSize = Mathf.CeilToInt(totalLevel / 4f);
+
+        // if (currentLevel <= phaseSize) {
         //     VoidMapGeneratorGPU.instance.SetPhase(0);
-        // if (GameManager.instance.currentLevelData.currentlevel == 3)
+        //     BugTracker.Info("[GameLoopManager] Generation MAP Phase set to: '0'");
+        // } else if (currentLevel <= phaseSize * 2) {
         //     VoidMapGeneratorGPU.instance.SetPhase(1);
-        // if (GameManager.instance.currentLevelData.currentlevel == 4)
+        //     BugTracker.Info("[GameLoopManager] Generation MAP Phase set to: '1'");
+        // } else if (currentLevel <= phaseSize * 3) {
         //     VoidMapGeneratorGPU.instance.SetPhase(2);
-        // if (GameManager.instance.currentLevelData.currentlevel == 5)
+        //     BugTracker.Info("[GameLoopManager] Generation MAP Phase set to: '2'");
+        // } else {
         //     VoidMapGeneratorGPU.instance.SetPhase(3);
+        //     BugTracker.Info("[GameLoopManager] Generation MAP Phase set to: '3'");
+        // }
+
         VoidMapGeneratorGPU.instance.SetSeed(VoidMapGeneratorGPU.instance.seed + GameManager.instance.currentLevelData.currentlevel);
 
-
         LevelInformationFadeTextManager.instance.DisplayTextWithFade(
-            GameManager.instance.currentLevelData.currentlevel.ToString(),
+            currentLevel.ToString(),
             GameManager.instance.currentLevelData.spawnAlgo.difficulty
         );
 
@@ -139,6 +146,9 @@ public class GameLoopManager : MonoBehaviour
         }
 
         popupEndGame.SetActive(true);
+
+        buttonNextOrRestart.onClick.RemoveAllListeners();
+
         if (isPlayerVictorious) {
             popupEndGame.GetComponentInChildren<TextMeshProUGUI>().text = "You win";
 

@@ -1,8 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
-public class LevelSelectManager : MonoBehaviour
+public class LevelSelectManager : MonoBehaviour, IDataPersistence
 {
     [Header("References")]
     [SerializeField] GameObject levelButtonPrefab;
@@ -22,19 +22,26 @@ public class LevelSelectManager : MonoBehaviour
 
     private LevelData[] levels;
 
-    void Start()
+    public void LoadData(GameData data)
     {
         GenerateLevels();
     }
 
+    public void SaveData(GameData data)
+    {
+    }
+
     void GenerateLevels()
     {
+        if (GameManager.instance == null || GameManager.instance.alllevelData == null)
+            return;
+
         foreach (Transform child in parentsPosition) {
             Destroy(child.gameObject);
         }
 
         if (CurrentMaxLevelReachText != null)
-            CurrentMaxLevelReachText.text = "Niveau " + GameManager.instance.maxLevelFinish + " / 20";
+            CurrentMaxLevelReachText.text = "Niveau " + GameManager.instance.maxLevelFinish + " / " + GameManager.instance.alllevelData.Count().ToString();
 
         levels = GameManager.instance.alllevelData;
 
@@ -73,6 +80,8 @@ public class LevelSelectManager : MonoBehaviour
 
             previousPosition = currentPosition;
         }
+
+        BugTracker.Info("All levels are successfuly generated.");
     }
 
     void CreateConnectingLine(Vector2 posA, Vector2 posB)
