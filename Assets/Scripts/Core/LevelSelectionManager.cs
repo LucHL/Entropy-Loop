@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class LevelSelectManager : MonoBehaviour, IDataPersistence
 {
@@ -40,7 +41,7 @@ public class LevelSelectManager : MonoBehaviour, IDataPersistence
         }
 
         if (CurrentMaxLevelReachText != null)
-            CurrentMaxLevelReachText.text = "Niveau " + GameManager.instance.maxLevelFinish + " / 20";
+            CurrentMaxLevelReachText.text = "Niveau " + GameManager.instance.maxLevelFinish + " / " + GameManager.instance.alllevelData.Count().ToString();
 
         levels = GameManager.instance.alllevelData;
 
