@@ -48,9 +48,9 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        this.maxLevelReach = data.maxLevelReach;
-        this.maxLevelFinish = data.maxLevelFinish;
-        this.currentLevelData = alllevelData[data.maxLevelReach];
+        maxLevelReach = data.maxLevelReach;
+        maxLevelFinish = data.maxLevelFinish;
+        currentLevelData = alllevelData[data.maxLevelReach];
 
         BugTracker.Info("[GameManager] Data loaded into GameManager.");
     }
@@ -60,9 +60,9 @@ public class GameManager : MonoBehaviour, IDataPersistence
         if (currentLevelData != null)
             data.currentLevel = currentLevelData.currentlevel;
 
-        data.maxLevelReach = this.maxLevelReach;
-        data.maxLevelFinish = this.maxLevelFinish;
-        data.selectedDeck = GameModeManager.selectedDeck;
+        data.maxLevelReach = maxLevelReach;
+        data.maxLevelFinish = maxLevelFinish;
+        data.selectedDeckName = GameModeManager.selectedDeck.deckName ?? "";
 
         BugTracker.Info("[GameManager] Data saved from GameManager.");
     }

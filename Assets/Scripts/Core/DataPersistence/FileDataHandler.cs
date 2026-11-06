@@ -22,13 +22,25 @@ public class FileDataHandler
 
     public GameData Load()
     {
+        string jsonString = LoadJsonRaw();
+        if (string.IsNullOrEmpty(jsonString))
+            return null;
+
+        try {
+            return JsonUtility.FromJson<GameData>(jsonString);
+        } catch (Exception e) {
+            BugTracker.Error("Failed to parse GameData from JSON: " + e);
+            return null;
+        }
+    }
+
+    public string LoadJsonRaw()
+    {
         string fullPath = Path.Combine(dataDirPath, dataFileName);
-        GameData loadedData = null;
+        string dataToLoad = "";
 
         if (File.Exists(fullPath)) {
             try {
-                string dataToLoad = "";
-
                 using (FileStream stream = new FileStream(fullPath, FileMode.Open)) {
                     using (StreamReader reader = new StreamReader(stream)) {
                         dataToLoad = reader.ReadToEnd();
@@ -38,39 +50,41 @@ public class FileDataHandler
                 if (useEncryption) {
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
-
-                loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
             } catch (Exception e) {
-                BugTracker.Error("Failed to load data from path: " + fullPath + "\n" + e);
+                BugTracker.Error("Failed to load raw json from path: " + fullPath + "\n" + e);
             }
         }
 
-        return loadedData;
+        return dataToLoad;
     }
 
     public void Save(GameData data)
+    {
+        string dataToStore = JsonUtility.ToJson(data, true);
+        SaveJsonRaw(dataToStore);
+    }
+
+    public void SaveJsonRaw(string jsonString)
     {
         string fullPath = Path.Combine(dataDirPath, dataFileName);
 
         try {
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
-            string dataToStore = JsonUtility.ToJson(data);
+            string dataToStore = jsonString;
 
             if (useEncryption) {
                 dataToStore = EncryptDecrypt(dataToStore);
             }
 
-            using (FileStream stream = new FileStream(fullPath, FileMode.Create))
-            {
-                using (StreamWriter writer = new StreamWriter(stream)) 
-                {
+            using (FileStream stream = new FileStream(fullPath, FileMode.Create)) {
+                using (StreamWriter writer = new StreamWriter(stream))  {
                     writer.Write(dataToStore);
                 }
             }
 
         } catch (Exception e) {
-            BugTracker.Error("Failed to save Data: " + e);
+            BugTracker.Error("Failed to save raw JSON Data: " + e);
         }
     }
 

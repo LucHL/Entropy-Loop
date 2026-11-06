@@ -60,8 +60,17 @@ public class DataPersistenceManager : MonoBehaviour
         }
 
         foreach (IDataPersistence dataPersistence in dataPersistenceObjects) {
-            dataPersistence.LoadData(gameData);
+            if (dataPersistence is GameManager) {
+                dataPersistence.LoadData(gameData);
+            }
         }
+
+        foreach (IDataPersistence dataPersistence in dataPersistenceObjects) {
+            if (dataPersistence is not GameManager) {
+                dataPersistence.LoadData(gameData);
+            }
+        }
+
         BugTracker.Info("[DataPersistenceManager] Game successfully loaded.");
     }
 

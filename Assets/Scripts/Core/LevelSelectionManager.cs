@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class LevelSelectManager : MonoBehaviour
+public class LevelSelectManager : MonoBehaviour, IDataPersistence
 {
     [Header("References")]
     [SerializeField] GameObject levelButtonPrefab;
@@ -22,13 +22,20 @@ public class LevelSelectManager : MonoBehaviour
 
     private LevelData[] levels;
 
-    void Start()
+    public void LoadData(GameData data)
     {
         GenerateLevels();
     }
 
+    public void SaveData(GameData data)
+    {
+    }
+
     void GenerateLevels()
     {
+        if (GameManager.instance == null || GameManager.instance.alllevelData == null)
+            return;
+
         foreach (Transform child in parentsPosition) {
             Destroy(child.gameObject);
         }
