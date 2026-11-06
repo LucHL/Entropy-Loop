@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
         data.maxLevelReach = maxLevelReach;
         data.maxLevelFinish = maxLevelFinish;
-        data.selectedDeckName = GameModeManager.selectedDeck.deckName ?? "";
+        // data.selectedDeckName = GameModeManager.selectedDeck.deckName ?? "";
 
         BugTracker.Info("[GameManager] Data saved from GameManager.");
     }

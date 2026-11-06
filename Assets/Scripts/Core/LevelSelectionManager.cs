@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class LevelSelectManager : MonoBehaviour, IDataPersistence
@@ -80,6 +79,8 @@ public class LevelSelectManager : MonoBehaviour, IDataPersistence
 
             previousPosition = currentPosition;
         }
+
+        BugTracker.Info("All levels are successfuly generated.");
     }
 
     void CreateConnectingLine(Vector2 posA, Vector2 posB)
