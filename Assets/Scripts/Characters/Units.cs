@@ -448,10 +448,12 @@ public class Units : MonoBehaviour
 
     protected void PlaySound(AudioClip audioClip)
     {
-        if (audioClip != null)
-            audioSource.PlayOneShot(audioClip);
-        else
-            BugTracker.Warning("Function 'PlaySound': "+ audioClip.name + " is null.");
+        // Some unit prefabs intentionally have no audio assigned.
+        // Unity's missing-object references must be checked before dereferencing.
+        if (audioClip == null || audioSource == null)
+            return;
+
+        audioSource.PlayOneShot(audioClip);
     }
 
     private void GainCapacityPoints(float pts)
