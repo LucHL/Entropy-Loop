@@ -143,6 +143,7 @@ public class Units : MonoBehaviour
 
         team = GetComponentInChildren<EntityTeam>().GetTeam();
         GetComponentInChildren<ChangeHealthBarColor>().ChangeColor(team);
+        CombatUnitFeedback.Register(this, hpBarCanvas);
         if (team == UnitsTeam.Enemy)
             enemyTag = "Champion";
         else
@@ -407,6 +408,7 @@ public class Units : MonoBehaviour
             return;
 
         isAlive = false;
+        CombatUnitFeedback.Death(this);
         SetAnimationState(AnimationState.Dead);
         gameObject.layer = 6;
 

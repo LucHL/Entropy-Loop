@@ -139,15 +139,19 @@ public class GameLoopManager : MonoBehaviour
         }
 
         popupEndGame.SetActive(true);
+        buttonNextOrRestart.onClick.RemoveListener(GameManager.instance.SetNextLevel);
+        buttonNextOrRestart.onClick.RemoveListener(RestartGame);
         if (isPlayerVictorious) {
             popupEndGame.GetComponentInChildren<TextMeshProUGUI>().text = "You win";
 
             buttonNextOrRestart.GetComponentInChildren<TextMeshProUGUI>().text = "Next";
             buttonNextOrRestart.onClick.AddListener(GameManager.instance.SetNextLevel);
+            GetComponent<VoidbornHud>()?.ShowResult(true);
             return;
         }
 
         buttonNextOrRestart.onClick.AddListener(RestartGame);
+        GetComponent<VoidbornHud>()?.ShowResult(false);
     }
 
     public void CheckVictory()

@@ -31,6 +31,9 @@ public sealed class VoidbornHud : MonoBehaviour
     GameLogUI journalView;
     TMP_Text journalCount, journalEmpty;
     readonly HashSet<int> styledLogRows = new();
+    Transform resultPanel;
+    TMP_Text resultTitle, resultMessage, resultAction, resultKicker;
+    Image resultDivider;
     bool built;
     int lastMana = -1;
     int lastMaxMana = -1;
@@ -141,6 +144,7 @@ public sealed class VoidbornHud : MonoBehaviour
         SetupHand();
         SetupDraw();
         SetupJournal();
+        SetupResult();
         AlignTutorialTargets();
         built = true;
         Refresh();
@@ -304,6 +308,63 @@ public sealed class VoidbornHud : MonoBehaviour
         close.transform.SetAsLastSibling();
     }
 
+    void SetupResult()
+    {
+        resultPanel = canvas.Find("PopupEndGame");
+        if (!resultPanel) return;
+        var buttons = resultPanel.GetComponentsInChildren<Button>(true);
+        foreach (var text in resultPanel.GetComponentsInChildren<TMP_Text>(true))
+            if (!text.GetComponentInParent<Button>(true)) { resultTitle = text; break; }
+        if (!resultTitle || buttons.Length != 2) return;
+        // Replace only the presentation; preserve the original buttons and callbacks.
+        foreach (var graphic in resultPanel.GetComponentsInChildren<Image>(true))
+            if (!graphic.GetComponentInParent<Button>(true)) graphic.enabled = false;
+        Stretch((RectTransform)resultPanel);
+        var shade = resultPanel.GetComponent<Image>() ?? resultPanel.gameObject.AddComponent<Image>();
+        shade.enabled = true; shade.sprite = null; shade.color = new Color32(4, 2, 12, 225); shade.raycastTarget = true;
+        resultPanel.gameObject.tag = "BlockClick";
+        var panel = Art("Result obsidian panel", resultPanel, null, new Vector2(.5f, .5f), Vector2.zero, new Vector2(1000, 600));
+        panel.color = new Color32(17, 10, 29, 255); panel.raycastTarget = true;
+        resultTitle.transform.SetParent(panel.transform, false);
+        Place(resultTitle.transform, new Vector2(.5f, .5f), new Vector2(0, 70), new Vector2(850, 100));
+        Format(resultTitle, 68, true);
+        resultTitle.fontStyle = FontStyles.Bold;
+        // The original end-game code finds this text first when setting the result.
+        resultTitle.transform.SetAsFirstSibling();
+        var top = Art("Result crown", panel.transform, stoneSprite, new Vector2(.5f, 1), new Vector2(0, -42), new Vector2(1000, 90));
+        top.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
+        Art("Result base", panel.transform, stoneSprite, new Vector2(.5f, 0), new Vector2(0, 32), new Vector2(1000, 70));
+        for (int side = -1; side <= 1; side += 2)
+            Art("Result gold edge", panel.transform, null, new Vector2(.5f, .5f), new Vector2(side * 493, 0), new Vector2(2, 500)).color = Gold;
+        var crest = Art("Void crest", panel.transform, phaseSprite, new Vector2(.5f, .5f), new Vector2(0, 196), new Vector2(460, 58));
+        resultKicker = Label(crest.transform, "COMBAT TERMINÉ", Vector2.zero, new Vector2(380, 34), 20, true);
+        resultKicker.color = Gold;
+        resultDivider = Art("Result divider", panel.transform, null, new Vector2(.5f, .5f), new Vector2(0, -10), new Vector2(660, 2));
+        resultMessage = Label(panel.transform, "", new Vector2(0, -63), new Vector2(850, 66), 23, false);
+        foreach (var button in buttons)
+        {
+            var text = button.GetComponentInChildren<TMP_Text>(true);
+            bool home = text && text.text == "Home";
+            button.transform.SetParent(panel.transform, false);
+            Place(button.transform, new Vector2(.5f, .5f), new Vector2(home ? 205 : -205, -183), new Vector2(360, 80));
+            SkinButton(button, home ? "RETOUR AU MENU" : "RÉESSAYER", 23);
+            button.GetComponent<Image>().enabled = true;
+            if (!home) resultAction = button.GetComponentInChildren<TMP_Text>();
+        }
+        ShowResult(false);
+    }
+
+    public void ShowResult(bool victory)
+    {
+        if (!resultTitle || !resultAction) return;
+        resultTitle.text = victory ? "VICTOIRE" : "DÉFAITE";
+        resultTitle.color = victory ? new Color32(255, 225, 155, 255) : new Color32(231, 157, 202, 255);
+        resultDivider.color = victory ? Gold : Violet;
+        resultMessage.text = victory ? "Le néant recule. Votre voyage continue." : "La boucle n’est pas brisée. Tentez une nouvelle stratégie.";
+        resultAction.text = victory ? "CONTINUER" : "RÉESSAYER";
+        if (resultPanel.gameObject.activeInHierarchy) resultPanel.SetAsLastSibling();
+    }
+
     void RefreshJournal()
     {
         if (!journalView || !journalPanel.gameObject.activeInHierarchy) return;
@@ -414,6 +475,7 @@ public sealed class VoidbornHud : MonoBehaviour
         bool paused = GameManager.instance && GameManager.instance.isPaused;
         bool ready = GameModeManager.selectedDeck != null;
         bool modal = (journalPanel && journalPanel.gameObject.activeInHierarchy)
+            || (resultPanel && resultPanel.gameObject.activeInHierarchy)
             || (ShopManager.instance && ShopManager.instance.shopPopup.activeInHierarchy);
         phase.text = running ? "COMBAT EN COURS" : "PRÉPARATION";
         battle.interactable = !running && !paused && !modal && ready && loop.playerUnits.Exists(u => u && u.activeInHierarchy);
