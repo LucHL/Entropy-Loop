@@ -143,6 +143,7 @@ public class Units : MonoBehaviour
 
         team = GetComponentInChildren<EntityTeam>().GetTeam();
         GetComponentInChildren<ChangeHealthBarColor>().ChangeColor(team);
+        CombatUnitFeedback.Register(this, hpBarCanvas);
         if (team == UnitsTeam.Enemy)
             enemyTag = "Champion";
         else
@@ -407,6 +408,7 @@ public class Units : MonoBehaviour
             return;
 
         isAlive = false;
+        CombatUnitFeedback.Death(this);
         SetAnimationState(AnimationState.Dead);
         gameObject.layer = 6;
 
@@ -448,10 +450,12 @@ public class Units : MonoBehaviour
 
     protected void PlaySound(AudioClip audioClip)
     {
-        if (audioClip != null)
-            audioSource.PlayOneShot(audioClip);
-        else
-            BugTracker.Warning("Function 'PlaySound': "+ audioClip.name + " is null.");
+        // Some unit prefabs intentionally have no audio assigned.
+        // Unity's missing-object references must be checked before dereferencing.
+        if (audioClip == null || audioSource == null)
+            return;
+
+        audioSource.PlayOneShot(audioClip);
     }
 
     private void GainCapacityPoints(float pts)
