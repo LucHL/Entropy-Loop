@@ -477,7 +477,7 @@ public sealed class EntropyLoopHud : MonoBehaviour
         bool ready = GameModeManager.selectedDeck != null;
         bool modal = (journalPanel && journalPanel.gameObject.activeInHierarchy)
             || (resultPanel && resultPanel.gameObject.activeInHierarchy)
-            || (ShopManager.instance && ShopManager.instance.shopPopup.activeInHierarchy);
+            || (ShopManager.instance && ShopManager.instance.IsOpen);
         phase.text = running ? "COMBAT EN COURS" : "PRÉPARATION";
         battle.interactable = !running && !paused && !modal && ready && loop.playerUnits.Exists(u => u && u.activeInHierarchy);
         bool full = true;
