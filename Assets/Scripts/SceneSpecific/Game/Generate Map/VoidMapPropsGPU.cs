@@ -1436,6 +1436,12 @@ public class VoidMapPropsGPU : MonoBehaviour
           Quaternion.identity, matCloud);
             }
 
+            // Keep animated cloud shadows without drawing clouds over the board.
+            foreach (var renderer in cloud.GetComponentsInChildren<MeshRenderer>())
+            {
+                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+                renderer.receiveShadows = false;
+            }
             VoidPropFloat fl = cloud.gameObject.AddComponent<VoidPropFloat>();
             fl.bobAmplitude   = 0.5f;
             fl.bobSpeed       = 0.12f;
