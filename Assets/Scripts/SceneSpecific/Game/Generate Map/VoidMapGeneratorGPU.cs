@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
 using UnityEngine.AI;
@@ -18,6 +18,8 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     public int   islandResolution      = 128;
     public int   islandVisualResolution = 200;
     public bool  useGPUIslandVisual    = false;
+    public bool facetedTerrain = true;
+    [Min(0)] public float arenaDecorationMargin = 1.5f;
 
     [Header("Planet Underside (ventre de l'île)")]
     public bool  buildUnderside      = true;
@@ -217,6 +219,11 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         propsGroup.name = "Props";
         yield return null;
 
+        var worldDirector = GetComponent<EntropyWorldDirector>();
+        if (!worldDirector) worldDirector = gameObject.AddComponent<EntropyWorldDirector>();
+        worldDirector.Generate(this, root);
+        ClearArenaDecorations();
+
         root.transform.position = Vector3.zero;
 
         if (navSurface == null) navSurface = GetComponent<NavMeshSurface>();
@@ -306,6 +313,11 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         Transform propsGroup = props.GenerateProps(this, root, rng);
         propsGroup.name = "Props";
 
+        var worldDirector = GetComponent<EntropyWorldDirector>();
+        if (!worldDirector) worldDirector = gameObject.AddComponent<EntropyWorldDirector>();
+        worldDirector.Generate(this, root);
+        ClearArenaDecorations();
+
         root.transform.position = Vector3.zero;
 
         if (navSurface == null) navSurface = GetComponent<NavMeshSurface>();
@@ -373,44 +385,44 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         Shader std     = Shader.Find("Standard");
         Shader chosen  = std;
 
-        matGrass      = NewMat(chosen, new Color(0.27f, 0.52f, 0.20f), 1f, 0.10f);
-        matGrassLight = NewMat(chosen, new Color(0.38f, 0.62f, 0.28f), 1f, 0.08f);
-        matDirt       = NewMat(chosen, new Color(0.40f, 0.28f, 0.18f), 1f, 0.12f);
-        matRock       = NewMat(chosen, new Color(0.55f, 0.53f, 0.50f), 1f, 0.30f);
-        matRockDark   = NewMat(chosen, new Color(0.35f, 0.34f, 0.32f), 1f, 0.22f);
-        matSand       = NewMat(chosen, new Color(0.84f, 0.76f, 0.55f), 1f, 0.06f);
-        matSandWet    = NewMat(chosen, new Color(0.65f, 0.58f, 0.42f), 1f, 0.20f);
-        matUnderRock  = NewMat(chosen, new Color(0.24f, 0.20f, 0.19f), 1f, 0.16f);
+        matGrass      = NewMat(chosen, new Color(.15f, .23f, .21f), 1f, 0.10f);
+        matGrassLight = NewMat(chosen, new Color(.23f, .32f, .28f), 1f, 0.08f);
+        matDirt       = NewMat(chosen, new Color(.25f, .22f, .27f), 1f, 0.12f);
+        matRock       = NewMat(chosen, new Color(.39f, .37f, .46f), 1f, 0.30f);
+        matRockDark   = NewMat(chosen, new Color(.19f, .17f, .25f), 1f, 0.22f);
+        matSand       = NewMat(chosen, new Color(.43f, .40f, .42f), 1f, 0.06f);
+        matSandWet    = NewMat(chosen, new Color(.26f, .26f, .32f), 1f, 0.20f);
+        matUnderRock  = NewMat(chosen, new Color(.15f, .12f, .21f), 1f, 0.16f);
 
         Shader wSh   = waterSh != null ? waterSh : chosen;
         matWater     = NewMat(wSh,    new Color(0.14f, 0.46f, 0.68f, 0.60f), 0.60f, 0.92f, true);
         matWaterDeep = NewMat(chosen, new Color(0.08f, 0.22f, 0.45f, 0.72f), 0.72f, 0.95f, true);
 
-        matWood      = NewMat(chosen, new Color(0.38f, 0.24f, 0.14f), 1f, 0.14f);
-        matWoodDark  = NewMat(chosen, new Color(0.24f, 0.14f, 0.08f), 1f, 0.10f);
-        matLeaf      = NewMat(chosen, new Color(0.18f, 0.46f, 0.15f), 1f, 0.10f);
-        matLeafLight = NewMat(chosen, new Color(0.35f, 0.58f, 0.22f), 1f, 0.08f);
-        matLeafDark  = NewMat(chosen, new Color(0.10f, 0.30f, 0.10f), 1f, 0.12f);
-        matLeafAutumn   = NewMat(chosen, new Color(0.80f, 0.42f, 0.12f), 1f, 0.10f);
-        matLeafYellow   = NewMat(chosen, new Color(0.86f, 0.68f, 0.18f), 1f, 0.08f);
-        matBirchBark    = NewMat(chosen, new Color(0.88f, 0.86f, 0.80f), 1f, 0.10f);
-        matBlossom      = NewMat(chosen, new Color(0.93f, 0.62f, 0.74f), 1f, 0.12f);
-        matBlossomLight = NewMat(chosen, new Color(0.98f, 0.80f, 0.86f), 1f, 0.12f);
+        matWood      = NewMat(chosen, new Color(.24f, .19f, .23f), 1f, 0.14f);
+        matWoodDark  = NewMat(chosen, new Color(.13f, .11f, .17f), 1f, 0.10f);
+        matLeaf      = NewMat(chosen, new Color(.15f, .29f, .27f), 1f, 0.10f);
+        matLeafLight = NewMat(chosen, new Color(.27f, .40f, .35f), 1f, 0.08f);
+        matLeafDark  = NewMat(chosen, new Color(.08f, .17f, .19f), 1f, 0.12f);
+        matLeafAutumn   = NewMat(chosen, new Color(.32f, .22f, .37f), 1f, 0.10f);
+        matLeafYellow   = NewMat(chosen, new Color(.44f, .32f, .43f), 1f, 0.08f);
+        matBirchBark    = NewMat(chosen, new Color(.61f, .62f, .65f), 1f, 0.10f);
+        matBlossom      = NewMat(chosen, new Color(.37f, .26f, .47f), 1f, 0.12f);
+        matBlossomLight = NewMat(chosen, new Color(.54f, .41f, .61f), 1f, 0.12f);
 
-        matRoofDark  = NewMat(chosen, new Color(0.18f, 0.06f, 0.04f), 1f, 0.12f);
-        matRoofRed   = NewMat(chosen, new Color(0.55f, 0.18f, 0.10f), 1f, 0.15f);
-        matRoofBrown = NewMat(chosen, new Color(0.32f, 0.18f, 0.10f), 1f, 0.14f);
+        matRoofDark  = NewMat(chosen, new Color(.12f, .10f, .19f), 1f, 0.12f);
+        matRoofRed   = NewMat(chosen, new Color(.29f, .16f, .25f), 1f, 0.15f);
+        matRoofBrown = NewMat(chosen, new Color(.22f, .20f, .30f), 1f, 0.14f);
 
-        matStone      = NewMat(chosen, new Color(0.68f, 0.65f, 0.60f), 1f, 0.22f);
-        matStoneDark  = NewMat(chosen, new Color(0.32f, 0.30f, 0.28f), 1f, 0.18f);
-        matPlaster    = NewMat(chosen, new Color(0.88f, 0.84f, 0.76f), 1f, 0.12f);
-        matPlasterWarm= NewMat(chosen, new Color(0.82f, 0.72f, 0.58f), 1f, 0.10f);
-        matPlasterGrey= NewMat(chosen, new Color(0.70f, 0.70f, 0.68f), 1f, 0.12f);
+        matStone      = NewMat(chosen, new Color(.46f, .44f, .51f), 1f, 0.22f);
+        matStoneDark  = NewMat(chosen, new Color(.23f, .21f, .30f), 1f, 0.18f);
+        matPlaster    = NewMat(chosen, new Color(.62f, .59f, .58f), 1f, 0.12f);
+        matPlasterWarm= NewMat(chosen, new Color(.53f, .47f, .43f), 1f, 0.10f);
+        matPlasterGrey= NewMat(chosen, new Color(.43f, .44f, .49f), 1f, 0.12f);
 
         matBoardLight = NewMat(chosen, new Color(0.94f, 0.94f, 0.92f), 1f, 0.25f);
         matBoardDark  = NewMat(chosen, new Color(0.06f, 0.06f, 0.06f), 1f, 0.25f);
-        matPath       = NewMat(chosen, new Color(0.60f, 0.52f, 0.40f), 1f, 0.06f);
-        matPathDark   = NewMat(chosen, new Color(0.38f, 0.30f, 0.22f), 1f, 0.05f);
+        matPath       = NewMat(chosen, new Color(.40f, .37f, .39f), 1f, 0.06f);
+        matPathDark   = NewMat(chosen, new Color(.25f, .23f, .29f), 1f, 0.05f);
         matWindow     = NewMat(chosen, new Color(0.55f, 0.75f, 0.90f, 0.55f), 0.55f, 0.95f, true);
         matDoor       = NewMat(chosen, new Color(0.28f, 0.16f, 0.08f), 1f, 0.18f);
 
@@ -644,10 +656,13 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         MeshRenderer mr = islandCPU.AddComponent<MeshRenderer>();
         MeshCollider mc = islandCPU.AddComponent<MeshCollider>();
         Mesh colliderMesh = GenerateIslandMesh(islandResolution);
-        mf.sharedMesh     = colliderMesh;
-        mc.sharedMesh     = colliderMesh;
-        mr.sharedMaterial = matGrass;
-        mr.enabled        = !useGPUIslandVisual;
+        // Keep collision unchanged, but draw larger flat-shaded terrain facets.
+        var visualSource = GenerateIslandMesh(Mathf.Min(islandResolution, 44));
+        mf.sharedMesh = BuildFacetedTerrain(visualSource);
+        if (Application.isPlaying) Destroy(visualSource); else DestroyImmediate(visualSource);
+        mc.sharedMesh = colliderMesh;
+        mr.sharedMaterials = new[] { matGrass, matGrassLight, matDirt, matRock, matRockDark, matSand, matSandWet, matVoidGround };
+        mr.enabled = facetedTerrain || !useGPUIslandVisual || islandGPUShader == null;
 
         // Ventre rocheux : transforme la « crêpe » plate en morceau de planète
         if (buildUnderside)
@@ -655,7 +670,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
 
         BuildIslandColorOverlay(group.transform);
 
-        if (useGPUIslandVisual && islandGPUShader != null)
+        if (!facetedTerrain && useGPUIslandVisual && islandGPUShader != null)
         {
             GameObject islandVisualGO = new GameObject("Island_GPU");
             islandVisualGO.transform.SetParent(group.transform);
@@ -675,9 +690,52 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         return group;
     }
 
+    public bool IsInsideArena(Vector3 position, float footprint = 0)
+    {
+        float half = 4f * chessTile + arenaDecorationMargin + Mathf.Max(0, footprint);
+        return Mathf.Abs(position.x) < half && Mathf.Abs(position.z) < half;
+    }
+
+    void ClearArenaDecorations()
+    {
+        float half = 4f * chessTile + arenaDecorationMargin;
+        foreach (var renderer in root.GetComponentsInChildren<Renderer>())
+        {
+            // Preserve the actual ground and every gameplay tile.
+            var branch = renderer.transform;
+            while (branch.parent && branch.parent != root) branch = branch.parent;
+            if (renderer.name == "Island_CPU" || renderer.name == "Island_GPU" || renderer.name == "Island_Underside" || renderer.bounds.max.y < 0) continue;
+            if (branch.name == "ParkAndArena" &&
+                (renderer.name == "BoardPad" || renderer.GetComponent<GridCell>())) continue;
+            var bounds = renderer.bounds;
+            if (bounds.min.x > half || bounds.max.x < -half ||
+                bounds.min.z > half || bounds.max.z < -half) continue;
+            renderer.gameObject.SetActive(false);
+        }
+    }
+
+    Mesh BuildFacetedTerrain(Mesh source)
+    {
+        var original = source.vertices; var sourceUV = source.uv; var indices = source.triangles;
+        var vertices = new Vector3[indices.Length]; var uv = new Vector2[indices.Length];
+        var groups = new List<int>[8]; for(int i=0;i<groups.Length;i++) groups[i]=new List<int>();
+        Material[] palette = { matGrass, matGrassLight, matDirt, matRock, matRockDark, matSand, matSandWet, matVoidGround };
+        for(int i=0;i<indices.Length;i+=3)
+        {
+            var center=(original[indices[i]]+original[indices[i+1]]+original[indices[i+2]])/3;
+            var material=ChooseTerrainMaterial(center.x,center.z,center.y);
+            int group=System.Array.IndexOf(palette,material); if(group<0)group=0;
+            for(int j=0;j<3;j++){vertices[i+j]=original[indices[i+j]];uv[i+j]=sourceUV[indices[i+j]];groups[group].Add(i+j);}
+        }
+        var result=new Mesh { name="Entropy faceted terrain", indexFormat=UnityEngine.Rendering.IndexFormat.UInt32 };
+        result.vertices=vertices;result.uv=uv;result.subMeshCount=groups.Length;
+        for(int i=0;i<groups.Length;i++)result.SetTriangles(groups[i],i);
+        result.RecalculateNormals();result.RecalculateBounds();return result;
+    }
+
     void BuildIslandColorOverlay(Transform parent)
     {
-        for (int i = 0; i < 250; i++)
+        for (int i = 0; i < 65; i++)
         {
             float ang = (float)rng.NextDouble() * Mathf.PI * 2f;
             float rad = Mathf.Sqrt((float)rng.NextDouble()) * (islandRadius - 3f);
@@ -988,8 +1046,8 @@ public class VoidMapGeneratorGPU : MonoBehaviour
                 quad.AddComponent<GridCell>();
         }
 
-        AddPathJoints(group.transform, cy + arenaRaise, boardSize);
-        AddArenaOrganic(group.transform, cy + arenaRaise, boardSize);
+        // The arena contains only the board, without moss, props or barriers.
+
 
         return group;
     }
@@ -1132,6 +1190,8 @@ public class VoidMapGeneratorGPU : MonoBehaviour
             if (pos.magnitude > islandRadius - 3f) continue;
             if (IsNearHouse(pos, 3.0f))            continue;
             if (IsInVoidBite(pos))                 continue;
+            if (Mathf.PerlinNoise(pos.x*.085f+seed*.01f,pos.z*.085f-seed*.01f) < .38f) continue;
+            if (pos.magnitude < parkRadius + 5f) continue;
             PlaceTree(g, pos);
             placed++;
         }
@@ -1150,7 +1210,9 @@ public class VoidMapGeneratorGPU : MonoBehaviour
                 Vector3 pos = new Vector3(Mathf.Cos(ang) * rad, 0f, Mathf.Sin(ang) * rad);
                 if (IsInsideLake(pos))      continue;
                 if (IsNearHouse(pos, 3.0f)) continue;
-                PlaceTree(g, pos);
+                if (Mathf.PerlinNoise(pos.x*.085f+seed*.01f,pos.z*.085f-seed*.01f) < .38f) continue;
+            if (pos.magnitude < parkRadius + 5f) continue;
+            PlaceTree(g, pos);
             }
         }
         return g;
@@ -1306,7 +1368,7 @@ public class VoidMapGeneratorGPU : MonoBehaviour
     GameObject AddTreePart(Transform parent, PrimitiveType type, string n,
                            Vector3 lPos, Vector3 lScale, Quaternion lRot, Material mat)
     {
-        GameObject go = GameObject.CreatePrimitive(type);
+        GameObject go = EntropyLowPoly.CreatePrimitive(type);
         go.name  = n;
         go.transform.SetParent(parent);
         go.layer = parent.gameObject.layer;
@@ -1364,13 +1426,13 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         }
 
         // Canopée : gros cœur + couronne de blobs décalés
-        float canopyR = h * 0.30f;
+        float canopyR = h * 0.22f;
         float cy = trunkH + canopyR * 0.55f;
         AddTreePart(tree, PrimitiveType.Sphere, "CanopyCore",
             new Vector3(0f, cy + canopyR * 0.15f, 0f),
             new Vector3(canopyR * 2.1f, canopyR * 1.6f, canopyR * 2.1f),
             Quaternion.identity, leafMain);
-        int blobs = 5 + (int)(rng.NextDouble() * 2f);
+        int blobs = 3 + (int)(rng.NextDouble() * 2f);
         for (int i = 0; i < blobs; i++)
         {
             float ang = i * (Mathf.PI * 2f / blobs) + (float)rng.NextDouble() * 0.6f;
