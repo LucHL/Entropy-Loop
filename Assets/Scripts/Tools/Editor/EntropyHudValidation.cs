@@ -167,13 +167,13 @@ public static class EntropyHudValidation
                 Click(window.actionLogPanel.GetComponentsInChildren<Button>().First(b => b.name == "Close Button"));
                 Check(!window.actionLogPanel.activeSelf, "Original journal close action works");
                 Click(Button("Boutique"));
-                Check(ShopManager.instance.shopPopup.activeSelf, "Boutique button opens existing shop");
+                Check(ShopManager.instance.IsOpen, "Boutique button opens existing shop");
                 step = 31; frames = 0;
             }
             else if (step == 31)
             {
-                Click(ShopManager.instance.closeButton);
-                Check(!ShopManager.instance.shopPopup.activeSelf, "Shop close button works");
+                Click(ShopManager.instance.leaveButton);
+                Check(!ShopManager.instance.IsOpen, "Shop close button works");
                 var mana = ManaManager.instance;
                 mana.SpendMana(3);
                 step = 4; frames = 0;
