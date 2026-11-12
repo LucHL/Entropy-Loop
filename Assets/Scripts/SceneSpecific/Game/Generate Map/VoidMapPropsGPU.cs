@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
 
@@ -14,6 +14,8 @@ using Unity.AI.Navigation;
 [ExecuteAlways]
 public class VoidMapPropsGPU : MonoBehaviour
 {
+    [Range(1f, 2f)] public float sceneryDensity = 1.35f;
+
     [Header("Buissons")]
     public int     bushCount     = 130;
     public Vector2 bushSizeRange = new Vector2(0.35f, 0.85f);
@@ -173,7 +175,7 @@ public class VoidMapPropsGPU : MonoBehaviour
         BuildBoulders(g);
         BuildCrystals(g);
         BuildRuins(g);
-        if (buildArenaDecor) BuildArenaDecor(g);
+        // Arena deliberately kept free of ropes, flags, barriers and props.
 
         if (gen.phase >= 1)
         {
@@ -217,38 +219,38 @@ public class VoidMapPropsGPU : MonoBehaviour
         Shader std = Shader.Find("Standard");
 
         // --- Bois ---
-        matWood      = NewMat(std, new Color(0.38f, 0.24f, 0.14f), 0.14f);
-        matWoodDark  = NewMat(std, new Color(0.24f, 0.14f, 0.08f), 0.10f);
+        matWood      = NewMat(std, new Color(.24f, .19f, .23f), 0.14f);
+        matWoodDark  = NewMat(std, new Color(.13f, .11f, .17f), 0.10f);
         matPlank     = NewMat(std, new Color(0.52f, 0.36f, 0.20f), 0.16f);
 
         // --- Végétation ---
-        matLeaf      = NewMat(std, new Color(0.18f, 0.46f, 0.15f), 0.10f);
-        matLeafLight = NewMat(std, new Color(0.35f, 0.58f, 0.22f), 0.08f);
-        matLeafDark  = NewMat(std, new Color(0.10f, 0.30f, 0.10f), 0.12f);
-        matPineDark  = NewMat(std, new Color(0.07f, 0.27f, 0.14f), 0.10f);
+        matLeaf      = NewMat(std, new Color(.15f, .29f, .27f), 0.10f);
+        matLeafLight = NewMat(std, new Color(.27f, .40f, .35f), 0.08f);
+        matLeafDark  = NewMat(std, new Color(.08f, .17f, .19f), 0.12f);
+        matPineDark  = NewMat(std, new Color(.10f, .20f, .24f), 0.10f);
 
         // --- Fleurs ---
-        matFlowerRed    = NewMat(std, new Color(0.85f, 0.18f, 0.15f), 0.20f);
-        matFlowerYellow = NewMat(std, new Color(0.95f, 0.80f, 0.20f), 0.20f);
+        matFlowerRed    = NewMat(std, new Color(.50f, .24f, .40f), 0.20f);
+        matFlowerYellow = NewMat(std, new Color(.65f, .53f, .32f), 0.20f);
         matFlowerWhite  = NewMat(std, new Color(0.95f, 0.95f, 0.90f), 0.20f);
         matFlowerViolet = NewMat(std, new Color(0.55f, 0.35f, 0.75f), 0.20f);
 
         // --- Champignons ---
-        matMushroomRed   = NewMat(std, new Color(0.75f, 0.15f, 0.10f), 0.18f);
+        matMushroomRed   = NewMat(std, new Color(.40f, .21f, .46f), 0.18f);
         matMushroomBrown = NewMat(std, new Color(0.55f, 0.38f, 0.20f), 0.14f);
         matMushroomStem  = NewMat(std, new Color(0.90f, 0.86f, 0.78f), 0.10f);
 
         // --- Pierre / sol ---
-        matStone     = NewMat(std, new Color(0.68f, 0.65f, 0.60f), 0.22f);
-        matStoneDark = NewMat(std, new Color(0.32f, 0.30f, 0.28f), 0.18f);
-        matPath      = NewMat(std, new Color(0.60f, 0.52f, 0.40f), 0.06f);
+        matStone     = NewMat(std, new Color(.46f, .44f, .51f), 0.22f);
+        matStoneDark = NewMat(std, new Color(.23f, .21f, .30f), 0.18f);
+        matPath      = NewMat(std, new Color(.40f, .37f, .39f), 0.06f);
         matAsh       = NewMat(std, new Color(0.15f, 0.14f, 0.13f), 0.05f);
 
         // --- Divers ---
-        matHay        = NewMat(std, new Color(0.85f, 0.70f, 0.30f), 0.08f);
+        matHay        = NewMat(std, new Color(.47f, .40f, .27f), 0.08f);
         matWellWater  = NewMat(std, new Color(0.10f, 0.30f, 0.50f), 0.85f);
-        matLilyPad    = NewMat(std, new Color(0.20f, 0.55f, 0.25f), 0.15f);
-        matLilyFlower = NewMat(std, new Color(0.95f, 0.55f, 0.75f), 0.25f);
+        matLilyPad    = NewMat(std, new Color(.19f, .32f, .30f), 0.15f);
+        matLilyFlower = NewMat(std, new Color(.52f, .36f, .61f), 0.25f);
         matReed       = NewMat(std, new Color(0.30f, 0.50f, 0.20f), 0.10f);
         matReedTip    = NewMat(std, new Color(0.45f, 0.30f, 0.15f), 0.10f);
 
@@ -257,9 +259,9 @@ public class VoidMapPropsGPU : MonoBehaviour
         matFire    = NewMatEmissive(std, new Color(1.00f, 0.45f, 0.10f), 2.2f);
 
         // --- Ambiance ---
-        matMoss       = NewMat(std, new Color(0.25f, 0.45f, 0.20f), 0.08f);
+        matMoss       = NewMat(std, new Color(.20f, .31f, .28f), 0.08f);
         matRope       = NewMat(std, new Color(0.45f, 0.36f, 0.24f), 0.10f);
-        matCloud      = NewMat(std, new Color(0.95f, 0.96f, 0.98f), 0.05f);
+        matCloud      = NewMat(std, new Color(.38f, .36f, .48f), 0.05f);
         matVoidRock   = NewMat(std, new Color(0.16f, 0.12f, 0.22f), 0.20f);   // roche du vide violacée
         matBannerRed  = NewMat(std, new Color(0.75f, 0.15f, 0.12f), 0.15f);
         matBannerBlue = NewMat(std, new Color(0.15f, 0.30f, 0.75f), 0.15f);
@@ -364,7 +366,7 @@ public class VoidMapPropsGPU : MonoBehaviour
     bool IsFree(Vector3 pos)
     {
         float r = new Vector2(pos.x, pos.z).magnitude;
-        if (r < gen.parkRadius + 1.2f)      return false;
+        if (gen.IsInsideArena(pos, 1.5f)) return false;
         if (r > gen.islandRadius - 2.5f)    return false;
         if (gen.IsInsideLake(pos))          return false;
         if (gen.phase >= 3 && Mathf.Abs(r - gen.castleOuterRadius) < 2.2f) return false;
@@ -432,7 +434,7 @@ public class VoidMapPropsGPU : MonoBehaviour
     GameObject PrimLocal(PrimitiveType type, string pName, Transform parent,
                          Vector3 localPos, Vector3 localScale, Quaternion localRot, Material mat)
     {
-        GameObject go = GameObject.CreatePrimitive(type);
+        GameObject go = EntropyLowPoly.CreatePrimitive(type);
         go.name  = pName;
         go.transform.SetParent(parent);
         go.layer = parent.gameObject.layer;
@@ -447,7 +449,7 @@ public class VoidMapPropsGPU : MonoBehaviour
     GameObject Prim(PrimitiveType type, string pName, Transform parent,
                     Vector3 worldPos, Vector3 scale, Quaternion rot, Material mat)
     {
-        GameObject go = GameObject.CreatePrimitive(type);
+        GameObject go = EntropyLowPoly.CreatePrimitive(type);
         go.name  = pName;
         go.transform.SetParent(parent);
         go.layer = parent.gameObject.layer;
@@ -471,8 +473,8 @@ public class VoidMapPropsGPU : MonoBehaviour
     void BuildBushes(Transform parent)
     {
         Transform g = Group("Bushes", parent);
-        int placed = 0, guard = bushCount * 8;
-        while (placed < bushCount && guard-- > 0)
+        int placed = 0, guard = Mathf.RoundToInt(bushCount * sceneryDensity) * 8;
+        while (placed < Mathf.RoundToInt(bushCount * sceneryDensity) && guard-- > 0)
         {
             Vector3 pos = RandomPoint(gen.parkRadius + 1.5f, gen.islandRadius - 3f);
             if (!IsFree(pos)) continue;
@@ -517,8 +519,8 @@ public class VoidMapPropsGPU : MonoBehaviour
         Transform g = Group("Flowers", parent);
         Material[] petals = { matFlowerRed, matFlowerYellow, matFlowerWhite, matFlowerViolet };
 
-        int placed = 0, guard = flowerClusterCount * 8;
-        while (placed < flowerClusterCount && guard-- > 0)
+        int placed = 0, guard = Mathf.RoundToInt(flowerClusterCount * sceneryDensity) * 8;
+        while (placed < Mathf.RoundToInt(flowerClusterCount * sceneryDensity) && guard-- > 0)
         {
             Vector3 center = RandomPoint(gen.parkRadius + 1.5f, gen.islandRadius - 4f);
             if (!IsFree(center)) continue;
@@ -553,8 +555,8 @@ public class VoidMapPropsGPU : MonoBehaviour
     void BuildMushrooms(Transform parent)
     {
         Transform g = Group("Mushrooms", parent);
-        int placed = 0, guard = mushroomClusterCount * 8;
-        while (placed < mushroomClusterCount && guard-- > 0)
+        int placed = 0, guard = Mathf.RoundToInt(mushroomClusterCount * sceneryDensity) * 8;
+        while (placed < Mathf.RoundToInt(mushroomClusterCount * sceneryDensity) && guard-- > 0)
         {
             Vector3 center = RandomPoint(gen.parkRadius + 2.5f, gen.islandRadius - 4f);
             if (!IsFree(center)) continue;
@@ -588,8 +590,8 @@ public class VoidMapPropsGPU : MonoBehaviour
     {
         Transform g = Group("StumpsAndLogs", parent);
 
-        int placed = 0, guard = stumpCount * 8;
-        while (placed < stumpCount && guard-- > 0)
+        int placed = 0, guard = Mathf.RoundToInt(stumpCount * sceneryDensity) * 8;
+        while (placed < Mathf.RoundToInt(stumpCount * sceneryDensity) && guard-- > 0)
         {
             Vector3 pos = RandomPoint(gen.parkRadius + 2.5f, gen.islandRadius - 4f);
             if (!IsFree(pos)) continue;
@@ -607,8 +609,8 @@ public class VoidMapPropsGPU : MonoBehaviour
             placed++;
         }
 
-        placed = 0; guard = logCount * 8;
-        while (placed < logCount && guard-- > 0)
+        placed = 0; guard = Mathf.RoundToInt(logCount * sceneryDensity) * 8;
+        while (placed < Mathf.RoundToInt(logCount * sceneryDensity) && guard-- > 0)
         {
             Vector3 pos = RandomPoint(gen.parkRadius + 2.5f, gen.islandRadius - 4f);
             if (!IsFree(pos)) continue;
@@ -1139,8 +1141,8 @@ public class VoidMapPropsGPU : MonoBehaviour
     {
         if (grassTuftCount <= 0) return;
         Transform g = Group("GrassTufts", parent);
-        int placed = 0, guard = grassTuftCount * 6;
-        while (placed < grassTuftCount && guard-- > 0)
+        int placed = 0, guard = Mathf.RoundToInt(grassTuftCount * sceneryDensity) * 6;
+        while (placed < Mathf.RoundToInt(grassTuftCount * sceneryDensity) && guard-- > 0)
         {
             Vector3 pos = RandomPoint(gen.parkRadius + 1.2f, gen.islandRadius - 3f);
             if (!IsFree(pos)) continue;
@@ -1164,8 +1166,8 @@ public class VoidMapPropsGPU : MonoBehaviour
     {
         if (boulderClusterCount <= 0) return;
         Transform g = Group("Boulders", parent);
-        int placed = 0, guard = boulderClusterCount * 12;
-        while (placed < boulderClusterCount && guard-- > 0)
+        int placed = 0, guard = Mathf.RoundToInt(boulderClusterCount * sceneryDensity) * 12;
+        while (placed < Mathf.RoundToInt(boulderClusterCount * sceneryDensity) && guard-- > 0)
         {
             Vector3 pos = RandomPoint(gen.parkRadius + 4f, gen.islandRadius - 4f);
             if (!IsFree(pos)) continue;
@@ -1199,8 +1201,8 @@ public class VoidMapPropsGPU : MonoBehaviour
     {
         if (crystalClusterCount <= 0) return;
         Transform g = Group("Crystals", parent);
-        int placed = 0, guard = crystalClusterCount * 14;
-        while (placed < crystalClusterCount && guard-- > 0)
+        int placed = 0, guard = Mathf.RoundToInt(crystalClusterCount * sceneryDensity) * 14;
+        while (placed < Mathf.RoundToInt(crystalClusterCount * sceneryDensity) && guard-- > 0)
         {
             Vector3 pos = RandomPoint(gen.parkRadius + 5f, gen.islandRadius - 4f);
             if (!IsFree(pos)) continue;
