@@ -10,5 +10,4 @@ public class MerchantDialogueData
     public string[] greetings;
     public string[] purchase;
     public string[] cantAfford;
-    public string[] soldOut;
 }
