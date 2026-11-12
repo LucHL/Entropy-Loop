@@ -100,6 +100,21 @@ public class GameManager : MonoBehaviour, IDataPersistence
         DataPersistenceManager.instance.SaveGame();
     }
 
+    // Enregistre le niveau comme terminé dès la victoire du dernier sous-niveau,
+    // pour qu'il reste débloqué même si le joueur retourne au menu au lieu de continuer
+    public void CompleteCurrentLevel()
+    {
+        if (currentLevelData == null || nbrSubLevelRemaining >= 1)
+            return;
+        if (currentLevelData.currentlevel <= maxLevelFinish)
+            return;
+
+        maxLevelFinish = currentLevelData.currentlevel;
+        maxLevelReach = currentLevelData.currentlevel + 1;
+        BugTracker.Info("[GameManager] Level " + maxLevelFinish + " completed.");
+        DataPersistenceManager.instance.SaveGame();
+    }
+
     public void SetNextLevel()
     {
         if (nbrSubLevelRemaining >= 1) { // sub-level
@@ -109,11 +124,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         }
 
         int nextLevelNumber = currentLevelData.currentlevel + 1;
-
-        if (currentLevelData.currentlevel > maxLevelFinish) {
-            maxLevelFinish = currentLevelData.currentlevel;
-            maxLevelReach = nextLevelNumber;
-        }
+        CompleteCurrentLevel();
 
         LevelData nextLevelData = null;
         foreach (var lvl in alllevelData) {
