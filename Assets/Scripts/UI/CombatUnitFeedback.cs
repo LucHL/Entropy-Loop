@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -233,7 +233,7 @@ public sealed class CombatUnitFeedback : MonoBehaviour
     static Image Panel(string name, Transform parent, Color color, Vector2 position, Vector2 size)
     {
         var rect = Rect(name, parent, size); rect.anchoredPosition = position;
-        var image = rect.gameObject.AddComponent<Image>(); image.color = color; image.raycastTarget = false; return image;
+        var image = rect.gameObject.AddComponent<CombatRoundedHealthGraphic>(); image.color = color; image.raycastTarget = false; return image;
     }
     static TMP_Text Text(string name, Transform parent, float size, Vector2 dimensions)
     {
@@ -272,5 +272,34 @@ public sealed class CombatImpactGraphic : MaskableGraphic
             vh.AddVert(center - tangent * width + direction * length, tint, Vector2.zero);
             vh.AddTriangle(n, n + 1, n + 2); vh.AddTriangle(n, n + 2, n + 3);
         }
+    }
+}
+
+// Rounded geometry follows the actual health width, including almost-empty bars.
+public sealed class CombatRoundedHealthGraphic : Image
+{
+    protected override void OnPopulateMesh(VertexHelper vh)
+    {
+        vh.Clear();
+        var r = rectTransform.rect;
+        if (r.width <= 0 || r.height <= 0) return;
+        float radius = Mathf.Min(r.height * .3f, r.width * .5f);
+        const int segments = 8;
+        vh.AddVert(r.center, color, Vector2.zero);
+        for (int corner = 0; corner < 4; corner++)
+        {
+            var center = new Vector2(
+                corner == 0 || corner == 3 ? r.xMax - radius : r.xMin + radius,
+                corner < 2 ? r.yMax - radius : r.yMin + radius);
+            for (int step = 0; step <= segments; step++)
+            {
+                float angle = (corner * 90f + step * 90f / segments) * Mathf.Deg2Rad;
+                var point = center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+                vh.AddVert(point, color, Vector2.zero);
+            }
+        }
+        int perimeter = 4 * (segments + 1);
+        for (int i = 0; i < perimeter; i++)
+            vh.AddTriangle(0, i + 1, (i + 1) % perimeter + 1);
     }
 }
