@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -62,6 +62,14 @@ public class GameLoopManager : MonoBehaviour
             DeckSelectionManager.instance.CloseSelection();
     }
 
+    public void OpenSettings()
+    {
+        if (!settings || !GameManager.instance) return;
+        GameManager.instance.PauseGame();
+        settings.SetActive(true);
+        settings.transform.SetAsLastSibling();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -69,8 +77,7 @@ public class GameLoopManager : MonoBehaviour
                 GameManager.instance.ResumeGame();
                 settings.SetActive(false);
             } else {
-                GameManager.instance.PauseGame();
-                settings.SetActive(true);
+                OpenSettings();
             }
         }
 
