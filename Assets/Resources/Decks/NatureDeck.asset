@@ -20,3 +20,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 89885bbea845189deb29beee015942b2, type: 2}
   - {fileID: 11400000, guid: 89885bbea845189deb29beee015942b2, type: 2}
   unlockLevel: 4
+  showInSelection: 0
+  displayName: 
+  category: "VERDENTIA CORROMPUE"
+  grimoireTitle: "L'Herbier du Silence"
+  lore: "Arraché aux ruines de Verdentia après la chute d'Ul'vynyx, ce grimoire lie les bêtes de la jungle que la Corruption a vidées de leur instinct. Boas, crocodiles et dents-de-sabre ne chassent plus pour survivre : ils obéissent désormais à celui qui a su refermer la brèche."
+  deckType: "ATTRITION & POISON"
+  mechanics: "Un deck qui use l'ennemi sur la durée. Le Boa du Vide empoisonne à chaque attaque, jusqu'à 10 charges, et la Dent de Sabres fait saigner sa cible. Le Crocodile du Vide frappe les rangées les plus éloignées, tandis qu'Ul'vynyx invoque deux copies de lui-même pour submerger le terrain."
