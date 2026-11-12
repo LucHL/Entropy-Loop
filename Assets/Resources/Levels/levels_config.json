@@ -76,7 +76,7 @@
         "spawnAlgo": {
             "spawnStartegy": [3, 3],
             "deck": ["", ""],
-            "manaCost": [12],
+            "manaCost": [12, 12],
             "difficulty": "medium"
         }
     },
