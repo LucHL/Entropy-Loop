@@ -342,12 +342,9 @@ public class Units : MonoBehaviour
 
         Vector2Int nextGridPos = currentGridPos;
 
-        if (canMoveDiagonally && stepX != 0 && stepY != 0)
-        {
+        if (canMoveDiagonally && stepX != 0 && stepY != 0) {
             nextGridPos = new Vector2Int(currentGridPos.x + stepX, currentGridPos.y + stepY);
-        }
-        else
-        {
+        } else {
             if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y)) {
                 nextGridPos.x += stepX;
             } else {
@@ -378,14 +375,15 @@ public class Units : MonoBehaviour
     private void UpdatePathVisual()
     {
         if (target == null || lineRenderer == null || !isAlive) {
-            if (lineRenderer != null) lineRenderer.positionCount = 0;
+            if (lineRenderer != null)
+                lineRenderer.positionCount = 0;
             return;
         }
 
         Vector2Int currentGridPos = WorldToGridPosition(transform.position);
         Vector2Int targetGridPos = WorldToGridPosition(target.transform.position);
 
-        List<Vector3> pathPoints = new List<Vector3>();
+        List<Vector3> pathPoints = new();
 
         Vector3 startTileCenter = GridToWorldPosition(currentGridPos) + Vector3.up * pathHeightOffset;
         pathPoints.Add(startTileCenter);
