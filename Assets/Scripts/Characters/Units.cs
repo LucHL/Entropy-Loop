@@ -55,19 +55,6 @@ public class Units : MonoBehaviour
     [SerializeField] Slider hpSlider;
     public Transform modelPosition;
 
-    [Header("Grid Movement Rules")]
-    public bool canMoveDiagonally = false;
-
-    [Tooltip("Nombre de ticks requis pour effectuer un déplacement d'une case")]
-    public int ticksPerMove = 1;
-
-    private Vector2Int gridPosition;
-    private int currentTickCount = 0;
-    private LineRenderer lineRenderer;
-    private Coroutine moveCoroutine;
-    [SerializeField] private float pathHeightOffset = 2f;
-    private float chessTileSize = 1f;
-
     [Header("Must be handle in each entities script")] // voir pour un UnitData
     public float damagePerAttack = 10;
     public int manaCost = 3;
@@ -86,6 +73,7 @@ public class Units : MonoBehaviour
     protected float passifTimer = 0f;
 
     public virtual UnitsClass unitsClass => UnitsClass.Dps;
+
 
     /* end */
     public bool isAlive = true;
@@ -113,9 +101,18 @@ public class Units : MonoBehaviour
     private AnimationState currentAnimationState;
     private BackupUnits backupUnits = new();
     public bool isGameRunning = false;
+    private float chessTileSize = 1f;
 
     protected float capacityTriggerMax = 100f;
     protected float capacityPoints = 0f;
+
+    private LineRenderer lineRenderer;
+    [Header("Visual Path")]
+    [SerializeField] private float pathHeightOffset = 0.05f;
+
+    [Header("Grid Movement Rules")]
+    public bool canMoveDiagonally = false;
+
 
     // hp * 5
     // 4 def = 40%
@@ -136,8 +133,6 @@ public class Units : MonoBehaviour
         unitsRigidbody.isKinematic = true;
 
         lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.startWidth = 0.2f;
-        lineRenderer.endWidth = 0.2f;
     }
 
     protected virtual void Start() {
@@ -165,7 +160,18 @@ public class Units : MonoBehaviour
         
         unitsRigidbody.isKinematic = false;
 
-        attackRange *= VoidMapGeneratorGPU.instance.chessTile;
+        attackRange *= chessTileSize;
+
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+
+        if (team == UnitsTeam.Enemy) {
+            lineRenderer.startColor = new Color32(133, 0, 200, 255);
+            lineRenderer.endColor = new Color32(133, 0, 200, 255);
+        } else {
+            lineRenderer.startColor = new Color32(200, 29, 0, 255);
+            lineRenderer.endColor = new Color32(200, 29, 0, 255);
+        }
 
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
 
@@ -218,7 +224,7 @@ public class Units : MonoBehaviour
     {
         if (!isGameRunning)
             return;
-
+        
         Passif();
 
         attackTimer -= Time.deltaTime;
@@ -226,10 +232,6 @@ public class Units : MonoBehaviour
         if (target != null && targetUnitsComponent != null) {
             if (!targetUnitsComponent.isAlive) {
                 target = null;
-
-                if (lineRenderer != null)
-                    lineRenderer.positionCount = 0;
-
                 return;
             }
 
@@ -239,7 +241,6 @@ public class Units : MonoBehaviour
                 SetAnimationState(AnimationState.Moving);
                 MoveTowardsTarget();
             } else {
-                SetAnimationState(AnimationState.Attacking);
                 if (attackTimer <= 0f) {
                     SetAnimationState(AnimationState.Attacking);
                     attackTimer = attackRate;
@@ -262,58 +263,6 @@ public class Units : MonoBehaviour
             //GameLogManager.Instance.AddLog("'"+name.Split("(")[0] +"' activated Capacity");
 
             Capacite();
-        }
-    }
-
-    private void UpdatePathVisual()
-    {
-        if (target == null || lineRenderer == null || !isAlive) {
-            if (lineRenderer != null) lineRenderer.positionCount = 0;
-            return;
-        }
-
-        Vector2Int currentGridPos = WorldToGridPosition(transform.position);
-        Vector2Int targetGridPos = WorldToGridPosition(target.transform.position);
-
-        Vector2Int delta = targetGridPos - currentGridPos;
-
-        if (delta == Vector2Int.zero) {
-            lineRenderer.positionCount = 0;
-            return;
-        }
-
-        int stepX = System.Math.Sign(delta.x);
-        int stepY = System.Math.Sign(delta.y);
-
-        Vector2Int nextGridPos = currentGridPos;
-        if (canMoveDiagonally && stepX != 0 && stepY != 0) {
-            nextGridPos = new Vector2Int(currentGridPos.x + stepX, currentGridPos.y + stepY);
-        } else {
-            if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y)) {
-                nextGridPos.x += stepX;
-            } else {
-                nextGridPos.y += stepY;
-            }
-        }
-
-        Vector3 startWorldPos = transform.position + Vector3.up * pathHeightOffset;
-        Vector3 nextWorldPos = GridToWorldPosition(nextGridPos) + Vector3.up * pathHeightOffset;
-        Vector3 targetWorldPos = target.transform.position + Vector3.up * pathHeightOffset;
-
-        if (canMoveDiagonally && stepX != 0 && stepY != 0)
-        {
-            lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0, startWorldPos);
-            lineRenderer.SetPosition(1, targetWorldPos);
-        }
-        else
-        {
-            Vector3 cornerWorldPos = new Vector3(targetWorldPos.x, startWorldPos.y, startWorldPos.z);
-
-            lineRenderer.positionCount = 3;
-            lineRenderer.SetPosition(0, startWorldPos);
-            lineRenderer.SetPosition(1, cornerWorldPos);
-            lineRenderer.SetPosition(2, targetWorldPos);
         }
     }
 
@@ -375,16 +324,6 @@ public class Units : MonoBehaviour
         return closest;
     }
 
-    // ------------------------------------------------------------------ //
-    // This function use NavMesh
-    // ------------------------------------------------------------------ //
-    // protected void MoveTowardsTarget()
-    // {
-    //     navMeshAgent.Warp(transform.position); 
-    //     navMeshAgent.SetDestination(target.transform.position - new Vector3(chessTileSize, chessTileSize, chessTileSize));
-    //     navMeshAgent.steeringTarget.Set(target.transform.position.x, target.transform.position.y, target.transform.position.z);
-    // }
-    
     protected void MoveTowardsTarget()
     {
         if (target == null) return;
@@ -395,17 +334,13 @@ public class Units : MonoBehaviour
         Vector2Int delta = targetGridPos - currentGridPos;
 
         if (delta == Vector2Int.zero)
-        {
-            SetAnimationState(AnimationState.Idle);
             return;
-        }
 
         int stepX = System.Math.Sign(delta.x);
         int stepY = System.Math.Sign(delta.y);
 
         Vector2Int nextGridPos = currentGridPos;
 
-        // 1. Détermination du prochain pas (Diagonale ou Orthogonal)
         if (canMoveDiagonally && stepX != 0 && stepY != 0)
         {
             nextGridPos = new Vector2Int(currentGridPos.x + stepX, currentGridPos.y + stepY);
@@ -419,74 +354,70 @@ public class Units : MonoBehaviour
             }
         }
 
-        // 2. Gestion des collisions (si la case est occupée par une autre entité)
-        if (IsTileOccupied(nextGridPos))
-        {
-            // Essai d'un axe secondaire pour contourner
-            Vector2Int alternativePos = currentGridPos;
-            if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y)) {
-                alternativePos.y += stepY;
-            } else {
-                alternativePos.x += stepX;
-            }
-
-            if (!IsTileOccupied(alternativePos))
-            {
-                nextGridPos = alternativePos;
-            }
-            else
-            {
-                // Chemin complètement bloqué : l'unité s'arrête et attend en Idle
-                SetAnimationState(AnimationState.Idle);
-                return;
-            }
-        }
-
-        // 3. Déplacement vers le centre exact de la case choisie
         Vector3 targetWorldPos = GridToWorldPosition(nextGridPos);
-        SetAnimationState(AnimationState.Moving);
 
         transform.position = Vector3.MoveTowards(transform.position, targetWorldPos, speed * Time.deltaTime);
 
-        // Rotation fluide vers la direction
+        if (Vector3.Distance(transform.position, targetWorldPos) < 0.001f) {
+            transform.position = targetWorldPos;
+        }
+
         Vector3 direction = targetWorldPos - transform.position;
         direction.y = 0f;
         if (direction != Vector3.zero) {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
-        }
-
-        // 4. PAUSE / ARRÊT SUR LA CASE : Dès qu'elle atteint le centre exact, elle s'arrête (prêt pour les ticks)
-        if (Vector3.Distance(transform.position, targetWorldPos) < 0.001f)
-        {
-            transform.position = targetWorldPos;
-            // Ici, l'entité est parfaitement ancrée au centre de la case et fait une pause.
-            // Plus tard, tu pourras conditionner ce déplacement pour qu'il n'avance d'une case qu'à l'écoute d'un "OnTick".
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                15f * Time.deltaTime
+            );
         }
     }
 
-    private bool IsTileOccupied(Vector2Int gridPos)
+    private void UpdatePathVisual()
     {
-        GameObject[] allChampions = GameObject.FindGameObjectsWithTag("Champion");
-        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        List<GameObject> allEntities = new(allChampions);
-        allEntities.AddRange(allEnemies);
-
-        foreach (GameObject entity in allEntities) {
-            if (entity == null || entity == gameObject)
-                continue;
-
-            Units unit = entity.GetComponentInParent<Units>();
-
-            if (unit != null && unit.isAlive) {
-                Vector2Int otherPos = unit.WorldToGridPosition(entity.transform.position);
-
-                if (otherPos == gridPos)
-                    return true;
-            }
+        if (target == null || lineRenderer == null || !isAlive) {
+            if (lineRenderer != null) lineRenderer.positionCount = 0;
+            return;
         }
-        return false;
+
+        Vector2Int currentGridPos = WorldToGridPosition(transform.position);
+        Vector2Int targetGridPos = WorldToGridPosition(target.transform.position);
+
+        List<Vector3> pathPoints = new List<Vector3>();
+
+        Vector3 startTileCenter = GridToWorldPosition(currentGridPos) + Vector3.up * pathHeightOffset;
+        pathPoints.Add(startTileCenter);
+
+        Vector2Int tempPos = currentGridPos;
+        int maxSteps = 100;
+        int steps = 0;
+
+        while (tempPos != targetGridPos && steps < maxSteps) {
+            Vector2Int delta = targetGridPos - tempPos;
+            int stepX = System.Math.Sign(delta.x);
+            int stepY = System.Math.Sign(delta.y);
+
+            if (canMoveDiagonally && stepX != 0 && stepY != 0) {
+                tempPos = new Vector2Int(tempPos.x + stepX, tempPos.y + stepY);
+            } else {
+                if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y)) {
+                    tempPos.x += stepX;
+                } else {
+                    tempPos.y += stepY;
+                }
+            }
+
+            Vector3 tileWorldCenter = GridToWorldPosition(tempPos) + Vector3.up * pathHeightOffset;
+            pathPoints.Add(tileWorldCenter);
+
+            steps++;
+        }
+
+        lineRenderer.positionCount = pathPoints.Count;
+        for (int i = 0; i < pathPoints.Count; i++) {
+            lineRenderer.SetPosition(i, pathPoints[i]);
+        }
     }
 
     public Vector2Int WorldToGridPosition(Vector3 worldPos)
