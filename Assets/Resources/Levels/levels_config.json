@@ -21,8 +21,8 @@
         "chaptersBeforeGame": "Chapter1/chpt1-1",
         "chaptersAfterGame": "Chapter1/chpt1-1aft",
         "panelDetail": {
-            "levelTitle": "Chapitre 1",
-            "levelDescription": "Description 1",
+            "levelTitle": "La Lisière Muette",
+            "levelDescription": "L’entrée de Keronas dans la jungle, le silence",
             "totalPhases": 1
         },
         "spawnAlgo": {
@@ -37,8 +37,8 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "panelDetail": {
-            "levelTitle": "Chapitre 2",
-            "levelDescription": "Description 2",
+            "levelTitle": "Sentiers de Cendre",
+            "levelDescription": "La végétation qui s’effrite sous ses pas",
             "totalPhases": 1
         },
         "spawnAlgo": {
@@ -53,8 +53,8 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "panelDetail": {
-            "levelTitle": "Chapitre 3",
-            "levelDescription": "Description 3",
+            "levelTitle": "Le Bourdonnement",
+            "levelDescription": "Les premiers signes de la ruche",
             "totalPhases": 1
         },
         "spawnAlgo": {
@@ -69,8 +69,8 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "panelDetail": {
-            "levelTitle": "Chapitre 4",
-            "levelDescription": "Description 4",
+            "levelTitle": "Racines Creuses",
+            "levelDescription": "La forêt qui a perdu sa sève",
             "totalPhases": 2
         },
         "spawnAlgo": {
@@ -85,8 +85,8 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "panelDetail": {
-            "levelTitle": "Chapitre 5",
-            "levelDescription": "Description 5",
+            "levelTitle": "Le Fleuve sans Reflet",
+            "levelDescription": "L’eau qui ne renvoie plus rien",
             "totalPhases": 1
         },
         "spawnAlgo": {
@@ -101,8 +101,8 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "panelDetail": {
-            "levelTitle": "Chapitre 6",
-            "levelDescription": "Description 6",
+            "levelTitle": "Canopée Fanée",
+            "levelDescription": "Combat en hauteur, les créatures déformées de la faune",
             "totalPhases": 1
         },
         "spawnAlgo": {
@@ -117,8 +117,216 @@
         "chaptersBeforeGame": "",
         "chaptersAfterGame": "",
         "panelDetail": {
-            "levelTitle": "Chapitre 7",
-            "levelDescription": "Description 7",
+            "levelTitle": "Les Ruches Silencieuses",
+            "levelDescription": "La découverte de l’installation de la colonie",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 9,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Mue",
+            "levelDescription": "Les créatures qui changent, la menace s’organise",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 10,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Le Seuil de la Reine",
+            "levelDescription": "L’approche de son territoire",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 11,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Ul’vynyx, le Trône Creux",
+            "levelDescription": "Le combat contre la reine",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 12,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "La Veille",
+            "levelDescription": "Le campement, la nuit, l’alerte des gardes",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 13,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Déchirure",
+            "levelDescription": "La brèche s’ouvre",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 14,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Ceux qui Restent",
+            "levelDescription": "Défendre les gardes pendant l’évacuation",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 15,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Le Nom Effacé",
+            "levelDescription": "Le Void commence à effacer les souvenirs des survivants",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 16,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Terre sans Mémoire",
+            "levelDescription": "Une zone où même les cartes ne correspondent plus",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 17,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "L’Ennemie Commune",
+            "levelDescription": "La reine, menacée elle aussi, réagit à la brèche",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 18,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Le Prix du Cœur",
+            "levelDescription": "Le sacrifice et la mécanique de fermeture de la brèche",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 19,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Écho",
+            "levelDescription": "Les premières créatures imitant le Void apparaissent",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 20,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "La Dernière Veille",
+            "levelDescription": "Keronas rassemble ce qui lui reste avant l’affrontement final",
+            "totalPhases": 1
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3],
+            "deck": [""],
+            "manaCost": [24],
+            "difficulty": "hard"
+        }
+    },
+    {
+        "currentlevel": 21,
+        "chaptersBeforeGame": "",
+        "chaptersAfterGame": "",
+        "panelDetail": {
+            "levelTitle": "Le Simulacre",
+            "levelDescription": "Le tyrant de verdentia",
             "totalPhases": 1
         },
         "spawnAlgo": {
