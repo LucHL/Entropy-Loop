@@ -55,6 +55,19 @@ public class Units : MonoBehaviour
     [SerializeField] Slider hpSlider;
     public Transform modelPosition;
 
+    [Header("Grid Movement Rules")]
+    public bool canMoveDiagonally = false;
+
+    [Tooltip("Nombre de ticks requis pour effectuer un déplacement d'une case")]
+    public int ticksPerMove = 1;
+
+    private Vector2Int gridPosition;
+    private int currentTickCount = 0;
+    private LineRenderer lineRenderer;
+    private Coroutine moveCoroutine;
+    [SerializeField] private float pathHeightOffset = 2f;
+    private float chessTileSize = 1f;
+
     [Header("Must be handle in each entities script")] // voir pour un UnitData
     public float damagePerAttack = 10;
     public int manaCost = 3;
@@ -73,7 +86,6 @@ public class Units : MonoBehaviour
     protected float passifTimer = 0f;
 
     public virtual UnitsClass unitsClass => UnitsClass.Dps;
-
 
     /* end */
     public bool isAlive = true;
@@ -101,11 +113,9 @@ public class Units : MonoBehaviour
     private AnimationState currentAnimationState;
     private BackupUnits backupUnits = new();
     public bool isGameRunning = false;
-    private float chessTileSize = 1f;
 
     protected float capacityTriggerMax = 100f;
     protected float capacityPoints = 0f;
-
 
     // hp * 5
     // 4 def = 40%
@@ -124,6 +134,10 @@ public class Units : MonoBehaviour
         team = UnitsTeam.Enemy;
         gameObject.layer = 0;
         unitsRigidbody.isKinematic = true;
+
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.startWidth = 0.2f;
+        lineRenderer.endWidth = 0.2f;
     }
 
     protected virtual void Start() {
@@ -204,7 +218,7 @@ public class Units : MonoBehaviour
     {
         if (!isGameRunning)
             return;
-        
+
         Passif();
 
         attackTimer -= Time.deltaTime;
@@ -212,6 +226,10 @@ public class Units : MonoBehaviour
         if (target != null && targetUnitsComponent != null) {
             if (!targetUnitsComponent.isAlive) {
                 target = null;
+
+                if (lineRenderer != null)
+                    lineRenderer.positionCount = 0;
+
                 return;
             }
 
@@ -221,6 +239,7 @@ public class Units : MonoBehaviour
                 SetAnimationState(AnimationState.Moving);
                 MoveTowardsTarget();
             } else {
+                SetAnimationState(AnimationState.Attacking);
                 if (attackTimer <= 0f) {
                     SetAnimationState(AnimationState.Attacking);
                     attackTimer = attackRate;
@@ -234,6 +253,7 @@ public class Units : MonoBehaviour
         }
 
         // Debug.Log($"{name} | HasCapacity={EntityHasCapacity} | Capacity={capacityPoints}/{capacityTriggerMax}");
+        UpdatePathVisual();
 
         if (EntityHasCapacity && capacityPoints >= capacityTriggerMax) {
             capacityPoints = 0;
@@ -242,6 +262,58 @@ public class Units : MonoBehaviour
             //GameLogManager.Instance.AddLog("'"+name.Split("(")[0] +"' activated Capacity");
 
             Capacite();
+        }
+    }
+
+    private void UpdatePathVisual()
+    {
+        if (target == null || lineRenderer == null || !isAlive) {
+            if (lineRenderer != null) lineRenderer.positionCount = 0;
+            return;
+        }
+
+        Vector2Int currentGridPos = WorldToGridPosition(transform.position);
+        Vector2Int targetGridPos = WorldToGridPosition(target.transform.position);
+
+        Vector2Int delta = targetGridPos - currentGridPos;
+
+        if (delta == Vector2Int.zero) {
+            lineRenderer.positionCount = 0;
+            return;
+        }
+
+        int stepX = System.Math.Sign(delta.x);
+        int stepY = System.Math.Sign(delta.y);
+
+        Vector2Int nextGridPos = currentGridPos;
+        if (canMoveDiagonally && stepX != 0 && stepY != 0) {
+            nextGridPos = new Vector2Int(currentGridPos.x + stepX, currentGridPos.y + stepY);
+        } else {
+            if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y)) {
+                nextGridPos.x += stepX;
+            } else {
+                nextGridPos.y += stepY;
+            }
+        }
+
+        Vector3 startWorldPos = transform.position + Vector3.up * pathHeightOffset;
+        Vector3 nextWorldPos = GridToWorldPosition(nextGridPos) + Vector3.up * pathHeightOffset;
+        Vector3 targetWorldPos = target.transform.position + Vector3.up * pathHeightOffset;
+
+        if (canMoveDiagonally && stepX != 0 && stepY != 0)
+        {
+            lineRenderer.positionCount = 2;
+            lineRenderer.SetPosition(0, startWorldPos);
+            lineRenderer.SetPosition(1, targetWorldPos);
+        }
+        else
+        {
+            Vector3 cornerWorldPos = new Vector3(targetWorldPos.x, startWorldPos.y, startWorldPos.z);
+
+            lineRenderer.positionCount = 3;
+            lineRenderer.SetPosition(0, startWorldPos);
+            lineRenderer.SetPosition(1, cornerWorldPos);
+            lineRenderer.SetPosition(2, targetWorldPos);
         }
     }
 
@@ -315,24 +387,119 @@ public class Units : MonoBehaviour
     
     protected void MoveTowardsTarget()
     {
-        Vector3 direction = target.transform.position - transform.position;
+        if (target == null) return;
 
-        direction.Normalize();
+        Vector2Int currentGridPos = WorldToGridPosition(transform.position);
+        Vector2Int targetGridPos = WorldToGridPosition(target.transform.position);
 
-        // Cannot work for entity who can fly
+        Vector2Int delta = targetGridPos - currentGridPos;
+
+        if (delta == Vector2Int.zero)
+        {
+            SetAnimationState(AnimationState.Idle);
+            return;
+        }
+
+        int stepX = System.Math.Sign(delta.x);
+        int stepY = System.Math.Sign(delta.y);
+
+        Vector2Int nextGridPos = currentGridPos;
+
+        // 1. Détermination du prochain pas (Diagonale ou Orthogonal)
+        if (canMoveDiagonally && stepX != 0 && stepY != 0)
+        {
+            nextGridPos = new Vector2Int(currentGridPos.x + stepX, currentGridPos.y + stepY);
+        }
+        else
+        {
+            if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y)) {
+                nextGridPos.x += stepX;
+            } else {
+                nextGridPos.y += stepY;
+            }
+        }
+
+        // 2. Gestion des collisions (si la case est occupée par une autre entité)
+        if (IsTileOccupied(nextGridPos))
+        {
+            // Essai d'un axe secondaire pour contourner
+            Vector2Int alternativePos = currentGridPos;
+            if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y)) {
+                alternativePos.y += stepY;
+            } else {
+                alternativePos.x += stepX;
+            }
+
+            if (!IsTileOccupied(alternativePos))
+            {
+                nextGridPos = alternativePos;
+            }
+            else
+            {
+                // Chemin complètement bloqué : l'unité s'arrête et attend en Idle
+                SetAnimationState(AnimationState.Idle);
+                return;
+            }
+        }
+
+        // 3. Déplacement vers le centre exact de la case choisie
+        Vector3 targetWorldPos = GridToWorldPosition(nextGridPos);
+        SetAnimationState(AnimationState.Moving);
+
+        transform.position = Vector3.MoveTowards(transform.position, targetWorldPos, speed * Time.deltaTime);
+
+        // Rotation fluide vers la direction
+        Vector3 direction = targetWorldPos - transform.position;
         direction.y = 0f;
-
-        transform.position += speed * Time.deltaTime * direction;
-
-        // transform.rotation = Quaternion.LookRotation(direction);
         if (direction != Vector3.zero) {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                10f * Time.deltaTime
-            );
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
         }
+
+        // 4. PAUSE / ARRÊT SUR LA CASE : Dès qu'elle atteint le centre exact, elle s'arrête (prêt pour les ticks)
+        if (Vector3.Distance(transform.position, targetWorldPos) < 0.001f)
+        {
+            transform.position = targetWorldPos;
+            // Ici, l'entité est parfaitement ancrée au centre de la case et fait une pause.
+            // Plus tard, tu pourras conditionner ce déplacement pour qu'il n'avance d'une case qu'à l'écoute d'un "OnTick".
+        }
+    }
+
+    private bool IsTileOccupied(Vector2Int gridPos)
+    {
+        GameObject[] allChampions = GameObject.FindGameObjectsWithTag("Champion");
+        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        List<GameObject> allEntities = new(allChampions);
+        allEntities.AddRange(allEnemies);
+
+        foreach (GameObject entity in allEntities) {
+            if (entity == null || entity == gameObject)
+                continue;
+
+            Units unit = entity.GetComponentInParent<Units>();
+
+            if (unit != null && unit.isAlive) {
+                Vector2Int otherPos = unit.WorldToGridPosition(entity.transform.position);
+
+                if (otherPos == gridPos)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public Vector2Int WorldToGridPosition(Vector3 worldPos)
+    {
+        return new Vector2Int(
+            Mathf.RoundToInt(worldPos.x / chessTileSize),
+            Mathf.RoundToInt(worldPos.z / chessTileSize)
+        );
+    }
+
+    public Vector3 GridToWorldPosition(Vector2Int gridPos)
+    {
+        return new Vector3(gridPos.x * chessTileSize, transform.position.y, gridPos.y * chessTileSize);
     }
 
     /// <summary>

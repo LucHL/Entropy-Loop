@@ -100,6 +100,9 @@ MonoBehaviour:
   hpBarCanvas: {fileID: 4151159326295130401}
   hpSlider: {fileID: 4158521075186691887}
   modelPosition: {fileID: 0}
+  canMoveDiagonally: 0
+  ticksPerMove: 1
+  pathHeightOffset: 2
   damagePerAttack: 10
   manaCost: 3
   totalHealth: 100
