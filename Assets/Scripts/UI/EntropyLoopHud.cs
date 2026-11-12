@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -91,30 +91,49 @@ public sealed class EntropyLoopHud : MonoBehaviour
             stoneSprite = Slice(borders, 0, 20, 1536, 260);
             cardFrameSprite = Slice(borders, 158, 398, 368, 550);
             drawBaseSprite = Slice(borders, 807, 636, 432, 232);
-            var stone = Art("Obsidian lower surround", root, stoneSprite, new Vector2(.5f, 0), new Vector2(0, 100), new Vector2(1920, 200));
+            // A continuous stone underlay fills the transparent valleys of the decorative strip.
+            // Crop inside the rock itself, excluding the atlas background and fractured edge.
+            var solidStone = Slice(borders, 30, 210, 1476, 55);
+            // Seal only the outer screen edge. A tall backing exposes a second
+            // rock silhouette and a straight dark band below the original border.
+            AddObsidianUnderlay("Upper", solidStone, true, 24);
+            AddObsidianUnderlay("Lower", solidStone, false, 90);
+            var stone = Art("Obsidian lower surround", root, stoneSprite, new Vector2(.5f, 0), new Vector2(0, 84), new Vector2(1920, 200));
             stone.rectTransform.anchorMin = new Vector2(0, 0);
             stone.rectTransform.anchorMax = new Vector2(1, 0);
-            stone.rectTransform.sizeDelta = new Vector2(0, 200);
-            var upperStone = Art("Obsidian upper surround", root, stoneSprite, new Vector2(.5f, 1), new Vector2(0, -100), new Vector2(1920, 200));
+            stone.rectTransform.sizeDelta = new Vector2(80, 200);
+            // Extend 20px upward and 20px rightward, preserving the left and lower edges.
+            var upperStone = Art("Obsidian upper surround", root, stoneSprite, new Vector2(.5f, 1), new Vector2(10, -71), new Vector2(1920, 226));
             upperStone.rectTransform.anchorMin = new Vector2(0, 1);
             upperStone.rectTransform.anchorMax = Vector2.one;
-            upperStone.rectTransform.sizeDelta = new Vector2(0, 200);
+            upperStone.rectTransform.sizeDelta = new Vector2(108, 226);
             // Turn the same stone strip upside down: flat edge at the screen top,
             // fractured edge towards the board. Decorative images never receive clicks.
             upperStone.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
         }
         var oldLevelBanner = canvas.Find("LevelInformations");
         if (oldLevelBanner) oldLevelBanner.gameObject.SetActive(false);
-        var logo = Art("Entropy Loop", root, headerSprite, new Vector2(.5f, 1), new Vector2(0, -62), new Vector2(1160, 230));
+        // The title is centered at x=400 inside the 768px sprite, rather than x=384.
+        // Compensate for the sprite offset, with an additional 10px leftward visual adjustment.
+        var logo = Art("Entropy Loop", root, headerSprite, new Vector2(.5f, 1), new Vector2(-30.44f, -62), new Vector2(1160, 230));
         logo.preserveAspect = true;
         if (!headerSprite) Label(logo.transform, "ENTROPY LOOP", Vector2.zero, new Vector2(700, 60), 36, true);
-        var plaque = Art("Phase plaque", root, phaseSprite, new Vector2(.5f, 1), new Vector2(0, -140), new Vector2(480, 52));
+        var plaque = Art("Phase plaque", root, phaseSprite, new Vector2(.5f, 1), new Vector2(0, -142), new Vector2(480, 52));
         phase = Label(plaque.transform, "PRÉPARATION", Vector2.zero, new Vector2(380, 34), 24, true);
+
+        // Extend the stone beyond the screen edges to hide its transparent outer margins.
+        var optionRect = NewRect("Option", root);
+        var option = AdoptButton(optionRect, "Option", "OPTION", new Vector2(0, 1),
+            new Vector2(125, -48), new Vector2(202, 58));
+        option.onClick.AddListener(() =>
+        {
+            if (GameLoopManager.instance) GameLoopManager.instance.OpenSettings();
+        });
 
         // Keep the original scene objects and their persistent click events.
         shop = AdoptButton(canvas.Find("Shop/ShopButton"), "Boutique", "BOUTIQUE", new Vector2(1, 1), new Vector2(-426, -48), new Vector2(202, 58));
         var cart = NewRect("Boutique icon", shop.transform);
-        Place(cart, new Vector2(.5f, .5f), new Vector2(-73, 0), new Vector2(30, 30));
+        Place(cart, new Vector2(.5f, .5f), new Vector2(-61, 0), new Vector2(30, 30));
         cart.gameObject.AddComponent<CanvasRenderer>();
         var cartGraphic = cart.gameObject.AddComponent<CombatHudCartGlyph>();
         cartGraphic.color = Gold;
@@ -135,8 +154,23 @@ public sealed class EntropyLoopHud : MonoBehaviour
         }
         var oldMenu = canvas.Find("BackToMenuButton");
         var menu = AdoptButton(oldMenu, "Menu", "", new Vector2(1, 1), new Vector2(-62, -48), new Vector2(68, 58));
-        for (int i = -1; i <= 1; i++)
-            Art("Menu line", menu.transform, null, new Vector2(.5f, .5f), new Vector2(0, i * 7), new Vector2(23, 2)).color = Gold;
+        // A house outline drawn with UI geometry avoids missing font glyphs.
+        Vector2[] homePoints = {
+            new(-14, 0), new(0, 12), new(14, 0),
+            new(10, 3), new(10, -11), new(3, -11),
+            new(3, -3), new(-3, -3), new(-3, -11),
+            new(-10, -11), new(-10, 3)
+        };
+        for (int i = 0; i < homePoints.Length - 1; i++)
+        {
+            Vector2 start = homePoints[i], end = homePoints[i + 1];
+            Vector2 direction = end - start;
+            var line = Art("Home icon", menu.transform, null, new Vector2(.5f, .5f),
+                (start + end) * .5f, new Vector2(direction.magnitude + 1, 2.5f));
+            line.color = Gold;
+            line.rectTransform.localRotation = Quaternion.Euler(0, 0,
+                Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+        }
 
         battle = AdoptButton(canvas.Find("StartBattle"), "Combat", "LANCER\nLE COMBAT", new Vector2(1, 0), new Vector2(-184, 128), new Vector2(344, 220));
         battle.gameObject.AddComponent<CombatHudBattleEmphasis>().Initialize(battle);
@@ -148,6 +182,24 @@ public sealed class EntropyLoopHud : MonoBehaviour
         AlignTutorialTargets();
         built = true;
         Refresh();
+    }
+
+    void AddObsidianUnderlay(string name, Sprite texture, bool top, float height)
+    {
+        var anchor = new Vector2(.5f, top ? 1 : 0);
+        // Overscan by eight reference pixels on the outer edge; keep the inner edge fixed.
+        const float edgeBleed = 8f;
+        var position = new Vector2(0, (top ? -1 : 1) * (height - edgeBleed) * .5f);
+        var backing = Art(name + " opaque backing", root, null, anchor, position, new Vector2(0, height));
+        backing.color = new Color32(15, 12, 20, 255);
+        var rock = Art(name + " continuous obsidian", root, texture, anchor, position, new Vector2(0, height));
+        foreach (var layer in new[] { backing, rock })
+        {
+            layer.rectTransform.anchorMin = new Vector2(0, anchor.y);
+            layer.rectTransform.anchorMax = new Vector2(1, anchor.y);
+            layer.rectTransform.sizeDelta = new Vector2(80, height + edgeBleed);
+        }
+        if (top) rock.rectTransform.localRotation = Quaternion.Euler(0, 0, 180);
     }
 
     void SetupMana()
@@ -163,13 +215,14 @@ public sealed class EntropyLoopHud : MonoBehaviour
         }
         var dock = Art("Mana", root, manaSprite, Vector2.zero, new Vector2(253, 128), new Vector2(506, 236));
         manaDock = dock.rectTransform;
-        manaValue = Label(dock.transform, "MANA", new Vector2(0, 49), new Vector2(420, 48), 32, true);
+        manaValue = Label(dock.transform, "MANA", new Vector2(0, 37), new Vector2(370, 48), 32, true);
+        manaValue.alignment = TextAlignmentOptions.MidlineLeft;
         int max = ManaManager.instance ? ManaManager.instance.maxMana : 10;
         manaGems = new Image[Mathf.Max(1, max)];
-        float step = Mathf.Min(39, 390f / manaGems.Length);
+        float step = Mathf.Min(36, 360f / manaGems.Length);
         for (int i = 0; i < manaGems.Length; i++)
         {
-            var image = Art("Mana " + (i + 1), dock.transform, gemSprite, new Vector2(.5f, .5f), new Vector2((i - (manaGems.Length - 1) * .5f) * step, -25), new Vector2(34, 60));
+            var image = Art("Mana " + (i + 1), dock.transform, gemSprite, new Vector2(.5f, .5f), new Vector2((i - (manaGems.Length - 1) * .5f) * step, -25), new Vector2(27, 48));
             image.preserveAspect = true;
             var outline = image.gameObject.AddComponent<Outline>();
             outline.effectColor = new Color32(220, 178, 255, 200);
@@ -231,7 +284,7 @@ public sealed class EntropyLoopHud : MonoBehaviour
         draw = AdoptButton(target, "Pioche", "", new Vector2(1, 0), new Vector2(-442, 235), new Vector2(150, 230));
         drawArt = draw.GetComponent<Image>();
         if (back) { drawArt.sprite = back; drawArt.preserveAspect = true; drawArt.type = Image.Type.Simple; }
-        Label(draw.transform, "PIOCHER", new Vector2(0, -145), new Vector2(164, 34), 25, true);
+        Label(draw.transform, "PIOCHER", new Vector2(0, -155), new Vector2(164, 34), 25, true);
         var counter = deck ? deck.GetComponentInChildren<NumberOfCardRemaining>(true) : null;
         if (counter)
         {
