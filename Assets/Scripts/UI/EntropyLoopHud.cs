@@ -477,47 +477,25 @@ public sealed class EntropyLoopHud : MonoBehaviour
 
     void AlignTutorialTargets()
     {
-        // Move only the existing HUD highlight/click regions to follow their controls.
+        // The tutorial zones follow the HUD controls every frame (TutorialHole.Follow);
+        // the click catchers follow their own target buttons. Step 5 (commander card)
+        // and the shop steps are wired in the scene.
         // Tutorial progression, wording, buttons and callbacks are not changed.
-        Canvas.ForceUpdateCanvases();
-        AlignTutorialTarget(2, manaDock);
-        AlignTutorialTarget(3, draw.transform as RectTransform);
-        AlignTutorialRect(canvas.Find("Tutorial/Step3/Next") as RectTransform, draw.transform as RectTransform);
-        AlignTutorialTarget(4, handRoot);
-        if (slots.Length > 0)
-        {
-            AlignTutorialTarget(5, slots[0].transform as RectTransform);
-            AlignTutorialRect(canvas.Find("Tutorial/Step5/Background/BlockRayCast") as RectTransform, slots[0].transform as RectTransform);
-        }
+        FollowTutorialStep(2, manaDock);
+        FollowTutorialStep(3, draw.transform as RectTransform);
+        FollowTutorialStep(4, handRoot);
         var preview = canvas.Find("Deck/CardSelected") as RectTransform;
-        AlignTutorialTarget(6, preview);
-        AlignTutorialTarget(7, preview, new Rect(0, .86f, .18f, .14f));
-        AlignTutorialTarget(8, preview, new Rect(0, 0, 1, .38f));
-        AlignTutorialTarget(9, shop.transform as RectTransform);
-        AlignTutorialRect(canvas.Find("Tutorial/Step9/Background/BlockRayCast") as RectTransform, shop.transform as RectTransform);
-        AlignTutorialTarget(14, battle.transform as RectTransform);
+        FollowTutorialStep(6, preview);
+        FollowTutorialStep(7, preview, new Rect(0, .86f, .18f, .14f));
+        FollowTutorialStep(8, preview, new Rect(0, 0, 1, .38f));
+        FollowTutorialStep(9, shop.transform as RectTransform);
+        FollowTutorialStep(14, battle.transform as RectTransform);
     }
 
-    void AlignTutorialTarget(int step, RectTransform control, Rect? region = null)
+    void FollowTutorialStep(int step, RectTransform control, Rect? region = null)
     {
-        var proxy = canvas.Find("Tutorial/Step" + step + "/Background/Target") as RectTransform;
-        AlignTutorialRect(proxy, control, region);
-    }
-
-    static void AlignTutorialRect(RectTransform proxy, RectTransform control, Rect? region = null)
-    {
-        if (!proxy || !control) return;
-        var corners = new Vector3[4];
-        control.GetWorldCorners(corners);
-        var r = region ?? new Rect(0, 0, 1, 1);
-        var size = corners[2] - corners[0];
-        var min = proxy.parent.InverseTransformPoint(corners[0] + Vector3.Scale(size, new Vector3(r.xMin, r.yMin, 0)));
-        var max = proxy.parent.InverseTransformPoint(corners[0] + Vector3.Scale(size, new Vector3(r.xMax, r.yMax, 0)));
-        proxy.localScale = Vector3.one;
-        proxy.localRotation = Quaternion.identity;
-        proxy.pivot = new Vector2(.5f, .5f);
-        proxy.localPosition = (min + max) * .5f;
-        proxy.sizeDelta = new Vector2(Mathf.Abs(max.x - min.x), Mathf.Abs(max.y - min.y));
+        var hole = canvas.Find("Tutorial/Step" + step + "/Background")?.GetComponent<TutorialHole>();
+        if (hole && control) hole.Follow(control, region);
     }
 
     void Refresh()

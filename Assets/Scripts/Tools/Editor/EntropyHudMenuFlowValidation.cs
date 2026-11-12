@@ -168,9 +168,17 @@ public static class EntropyHudMenuFlowValidation
                     draws++;
                     if (draws > 4) throw new Exception("Tutorial draw step failed to advance");
                 }
-                else
+                else if (draws == 4)
                 {
                     Check(DeckManager.instance.handSlots.All(s => !s.IsEmpty()), "Tutorial draws fill four correctly positioned cards");
+                    // le bouton Next de l'étape 3 n'apparaît qu'une fois la main pleine
+                    var step3Next = GameObject.Find("Canvas/Tutorial/Step3/Button/Next");
+                    if (step3Next == null) return;
+                    Click(step3Next.transform as RectTransform);
+                    draws++;
+                }
+                else
+                {
                     Click(Find("Canvas/Tutorial/Step4/Button/Next"));
                     stage++;
                 }
