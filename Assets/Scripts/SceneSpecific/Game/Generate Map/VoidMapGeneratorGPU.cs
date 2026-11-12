@@ -701,6 +701,8 @@ public class VoidMapGeneratorGPU : MonoBehaviour
         float half = 4f * chessTile + arenaDecorationMargin;
         foreach (var renderer in root.GetComponentsInChildren<Renderer>())
         {
+            // Invisible cloud casters can cross the arena without obscuring it.
+            if (renderer.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly) continue;
             // Preserve the actual ground and every gameplay tile.
             var branch = renderer.transform;
             while (branch.parent && branch.parent != root) branch = branch.parent;
