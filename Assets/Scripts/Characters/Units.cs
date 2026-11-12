@@ -224,7 +224,7 @@ public class Units : MonoBehaviour
     {
         if (!isGameRunning)
             return;
-        
+
         Passif();
 
         attackTimer -= Time.deltaTime;
@@ -254,7 +254,8 @@ public class Units : MonoBehaviour
         }
 
         // Debug.Log($"{name} | HasCapacity={EntityHasCapacity} | Capacity={capacityPoints}/{capacityTriggerMax}");
-        UpdatePathVisual();
+        if (GameManager.instance.displayLineRenderEntityPath)
+            UpdatePathVisual();
 
         if (EntityHasCapacity && capacityPoints >= capacityTriggerMax) {
             capacityPoints = 0;

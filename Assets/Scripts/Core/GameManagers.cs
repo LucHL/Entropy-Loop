@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public int maxLevelReach;
     public int maxLevelFinish;
 
+    [Header("Debug Mode")]
+    public bool displayLineRenderEntityPath = false;
+
     private void Awake()
     {
         if (instance == null) {
