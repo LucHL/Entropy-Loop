@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>Entropy Loop HUD. Reuses the scene's real cards and gameplay managers.</summary>
-public sealed class VoidbornHud : MonoBehaviour
+public sealed class EntropyLoopHud : MonoBehaviour
 {
     static readonly Color Ivory = new Color32(241, 232, 213, 255);
     static readonly Color Gold = new Color32(194, 166, 111, 255);
@@ -51,7 +51,7 @@ public sealed class VoidbornHud : MonoBehaviour
         foreach (var go in scene.GetRootGameObjects())
         {
             var loop = go.GetComponentInChildren<GameLoopManager>(true);
-            if (loop && !loop.GetComponent<VoidbornHud>()) loop.gameObject.AddComponent<VoidbornHud>();
+            if (loop && !loop.GetComponent<EntropyLoopHud>()) loop.gameObject.AddComponent<EntropyLoopHud>();
         }
     }
 
@@ -328,6 +328,7 @@ public sealed class VoidbornHud : MonoBehaviour
         resultTitle.transform.SetParent(panel.transform, false);
         Place(resultTitle.transform, new Vector2(.5f, .5f), new Vector2(0, 70), new Vector2(850, 100));
         Format(resultTitle, 68, true);
+        resultTitle.margin = Vector4.zero;
         resultTitle.fontStyle = FontStyles.Bold;
         // The original end-game code finds this text first when setting the result.
         resultTitle.transform.SetAsFirstSibling();
@@ -476,7 +477,7 @@ public sealed class VoidbornHud : MonoBehaviour
         bool ready = GameModeManager.selectedDeck != null;
         bool modal = (journalPanel && journalPanel.gameObject.activeInHierarchy)
             || (resultPanel && resultPanel.gameObject.activeInHierarchy)
-            || (ShopManager.instance && ShopManager.instance.shopPopup.activeInHierarchy);
+            || (ShopManager.instance && ShopManager.instance.IsOpen);
         phase.text = running ? "COMBAT EN COURS" : "PRÉPARATION";
         battle.interactable = !running && !paused && !modal && ready && loop.playerUnits.Exists(u => u && u.activeInHierarchy);
         bool full = true;

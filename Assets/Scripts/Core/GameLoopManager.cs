@@ -153,12 +153,12 @@ public class GameLoopManager : MonoBehaviour
 
             buttonNextOrRestart.GetComponentInChildren<TextMeshProUGUI>().text = "Next";
             buttonNextOrRestart.onClick.AddListener(GameManager.instance.SetNextLevel);
-            GetComponent<VoidbornHud>()?.ShowResult(true);
+            GetComponent<EntropyLoopHud>()?.ShowResult(true);
             return;
         }
 
         buttonNextOrRestart.onClick.AddListener(RestartGame);
-        GetComponent<VoidbornHud>()?.ShowResult(false);
+        GetComponent<EntropyLoopHud>()?.ShowResult(false);
     }
 
     public void CheckVictory()
