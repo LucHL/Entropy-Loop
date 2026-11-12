@@ -19,3 +19,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3d7d8ad50ee37f44d842004b47d61ec6, type: 2}
   - {fileID: 11400000, guid: 89e620f8a079edf40acb0d754deb0caa, type: 2}
   - {fileID: 11400000, guid: db1f706fb2249ff4097177ce349ce745, type: 2}
+  showInSelection: 1
+  displayName: Chevaliers
+  category: "ORDRE & LUMIÈRE STELLAIRE"
+  grimoireTitle: "Le Serment de l'Ordre"
+  lore: "Rédigé par les prêtres de l'Ordre pour les chevaliers du Royaume Astralistes, ce grimoire réunit ceux qui ont juré de tenir la ligne face aux Trous de Verre. À leur tête, le Capitaine Keronas, un Éclipsé au cœur percé par le Void, dont la bannière rallie les lames quand le Silence éteint les étoiles."
+  deckType: "SYNERGIE CHEVALERESQUE"
+  mechanics: "La bannière de Keronas renforce chaque chevalier présent : +1 ATK, +0.5 vitesse d'attaque et +2 PV, cumulables. Les Lanciers du Cosmos frappent de loin, les Paladins Stellaires annulent les blessures qu'ils encaissent et les Cavaliers scintillants ignorent la défense adverse. Plus vos chevaliers sont nombreux, plus l'armée devient redoutable."

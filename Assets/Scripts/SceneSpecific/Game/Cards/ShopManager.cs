@@ -92,7 +92,7 @@ public class ShopManager : MonoBehaviour
 
         SetHiddenObjectsActive(false);
         shopPanel.Open();
-        MerchantSay(AllSold() ? MerchantDialogue.Mood.SoldOut : MerchantDialogue.Mood.Greeting);
+        MerchantSay(MerchantDialogue.Mood.Greeting);
         BugTracker.Info("[ShopManager] Shop ouvert.");
     }
 
@@ -139,6 +139,7 @@ public class ShopManager : MonoBehaviour
         BugTracker.Info($"[ShopManager] {count} cartes proposées dans le shop.");
     }
 
+    // Une carte reste en vente après l'achat : on peut la racheter tant qu'on a l'or
     public void BuyCard(ShopCard slot)
     {
         if (!TrySpendGold(slot.Data.goldCost))
@@ -148,8 +149,7 @@ public class ShopManager : MonoBehaviour
         }
 
         DeckManager.instance.AddCardInDeck(slot.Data);
-        slot.MarkSold();
-        MerchantSay(AllSold() ? MerchantDialogue.Mood.SoldOut : MerchantDialogue.Mood.Purchase);
+        MerchantSay(MerchantDialogue.Mood.Purchase);
         BugTracker.Info($"[ShopManager] '{slot.Data.cardName}' achetée. Deck: {DeckManager.instance.deck.Count} cartes.");
     }
 
@@ -157,11 +157,6 @@ public class ShopManager : MonoBehaviour
     {
         if (merchant != null)
             merchant.Say(mood);
-    }
-
-    bool AllSold()
-    {
-        return currentSlots.Count > 0 && currentSlots.TrueForAll(slot => slot.IsSold);
     }
 
     public void AddGold(int amount)

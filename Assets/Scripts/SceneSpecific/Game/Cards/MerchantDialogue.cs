@@ -7,7 +7,7 @@ using UnityEngine.UI;
 // Affiche les répliques du marchand (chargées depuis Resources/Shop/*.json)
 public class MerchantDialogue : MonoBehaviour, IPointerClickHandler
 {
-    public enum Mood { Greeting, Purchase, CantAfford, SoldOut }
+    public enum Mood { Greeting, Purchase, CantAfford }
 
     [Header("UI")]
     [SerializeField] Image portraitImage;
@@ -98,7 +98,6 @@ public class MerchantDialogue : MonoBehaviour, IPointerClickHandler
         return mood switch {
             Mood.Purchase => data.purchase,
             Mood.CantAfford => data.cantAfford,
-            Mood.SoldOut => data.soldOut,
             _ => data.greetings,
         };
     }

@@ -146,6 +146,9 @@ public class GameLoopManager : MonoBehaviour
 
         BugTracker.Info("End of the game, player win: '" + isPlayerVictorious + "'.");
 
+        if (isPlayerVictorious)
+            GameManager.instance.CompleteCurrentLevel();
+
         if (isPlayerVictorious && GameManager.instance.currentLevelData.chaptersAfterGame != "" && GameManager.instance.currentLevelData != null) {
             GameManager.instance.nextStory = GameManager.instance.currentLevelData.chaptersAfterGame;
             LoadingScene.Instance.LoadStory();
