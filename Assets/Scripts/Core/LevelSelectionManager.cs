@@ -1,11 +1,14 @@
 using UnityEngine;
 using TMPro;
 using System.Linq;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class LevelSelectManager : MonoBehaviour, IDataPersistence
 {
     [Header("References")]
-    [SerializeField] GameObject levelButtonPrefab;
+    [SerializeField] GameObject levelBtnPrefab;
+    [SerializeField] List<SelectLevelButtonData> allBtnType;
     [SerializeField] GameObject linePrefab;
     [SerializeField] Transform parentsPosition;
     [SerializeField] LevelDetailPanelUI detailPanel;
@@ -17,7 +20,6 @@ public class LevelSelectManager : MonoBehaviour, IDataPersistence
     [SerializeField] float frequency = 1.0f;
 
     [Header("Zones")]
-    [SerializeField] int levelsPerZone = 12;
     [SerializeField] GameObject[] zoneBackgrounds;
 
     private LevelData[] levels;
@@ -54,9 +56,12 @@ public class LevelSelectManager : MonoBehaviour, IDataPersistence
         Vector2 previousPosition = Vector2.zero;
 
         for (int i = 0; i < levels.Length; i++)  {
-            int currentZone = i / levelsPerZone;
+            bool isBoss = (i + 1) % 10 == 0;
 
-            GameObject btn = Instantiate(levelButtonPrefab, parentsPosition);
+            GameObject btn = InstantiateLevelButtonPrefab(levels[i].panelDetail.levelZone, isBoss, out Sprite levelSprite);
+            if (btn == null)
+                continue;
+
             RectTransform rt = btn.GetComponent<RectTransform>();
 
             float posX = i * horizontalSpacing + 80f;
@@ -70,6 +75,7 @@ public class LevelSelectManager : MonoBehaviour, IDataPersistence
                 ui.Init(levels[i], (selectedLevelData) => {
                     if (detailPanel != null) {
                         detailPanel.ShowPanel(selectedLevelData);
+                        detailPanel.SetIslandSprite(levelSprite);
                     }
                 });
             }
@@ -81,7 +87,7 @@ public class LevelSelectManager : MonoBehaviour, IDataPersistence
             previousPosition = currentPosition;
         }
 
-        BugTracker.Info("All levels are successfuly generated.");
+        BugTracker.Info("[LevelSelectionManager] All levels are successfuly generated.");
     }
 
     void CreateConnectingLine(Vector2 posA, Vector2 posB)
@@ -105,5 +111,33 @@ public class LevelSelectManager : MonoBehaviour, IDataPersistence
     public void UpdateLevels()
     {
         GenerateLevels();
+    }
+
+    private GameObject InstantiateLevelButtonPrefab(string name, bool isBoss, out Sprite assignedSprite)
+    {
+        assignedSprite = null;
+
+        SelectLevelButtonData currentBtn = null;
+        foreach (SelectLevelButtonData btnType in allBtnType) {
+            if (btnType.spriteName == name && btnType.isBossLevel == isBoss) {
+                currentBtn = btnType;
+                break;
+            }
+        }
+
+        if (currentBtn == null) {
+            BugTracker.Error("[Level Selection] Failed to load sprite for zone: " + name);
+            return null;
+        }
+
+        GameObject btn = Instantiate(levelBtnPrefab, parentsPosition);
+
+        Image btnImage = btn.GetComponent<Image>();
+        if (btnImage != null) {
+            btnImage.sprite = currentBtn.levelSprite;
+            assignedSprite = currentBtn.levelSprite;
+        }
+
+        return btn;
     }
 }

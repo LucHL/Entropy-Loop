@@ -346,6 +346,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06fdf43338cdd104182836f01f9a98a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScalableText
+--- !u!1 &94241125 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8277699782556797601, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
+  m_PrefabInstance: {fileID: 1132116393}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &98730872
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,7 +988,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 193366135549019776, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -1520
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 193366135549019776, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1218,6 +1223,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8492721299574824067, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
+      propertyPath: island
+      value: 
+      objectReference: {fileID: 94241125}
+    - target: {fileID: 8492721299574824067, guid: d74d7baec1a662fb59786b1fbf94483b, type: 3}
       propertyPath: difficulty
       value: 
       objectReference: {fileID: 1132116397}
@@ -1307,7 +1316,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 274}
+  m_AnchoredPosition: {x: 0, y: 229}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1145287415
@@ -1437,7 +1446,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1091890a9b305192a82cceeed3b25db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelSelectManager
-  levelButtonPrefab: {fileID: 8121789240027763555, guid: 24570727f483c5a0e8358d2cded43ffc, type: 3}
+  levelBtnPrefab: {fileID: 8121789240027763555, guid: 24570727f483c5a0e8358d2cded43ffc, type: 3}
+  allBtnType:
+  - spriteName: foret
+    levelSprite: {fileID: 21300000, guid: 708d457e8b93356a4a8cb7d94c413526, type: 3}
+    isBossLevel: 0
+  - spriteName: foret
+    levelSprite: {fileID: 21300000, guid: ce6072daeebc91f80a6f2ac27d0a1d27, type: 3}
+    isBossLevel: 1
+  - spriteName: marais
+    levelSprite: {fileID: 21300000, guid: 913b79be79218d6d597fe24d3b406449, type: 3}
+    isBossLevel: 0
+  - spriteName: marais
+    levelSprite: {fileID: 21300000, guid: 740d30ba23e5387229b9a265261d3ae5, type: 3}
+    isBossLevel: 1
+  - spriteName: desert
+    levelSprite: {fileID: 21300000, guid: 18b29f6d264dfbcd99cf8f46d169d92b, type: 3}
+    isBossLevel: 0
+  - spriteName: desert
+    levelSprite: {fileID: 21300000, guid: c90c9a38591004a00acce9e4e45a99b1, type: 3}
+    isBossLevel: 1
+  - spriteName: lave
+    levelSprite: {fileID: 21300000, guid: 17b74936287803809815053f4b16c8b6, type: 3}
+    isBossLevel: 0
+  - spriteName: lave
+    levelSprite: {fileID: 21300000, guid: f013a36aebfc2bdf1844db11db281541, type: 3}
+    isBossLevel: 1
   linePrefab: {fileID: 8111538148230862529, guid: ea1f4000dd9de883f888c3a7bbb59063, type: 3}
   parentsPosition: {fileID: 959580403}
   detailPanel: {fileID: 1132116396}
@@ -1445,7 +1479,6 @@ MonoBehaviour:
   horizontalSpacing: 200
   verticalAmplitude: 200
   frequency: 2
-  levelsPerZone: 10
   zoneBackgrounds: []
 --- !u!1 &1263037693
 GameObject:
@@ -2064,11 +2097,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5383300822487845700, guid: ac55d64f494d266a5b210bbef01a928a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5383300822487845700, guid: ac55d64f494d266a5b210bbef01a928a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -355
+      value: -402
       objectReference: {fileID: 0}
     - target: {fileID: 5383300822487845700, guid: ac55d64f494d266a5b210bbef01a928a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3207,7 +3240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5383300822487845700, guid: ac55d64f494d266a5b210bbef01a928a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -112
+      value: -159
       objectReference: {fileID: 0}
     - target: {fileID: 5383300822487845700, guid: ac55d64f494d266a5b210bbef01a928a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3523,18 +3556,20 @@ MonoBehaviour:
       levelTitle: 
       levelDescription: 
       totalPhases: 0
-      subDescription: 
+      levelZone: 
     spawnAlgo:
       spawnStartegy: 
       deck: []
       manaCost: 
       difficulty: 
+      music: []
   nextStory: 
   spawnAlgoData:
     spawnStartegy: 
     deck: []
     manaCost: 
     difficulty: 
+    music: []
   nbrSubLevelTotal: 0
   nbrSubLevelRemaining: 0
   currentStrategy: 0

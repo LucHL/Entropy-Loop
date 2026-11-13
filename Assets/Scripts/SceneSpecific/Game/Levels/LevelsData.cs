@@ -8,6 +8,7 @@ public class SpawnAlgoData
     public string[] deck;
     public int[] manaCost;
     public string difficulty;
+    public string[] music;
 }
 
 [Serializable]
@@ -19,7 +20,7 @@ public class PanelDetailLevel
     public string levelDescription;
     public int totalPhases;
     [TextArea(1, 3)]
-    public string subDescription;
+    public string levelZone;
 }
 
 [Serializable]

@@ -7,7 +7,8 @@
         "panelDetail": {
             "levelTitle": "Tuto",
             "levelDescription": "Tutoriel pour décrouvir le fonctionnement du gameplay.",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "foret"
         },
         "spawnAlgo": {
             "spawnStartegy": [0],
@@ -23,7 +24,8 @@
         "panelDetail": {
             "levelTitle": "La Lisière Muette",
             "levelDescription": "L’entrée de Keronas dans la jungle, le silence",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "foret"
         },
         "spawnAlgo": {
             "spawnStartegy": [0],
@@ -39,7 +41,8 @@
         "panelDetail": {
             "levelTitle": "Sentiers de Cendre",
             "levelDescription": "La végétation qui s’effrite sous ses pas",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "foret"
         },
         "spawnAlgo": {
             "spawnStartegy": [1],
@@ -55,7 +58,8 @@
         "panelDetail": {
             "levelTitle": "Le Bourdonnement",
             "levelDescription": "Les premiers signes de la ruche",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "foret"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -71,7 +75,8 @@
         "panelDetail": {
             "levelTitle": "Racines Creuses",
             "levelDescription": "La forêt qui a perdu sa sève",
-            "totalPhases": 2
+            "totalPhases": 2,
+            "levelZone": "foret"
         },
         "spawnAlgo": {
             "spawnStartegy": [3, 3],
@@ -87,7 +92,8 @@
         "panelDetail": {
             "levelTitle": "Le Fleuve sans Reflet",
             "levelDescription": "L’eau qui ne renvoie plus rien",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "foret"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -103,7 +109,8 @@
         "panelDetail": {
             "levelTitle": "Canopée Fanée",
             "levelDescription": "Combat en hauteur, les créatures déformées de la faune",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "foret"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -119,7 +126,8 @@
         "panelDetail": {
             "levelTitle": "Les Ruches Silencieuses",
             "levelDescription": "La découverte de l’installation de la colonie",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "foret"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -135,7 +143,8 @@
         "panelDetail": {
             "levelTitle": "Mue",
             "levelDescription": "Les créatures qui changent, la menace s’organise",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "foret"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -151,7 +160,8 @@
         "panelDetail": {
             "levelTitle": "Le Seuil de la Reine",
             "levelDescription": "L’approche de son territoire",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "foret"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -167,7 +177,8 @@
         "panelDetail": {
             "levelTitle": "Ul’vynyx, le Trône Creux",
             "levelDescription": "Le combat contre la reine",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "marais"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -183,7 +194,8 @@
         "panelDetail": {
             "levelTitle": "La Veille",
             "levelDescription": "Le campement, la nuit, l’alerte des gardes",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "marais"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -199,7 +211,8 @@
         "panelDetail": {
             "levelTitle": "Déchirure",
             "levelDescription": "La brèche s’ouvre",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "marais"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -215,7 +228,8 @@
         "panelDetail": {
             "levelTitle": "Ceux qui Restent",
             "levelDescription": "Défendre les gardes pendant l’évacuation",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "marais"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -231,7 +245,8 @@
         "panelDetail": {
             "levelTitle": "Le Nom Effacé",
             "levelDescription": "Le Void commence à effacer les souvenirs des survivants",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "marais"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -247,7 +262,8 @@
         "panelDetail": {
             "levelTitle": "Terre sans Mémoire",
             "levelDescription": "Une zone où même les cartes ne correspondent plus",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "marais"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -263,7 +279,8 @@
         "panelDetail": {
             "levelTitle": "L’Ennemie Commune",
             "levelDescription": "La reine, menacée elle aussi, réagit à la brèche",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "marais"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -279,7 +296,8 @@
         "panelDetail": {
             "levelTitle": "Le Prix du Cœur",
             "levelDescription": "Le sacrifice et la mécanique de fermeture de la brèche",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "marais"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -295,7 +313,8 @@
         "panelDetail": {
             "levelTitle": "Écho",
             "levelDescription": "Les premières créatures imitant le Void apparaissent",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "marais"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -311,7 +330,8 @@
         "panelDetail": {
             "levelTitle": "La Dernière Veille",
             "levelDescription": "Keronas rassemble ce qui lui reste avant l’affrontement final",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "marais"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],
@@ -327,7 +347,8 @@
         "panelDetail": {
             "levelTitle": "Le Simulacre",
             "levelDescription": "Le tyrant de verdentia",
-            "totalPhases": 1
+            "totalPhases": 1,
+            "levelZone": "desert"
         },
         "spawnAlgo": {
             "spawnStartegy": [3],

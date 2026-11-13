@@ -6,6 +6,7 @@ public class LevelDetailPanelUI : MonoBehaviour
 {
     [Header("UI References du Panneau")]
     [SerializeField] GameObject panelRoot;
+    [SerializeField] GameObject island;
     [SerializeField] TextMeshProUGUI levelNumberText;
     [SerializeField] TextMeshProUGUI titleText;
     [SerializeField] TextMeshProUGUI descriptionText;
@@ -69,6 +70,15 @@ public class LevelDetailPanelUI : MonoBehaviour
                 phaseBar[i - 1].color = colorBarFill;
             else
                 phaseBar[i - 1].color = colorBarEmpty;
+        }
+    }
+
+    public void SetIslandSprite(Sprite sprite)
+    {
+        Image img = island.GetComponent<Image>();
+
+        if (img != null) {
+            img.sprite = sprite;
         }
     }
 
