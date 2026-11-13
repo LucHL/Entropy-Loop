@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GridDragAndDrop : MonoBehaviour
@@ -7,7 +6,15 @@ public class GridDragAndDrop : MonoBehaviour
     [SerializeField] LayerMask unitLayer;
     [SerializeField] LayerMask gridLayer;
     [SerializeField] float yOffset = 3f;
+
+    [Header("Effect")]
     [SerializeField] private ParticleSystem dustEffectPrefab;
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip spawnSound = null;
+    public AudioClip grabSound = null;
+    public AudioClip releaseSound = null;
 
     private Transform selectedUnit;
     private Rigidbody selectedRigidbody;
@@ -105,6 +112,9 @@ public class GridDragAndDrop : MonoBehaviour
         if (dustEffectPrefab != null) {
             ParticleSystem dustInstance = Instantiate(dustEffectPrefab, position, Quaternion.identity);
             dustInstance.Play();
+
+            if (spawnSound != null)
+                audioSource.PlayOneShot(spawnSound);
 
             Destroy(dustInstance.gameObject, dustInstance.main.duration + dustInstance.main.startLifetime.constantMax);
         }
