@@ -106,6 +106,13 @@ public class Units : MonoBehaviour
     protected float capacityTriggerMax = 100f;
     protected float capacityPoints = 0f;
 
+    private LineRenderer lineRenderer;
+    [Header("Visual Path")]
+    [SerializeField] private float pathHeightOffset = 0.05f;
+
+    [Header("Grid Movement Rules")]
+    public bool canMoveDiagonally = false;
+
 
     // hp * 5
     // 4 def = 40%
@@ -124,6 +131,8 @@ public class Units : MonoBehaviour
         team = UnitsTeam.Enemy;
         gameObject.layer = 0;
         unitsRigidbody.isKinematic = true;
+
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
     }
 
     protected virtual void Start() {
@@ -151,7 +160,18 @@ public class Units : MonoBehaviour
         
         unitsRigidbody.isKinematic = false;
 
-        attackRange *= VoidMapGeneratorGPU.instance.chessTile;
+        attackRange *= chessTileSize;
+
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+
+        if (team == UnitsTeam.Enemy) {
+            lineRenderer.startColor = new Color32(133, 0, 200, 255);
+            lineRenderer.endColor = new Color32(133, 0, 200, 255);
+        } else {
+            lineRenderer.startColor = new Color32(200, 29, 0, 255);
+            lineRenderer.endColor = new Color32(200, 29, 0, 255);
+        }
 
         BugTracker.Info("Entity '" + gameObject.name + "' backup created.");
 
@@ -204,7 +224,7 @@ public class Units : MonoBehaviour
     {
         if (!isGameRunning)
             return;
-        
+
         Passif();
 
         attackTimer -= Time.deltaTime;
@@ -234,6 +254,8 @@ public class Units : MonoBehaviour
         }
 
         // Debug.Log($"{name} | HasCapacity={EntityHasCapacity} | Capacity={capacityPoints}/{capacityTriggerMax}");
+        if (GameManager.instance.displayLineRenderEntityPath)
+            UpdatePathVisual();
 
         if (EntityHasCapacity && capacityPoints >= capacityTriggerMax) {
             capacityPoints = 0;
@@ -303,36 +325,111 @@ public class Units : MonoBehaviour
         return closest;
     }
 
-    // ------------------------------------------------------------------ //
-    // This function use NavMesh
-    // ------------------------------------------------------------------ //
-    // protected void MoveTowardsTarget()
-    // {
-    //     navMeshAgent.Warp(transform.position); 
-    //     navMeshAgent.SetDestination(target.transform.position - new Vector3(chessTileSize, chessTileSize, chessTileSize));
-    //     navMeshAgent.steeringTarget.Set(target.transform.position.x, target.transform.position.y, target.transform.position.z);
-    // }
-    
     protected void MoveTowardsTarget()
     {
-        Vector3 direction = target.transform.position - transform.position;
+        if (target == null) return;
 
-        direction.Normalize();
+        Vector2Int currentGridPos = WorldToGridPosition(transform.position);
+        Vector2Int targetGridPos = WorldToGridPosition(target.transform.position);
 
-        // Cannot work for entity who can fly
+        Vector2Int delta = targetGridPos - currentGridPos;
+
+        if (delta == Vector2Int.zero)
+            return;
+
+        int stepX = System.Math.Sign(delta.x);
+        int stepY = System.Math.Sign(delta.y);
+
+        Vector2Int nextGridPos = currentGridPos;
+
+        if (canMoveDiagonally && stepX != 0 && stepY != 0) {
+            nextGridPos = new Vector2Int(currentGridPos.x + stepX, currentGridPos.y + stepY);
+        } else {
+            if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y)) {
+                nextGridPos.x += stepX;
+            } else {
+                nextGridPos.y += stepY;
+            }
+        }
+
+        Vector3 targetWorldPos = GridToWorldPosition(nextGridPos);
+
+        transform.position = Vector3.MoveTowards(transform.position, targetWorldPos, speed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetWorldPos) < 0.001f) {
+            transform.position = targetWorldPos;
+        }
+
+        Vector3 direction = targetWorldPos - transform.position;
         direction.y = 0f;
-
-        transform.position += speed * Time.deltaTime * direction;
-
-        // transform.rotation = Quaternion.LookRotation(direction);
         if (direction != Vector3.zero) {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,
                 targetRotation,
-                10f * Time.deltaTime
+                15f * Time.deltaTime
             );
         }
+    }
+
+    private void UpdatePathVisual()
+    {
+        if (target == null || lineRenderer == null || !isAlive) {
+            if (lineRenderer != null)
+                lineRenderer.positionCount = 0;
+            return;
+        }
+
+        Vector2Int currentGridPos = WorldToGridPosition(transform.position);
+        Vector2Int targetGridPos = WorldToGridPosition(target.transform.position);
+
+        List<Vector3> pathPoints = new();
+
+        Vector3 startTileCenter = GridToWorldPosition(currentGridPos) + Vector3.up * pathHeightOffset;
+        pathPoints.Add(startTileCenter);
+
+        Vector2Int tempPos = currentGridPos;
+        int maxSteps = 100;
+        int steps = 0;
+
+        while (tempPos != targetGridPos && steps < maxSteps) {
+            Vector2Int delta = targetGridPos - tempPos;
+            int stepX = System.Math.Sign(delta.x);
+            int stepY = System.Math.Sign(delta.y);
+
+            if (canMoveDiagonally && stepX != 0 && stepY != 0) {
+                tempPos = new Vector2Int(tempPos.x + stepX, tempPos.y + stepY);
+            } else {
+                if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y)) {
+                    tempPos.x += stepX;
+                } else {
+                    tempPos.y += stepY;
+                }
+            }
+
+            Vector3 tileWorldCenter = GridToWorldPosition(tempPos) + Vector3.up * pathHeightOffset;
+            pathPoints.Add(tileWorldCenter);
+
+            steps++;
+        }
+
+        lineRenderer.positionCount = pathPoints.Count;
+        for (int i = 0; i < pathPoints.Count; i++) {
+            lineRenderer.SetPosition(i, pathPoints[i]);
+        }
+    }
+
+    public Vector2Int WorldToGridPosition(Vector3 worldPos)
+    {
+        return new Vector2Int(
+            Mathf.RoundToInt(worldPos.x / chessTileSize),
+            Mathf.RoundToInt(worldPos.z / chessTileSize)
+        );
+    }
+
+    public Vector3 GridToWorldPosition(Vector2Int gridPos)
+    {
+        return new Vector3(gridPos.x * chessTileSize, transform.position.y, gridPos.y * chessTileSize);
     }
 
     /// <summary>

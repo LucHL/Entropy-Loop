@@ -61,10 +61,10 @@
   <Project Path="Unity.Services.Core.Telemetry.csproj" />
   <Project Path="Unity.CollabProxy.Editor.csproj" />
   <Project Path="Unity.Services.Core.Components.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="UnityEditor.UI.Analytics.csproj" />
   <Project Path="UnityEngine.Purchasing.WinRTCore.csproj" />
   <Project Path="Purchasing.Common.csproj" />
-  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Unity.Services.Core.Threading.csproj" />
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
   <Project Path="Unity.Services.Core.Device.csproj" />
