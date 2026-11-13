@@ -7,6 +7,7 @@ public class GridDragAndDrop : MonoBehaviour
     [SerializeField] LayerMask unitLayer;
     [SerializeField] LayerMask gridLayer;
     [SerializeField] float yOffset = 3f;
+    [SerializeField] private ParticleSystem dustEffectPrefab;
 
     private Transform selectedUnit;
     private Rigidbody selectedRigidbody;
@@ -73,6 +74,7 @@ public class GridDragAndDrop : MonoBehaviour
     {
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
+        Vector3 landPosition = originalPosition;
 
         if (Physics.Raycast(ray, out hit, 200f)) {
             if (hit.collider.gameObject.tag.StartsWith("Tile")) {
@@ -81,6 +83,9 @@ public class GridDragAndDrop : MonoBehaviour
                 if (int.Parse(list[2]) < 4) {
                     selectedUnit.position = new Vector3(hit.collider.gameObject.transform.position.x, 2f, hit.collider.gameObject.transform.position.z);
                     selectedUnit.GetComponent<Units>().SaveNewPosition();
+
+                    PlayDustEffect(landPosition);
+
                     selectedRigidbody.isKinematic = false;
                     selectedBoxCollider.enabled = true;
                     selectedUnit = null;
@@ -93,5 +98,15 @@ public class GridDragAndDrop : MonoBehaviour
         selectedRigidbody.isKinematic = false;
         selectedBoxCollider.enabled = true;
         selectedUnit = null;
+    }
+
+    private void PlayDustEffect(Vector3 position)
+    {
+        if (dustEffectPrefab != null) {
+            ParticleSystem dustInstance = Instantiate(dustEffectPrefab, position, Quaternion.identity);
+            dustInstance.Play();
+
+            Destroy(dustInstance.gameObject, dustInstance.main.duration + dustInstance.main.startLifetime.constantMax);
+        }
     }
 }
