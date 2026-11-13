@@ -54,6 +54,7 @@
   <Project Path="Unity.Services.Core.Analytics.csproj" />
   <Project Path="Unity.Multiplayer.Center.Common.csproj" />
   <Project Path="UnityEngine.SpatialTracking.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Unity.Services.Core.Environments.Internal.csproj" />
   <Project Path="Unity.Services.Core.Networking.csproj" />
   <Project Path="UnityEngine.Purchasing.SecurityCore.csproj" />
@@ -61,7 +62,6 @@
   <Project Path="Unity.Services.Core.Telemetry.csproj" />
   <Project Path="Unity.CollabProxy.Editor.csproj" />
   <Project Path="Unity.Services.Core.Components.csproj" />
-  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="UnityEditor.UI.Analytics.csproj" />
   <Project Path="UnityEngine.Purchasing.WinRTCore.csproj" />
   <Project Path="Purchasing.Common.csproj" />
