@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Diagnostics;
-using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 public class GameLoopManager : MonoBehaviour
@@ -33,19 +30,29 @@ public class GameLoopManager : MonoBehaviour
 
     void Start()
     {
-        // if (GameManager.instance.currentLevelData.currentlevel < 3)
+        // int totalLevel = GameManager.instance.alllevelData.Count();
+        int currentLevel = GameManager.instance.currentLevelData.currentlevel;
+
+        // int phaseSize = Mathf.CeilToInt(totalLevel / 4f);
+
+        // if (currentLevel <= phaseSize) {
         //     VoidMapGeneratorGPU.instance.SetPhase(0);
-        // if (GameManager.instance.currentLevelData.currentlevel == 3)
+        //     BugTracker.Info("[GameLoopManager] Generation MAP Phase set to: '0'");
+        // } else if (currentLevel <= phaseSize * 2) {
         //     VoidMapGeneratorGPU.instance.SetPhase(1);
-        // if (GameManager.instance.currentLevelData.currentlevel == 4)
+        //     BugTracker.Info("[GameLoopManager] Generation MAP Phase set to: '1'");
+        // } else if (currentLevel <= phaseSize * 3) {
         //     VoidMapGeneratorGPU.instance.SetPhase(2);
-        // if (GameManager.instance.currentLevelData.currentlevel == 5)
+        //     BugTracker.Info("[GameLoopManager] Generation MAP Phase set to: '2'");
+        // } else {
         //     VoidMapGeneratorGPU.instance.SetPhase(3);
+        //     BugTracker.Info("[GameLoopManager] Generation MAP Phase set to: '3'");
+        // }
+
         VoidMapGeneratorGPU.instance.SetSeed(VoidMapGeneratorGPU.instance.seed + GameManager.instance.currentLevelData.currentlevel);
 
-
         LevelInformationFadeTextManager.instance.DisplayTextWithFade(
-            GameManager.instance.currentLevelData.currentlevel.ToString(),
+            currentLevel.ToString(),
             GameManager.instance.currentLevelData.spawnAlgo.difficulty
         );
 
@@ -55,6 +62,14 @@ public class GameLoopManager : MonoBehaviour
             DeckSelectionManager.instance.CloseSelection();
     }
 
+    public void OpenSettings()
+    {
+        if (!settings || !GameManager.instance) return;
+        GameManager.instance.PauseGame();
+        settings.SetActive(true);
+        settings.transform.SetAsLastSibling();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -62,8 +77,7 @@ public class GameLoopManager : MonoBehaviour
                 GameManager.instance.ResumeGame();
                 settings.SetActive(false);
             } else {
-                GameManager.instance.PauseGame();
-                settings.SetActive(true);
+                OpenSettings();
             }
         }
 
@@ -132,6 +146,9 @@ public class GameLoopManager : MonoBehaviour
 
         BugTracker.Info("End of the game, player win: '" + isPlayerVictorious + "'.");
 
+        if (isPlayerVictorious)
+            GameManager.instance.CompleteCurrentLevel();
+
         if (isPlayerVictorious && GameManager.instance.currentLevelData.chaptersAfterGame != "" && GameManager.instance.currentLevelData != null) {
             GameManager.instance.nextStory = GameManager.instance.currentLevelData.chaptersAfterGame;
             LoadingScene.Instance.LoadStory();
@@ -139,15 +156,19 @@ public class GameLoopManager : MonoBehaviour
         }
 
         popupEndGame.SetActive(true);
+        buttonNextOrRestart.onClick.RemoveListener(GameManager.instance.SetNextLevel);
+        buttonNextOrRestart.onClick.RemoveListener(RestartGame);
         if (isPlayerVictorious) {
             popupEndGame.GetComponentInChildren<TextMeshProUGUI>().text = "You win";
 
             buttonNextOrRestart.GetComponentInChildren<TextMeshProUGUI>().text = "Next";
             buttonNextOrRestart.onClick.AddListener(GameManager.instance.SetNextLevel);
+            GetComponent<EntropyLoopHud>()?.ShowResult(true);
             return;
         }
 
         buttonNextOrRestart.onClick.AddListener(RestartGame);
+        GetComponent<EntropyLoopHud>()?.ShowResult(false);
     }
 
     public void CheckVictory()

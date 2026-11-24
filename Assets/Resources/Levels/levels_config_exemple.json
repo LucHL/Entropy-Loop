@@ -1,0 +1,89 @@
+{
+    "levels": [
+    {
+        "currentlevel": 1,
+        "chaptersBeforeGame": "Chapter1/chpt1-1",
+        "chaptersAfterGame": "Chapter1/chpt1-1aft",
+        "panelDetail": {
+            "levelTitle": "Tuto",
+            "levelDescription": "Tutoriel pour décrouvir le fonctionnement du gameplay.",
+            "totalPhases": 2,
+            "levelZone": "foret"
+        },
+        "spawnAlgo": {
+            "spawnStartegy": [3, 3],
+            "deck": ["", ""],
+            "manaCost": [12, 12],
+            "difficulty": "medium",
+            "music": ["Music/classique.mp3", "Music/boss.mp3"]
+        },
+        "mapGen": {
+            "dayNight": true,
+            "daySeconds": 240,
+            "weather": true,
+            "weatherSeconds": 60,
+            "chaos": true,
+            "chaosStartSeconds": 180,
+            "chaosPeakSeconds": 300,
+            "collapseSeconds": 12,
+            "structures": [
+                {
+                "kind": "watchtower",
+                "resource": "",
+                "count": 3,
+                "minRadius": 17,
+                "maxRadius": 30,
+                "scale": 1
+                },
+                {
+                "kind": "merchant",
+                "resource": "",
+                "count": 3,
+                "minRadius": 17,
+                "maxRadius": 30,
+                "scale": 1
+                },
+                {
+                "kind": "observatory",
+                "resource": "",
+                "count": 2,
+                "minRadius": 17,
+                "maxRadius": 30,
+                "scale": 1
+                },
+                {
+                "kind": "obelisk",
+                "resource": "",
+                "count": 8,
+                "minRadius": 17,
+                "maxRadius": 29,
+                "scale": 1
+                },
+                {
+                "kind": "ruin",
+                "resource": "",
+                "count": 5,
+                "minRadius": 19,
+                "maxRadius": 30,
+                "scale": 1
+                },
+                {
+                "kind": "crystals",
+                "resource": "",
+                "count": 12,
+                "minRadius": 15,
+                "maxRadius": 28,
+                "scale": 0.8
+                },
+                {
+                "kind": "shrine",
+                "resource": "",
+                "count": 3,
+                "minRadius": 21,
+                "maxRadius": 31,
+                "scale": 1
+                }
+            ]
+        }
+    }
+]}

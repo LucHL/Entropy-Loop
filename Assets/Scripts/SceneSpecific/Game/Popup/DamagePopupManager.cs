@@ -14,6 +14,7 @@ public class DamagePopupManager : MonoBehaviour
 
     public void Init(Transform position, float dmg)
     {
+        if (CombatUnitFeedback.Hit(position, dmg)) return;
         GameObject dmgPopup = Instantiate(canvasDamagePopup, position.position + Vector3.up * 1.5f, Quaternion.identity);
         dmgPopup.GetComponent<DamagePopup>().Setup(dmg);
     }

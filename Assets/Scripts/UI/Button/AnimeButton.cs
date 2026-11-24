@@ -17,14 +17,19 @@ public class AnimeButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         image.sprite = sprite[0];
     }
 
+    // un bouton désactivé ne s'allume ni au survol ni au clic
+    bool IsInteractable => button == null || button.IsInteractable();
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        image.sprite = sprite[2];
+        if (IsInteractable)
+            image.sprite = sprite[2];
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        image.sprite = sprite[1];
+        if (IsInteractable)
+            image.sprite = sprite[1];
     }
 
     public void OnPointerExit(PointerEventData eventData)

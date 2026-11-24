@@ -46,7 +46,7 @@ public class TutorialManager : MonoBehaviour
         }
 
         if (CheckEntitySpawn()) {
-            FloatingTextManager.instance.Show("Aucune créature le terrain !");
+            FloatingTextManager.instance.Show("Aucune créature sur le terrain !");
             return;
         }
 
@@ -85,7 +85,7 @@ public class TutorialManager : MonoBehaviour
 
     public bool CheckEntitySpawn()
     {
-        if (currentStep != 8) // poser une carte sur le board
+        if (!tutorialSteps[currentStep].TryGetComponent(out TutorialStepRequireUnit _))
             return false;
 
         int isPlayerChampionSpawn = GameLoopManager.instance.playerUnits.Count();

@@ -44,7 +44,7 @@ public class SettingsScript : MonoBehaviour
 
     void Start()
     {
-        // Initialise les contrôles d'accessibilité avec les valeurs sauvegardées
+        // Initialise les contrï¿½les d'accessibilitï¿½ avec les valeurs sauvegardï¿½es
         if (AccessibilityManager.Instance != null)
         {
             if (colorBlindDropdown != null)
@@ -122,7 +122,7 @@ public class SettingsScript : MonoBehaviour
         PlayerPrefs.SetInt(RESOLUTION_KEY, resolutionDropdown.value);
         PlayerPrefs.Save();
 
-        BugTracker.Info($"[Settings] Résolution changée : {res.width}x{res.height}.");
+        BugTracker.Info($"[Settings] Rï¿½solution changï¿½e : {res.width}x{res.height}.");
     }
 
     /* ACCESSIBILITY */
@@ -133,7 +133,7 @@ public class SettingsScript : MonoBehaviour
     }
     public void ChangeFontScale()
     {
-        BugTracker.Info($"[Settings] ChangeFontScale appelé : {fontScaleSlider.value}");
+        BugTracker.Info($"[Settings] ChangeFontScale appelï¿½ : {fontScaleSlider.value}");
         if (AccessibilityManager.Instance != null)
             AccessibilityManager.Instance.SetFontScale(fontScaleSlider.value);
         else
@@ -150,8 +150,9 @@ public class SettingsScript : MonoBehaviour
     {
         BugTracker.ResetBugTrackerFile();
     }
+
     public void ResetSaveFile()
     {
-        SaveSystem.ResetFile();
+        DataPersistenceManager.instance.ResetSaveFile();
     }
 }

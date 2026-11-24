@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6238a96c613d7fa43b0816324de0fb82, type: 3}
   m_Name: UndeadDeck
   m_EditorClassIdentifier: Assembly-CSharp::DeckData
-  deckName: Nature
+  deckName: Effondrés
   commander: {fileID: 11400000, guid: 03a386616b984df55ada4834f89e8c9a, type: 2}
   cards:
   - {fileID: 11400000, guid: 03a386616b984df55ada4834f89e8c9a, type: 2}
@@ -20,3 +20,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: eeef6be012806e6708ef9dd5a065ba8b, type: 2}
   - {fileID: 11400000, guid: 466a3214eec4daa19a9834aa967e72ec, type: 2}
   unlockLevel: 50
+  showInSelection: 1
+  displayName: 
+  category: "NÉANT & ENTROPIE"
+  grimoireTitle: "Le Codex des Effondrés"
+  lore: "Ce grimoire n'a pas d'auteur : il s'est écrit seul, page après page, à mesure que des Éclipsés succombaient à l'appel du Void. Thal'Zek fut le premier des Effondrés. Ceux qui le suivent ne connaissent plus la peur ni la douleur, seulement le vide qui les pousse à se relever encore."
+  deckType: "RÉSURRECTION NÉANTIQUE"
+  mechanics: "Vos unités vaincues entrent en Repos Néantique avant de revenir au combat. Le Canaliseur d'Entropie soigne et raccourcit ce repos, la Sentinelle du Vide revient plus vite et l'Éclipseur du Néant explose à son retour. Mais tout repose sur Thal'Zek : s'il tombe, vos unités perdent leurs PV et ne peuvent plus se relever."

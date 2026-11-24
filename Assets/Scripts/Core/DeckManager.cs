@@ -88,6 +88,8 @@ public class DeckManager : MonoBehaviour
         NumberOfCardRemaining.instance.UpdateNumber(deck.Count);
     }
 
+    public bool IsHandFull => handSlots.All(slot => !slot.IsEmpty());
+
     bool CheckIfHandIsFull() {
         if (handSlots.All(slot => !slot.IsEmpty())) {
             FloatingTextManager.instance.Show("Hand is full");

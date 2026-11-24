@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IDataPersistence
 {
     public static GameManager instance;
 
@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
     public int maxLevelReach;
     public int maxLevelFinish;
 
+    [Header("Debug Mode")]
+    public bool displayLineRenderEntityPath = false;
+
     private void Awake()
     {
         if (instance == null) {
@@ -42,6 +45,24 @@ public class GameManager : MonoBehaviour
 
         } else if (instance != this)
             Destroy(gameObject);
+    }
+
+    // ---- Save / Load ----
+
+    public void LoadData(GameData data)
+    {
+        maxLevelReach = data.maxLevelReach;
+        maxLevelFinish = data.maxLevelFinish;
+
+        BugTracker.Info("[GameManager] Data loaded into GameManager.");
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.maxLevelReach = maxLevelReach;
+        data.maxLevelFinish = maxLevelFinish;
+
+        BugTracker.Info("[GameManager] Data saved from GameManager.");
     }
 
     // ---- PAUSE / RESUME ----
@@ -69,8 +90,6 @@ public class GameManager : MonoBehaviour
             alllevelData = wrapper.levels;
         } else
             BugTracker.Critical("Failed to load levels configs from 'levels_config.json'.");
-
-        SaveSystem.Load();
     }
 
     public void SaveLevelConfig(LevelData levelData)
@@ -80,36 +99,56 @@ public class GameManager : MonoBehaviour
         SetStrategy();
 
         nextStory = levelData.chaptersBeforeGame;
+
+        DataPersistenceManager.instance.SaveGame();
+    }
+
+    // Enregistre le niveau comme terminé dès la victoire du dernier sous-niveau,
+    // pour qu'il reste débloqué même si le joueur retourne au menu au lieu de continuer
+    public void CompleteCurrentLevel()
+    {
+        if (currentLevelData == null || nbrSubLevelRemaining >= 1)
+            return;
+        if (currentLevelData.currentlevel <= maxLevelFinish)
+            return;
+
+        maxLevelFinish = currentLevelData.currentlevel;
+        maxLevelReach = currentLevelData.currentlevel + 1;
+        BugTracker.Info("[GameManager] Level " + maxLevelFinish + " completed.");
+        DataPersistenceManager.instance.SaveGame();
     }
 
     public void SetNextLevel()
     {
-        if (nbrSubLevelRemaining >= 1) { // sublevel
+        if (nbrSubLevelRemaining >= 1) { // sub-level
             SetNextStrategy();
             LoadingScene.Instance.ChangeScene("Game");
             return;
         }
 
-        // next level
-        int index = Array.IndexOf(alllevelData, currentLevelData);
+        int nextLevelNumber = currentLevelData.currentlevel + 1;
+        CompleteCurrentLevel();
 
-        if (currentLevelData.currentlevel > maxLevelFinish) {
-            maxLevelFinish = currentLevelData.currentlevel;
-            maxLevelReach = currentLevelData.currentlevel + 1;
+        LevelData nextLevelData = null;
+        foreach (var lvl in alllevelData) {
+            if (lvl.currentlevel == nextLevelNumber) {
+                nextLevelData = lvl;
+                break;
+            }
         }
 
-        index+= 1;
-        if (index >= alllevelData.Length) {
+        if (nextLevelData == null) {
             BugTracker.Info("[GameManager] No level available, end of the game.");
             LoadingScene.Instance.ChangeScene("Menu");
             return;
         }
-        currentLevelData = alllevelData[index];
+
+        currentLevelData = nextLevelData;
 
         BugTracker.Info("[GameManager] Loading level: " + currentLevelData.currentlevel + ".");
         SetStrategy();
 
-        SaveSystem.Save();
+        DataPersistenceManager.instance.SaveGame();
 
         if (currentLevelData.chaptersBeforeGame != "") {
             nextStory = currentLevelData.chaptersBeforeGame;
